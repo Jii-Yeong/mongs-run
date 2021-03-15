@@ -42,7 +42,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		// 배경 1000 * 700
 		// 버튼 230 * 70
 		background_image = new ImageIcon(".\\img\\ScoreBackground.jpg");
-		mainButton_imgae = new ImageIcon(".\\img\\MainButton.jpg");
+		mainButton_imgae = new ImageIcon(".\\img\\MainButton.png");
 		
 		if (file.exists()) {
 			load();
@@ -80,9 +80,11 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		JButton MainButton = new JButton();
 		MainButton.addActionListener(this);
 		MainButton.setActionCommand("메인화면");
-		MainButton.setBounds(716, 564, 230, 70);
-		MainButton.setFont(font);
 		MainButton.setIcon(mainButton_imgae);
+		MainButton.setBounds(716, 564, 230, 70);
+		MainButton.setBorderPainted(false);
+		MainButton.setFocusPainted(false);
+		MainButton.setContentAreaFilled(false);
 		add(MainButton);
 		
 		JLabel rank1 = new JLabel("1등");
@@ -150,7 +152,6 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	// 데이터 저장
 	private void save() {
 		try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))){
-//			scoreList.add(new RankData("Test22", 999999999));   //테스트용
 			scoreList.add(score);
 			Collections.sort(scoreList, Collections.reverseOrder());
 			out.writeObject(scoreList);
