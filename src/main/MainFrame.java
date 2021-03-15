@@ -8,7 +8,7 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		PlayPanel playPanel = new PlayPanel();
 		add(playPanel);
-		setSize(800, 450);
+		setSize(1000, 700);
 		setVisible(true);
 	}
 	

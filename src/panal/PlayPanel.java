@@ -11,8 +11,8 @@ import img.Person;
 
 public class PlayPanel extends JPanel {
 	public PlayPanel() {
-		setPreferredSize(new Dimension(750, 450));
-		setMaximumSize(new Dimension(750, 450));
+		setPreferredSize(new Dimension(1000, 700));
+		setMaximumSize(new Dimension(1000, 700));
 		Person person = new Person();
 		add(person);
 		
