@@ -9,10 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import img.Person;
+import main.MainFrame;
 
 public class PlayPanel extends JPanel {
 	BackgroundPanel background = new BackgroundPanel();
-	public PlayPanel() {
+	public PlayPanel(MainFrame frame) {
 		setPreferredSize(new Dimension(1000, 700));
 		setMaximumSize(new Dimension(1000, 700));
 		setLayout(null);
