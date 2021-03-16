@@ -60,7 +60,7 @@ public class MainFrame extends JFrame {
 		getContentPane().add("result", resultPanel);
 		
 		setSize(1000, 700);
-		setResizable(false);
+//		setResizable(false); 다 만들고 주석 풀것임
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
