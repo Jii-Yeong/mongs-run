@@ -6,14 +6,15 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-import panal.PlayPanel;
-import panal.BackgroundPanel;
 import panel.TestGamePanel;
+import panel.BackgroundPanel;
+import panel.PlayPanel;
 import panel.SelectPanel;
 import panel.StartPanel;
 import ranking.RankData;
 import ranking.RankPanel;
 import result.ResultPanel;
+import score.ScorePanel;
 
 public class MainFrame extends JFrame {
 	// 레이아웃
@@ -41,11 +42,9 @@ public class MainFrame extends JFrame {
 
 	// 생성자
 	public MainFrame() {
-		
 		RankPanel rankPanel = new RankPanel(new RankData("양종문", 1234), this);
 		ResultPanel resultPanel = new ResultPanel(rankPanel);
 		
-
 		setTitle("Mongs Run");
 		getContentPane().setLayout(cards);
 		
