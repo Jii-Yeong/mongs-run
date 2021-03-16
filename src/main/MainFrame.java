@@ -14,6 +14,7 @@ import panel.StartPanel;
 import ranking.RankData;
 import ranking.RankPanel;
 import result.ResultPanel;
+import score.ScorePanel;
 
 public class MainFrame extends JFrame {
 	// 레이아웃
@@ -41,11 +42,9 @@ public class MainFrame extends JFrame {
 
 	// 생성자
 	public MainFrame() {
-		
 		RankPanel rankPanel = new RankPanel(new RankData("양종문", 1234), this);
 		ResultPanel resultPanel = new ResultPanel(rankPanel);
 		
-
 		setTitle("Mongs Run");
 		getContentPane().setLayout(cards);
 		
@@ -60,7 +59,7 @@ public class MainFrame extends JFrame {
 		getContentPane().add("result", resultPanel);
 		
 		setSize(1000, 700);
-		setResizable(false);
+//		setResizable(false); 다 만들고 주석 풀것임
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

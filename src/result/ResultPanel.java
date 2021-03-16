@@ -31,6 +31,7 @@ public class ResultPanel extends JPanel implements ActionListener {
 		this.rankPanel = rankPanel;
 		setLayout(null);
 		font = new Font("맑은 고딕", Font.BOLD, 30);
+		
 		JLabel score = new JLabel(rankPanel.getScore().getName() + " : " + rankPanel.getScore().getScore() + "점");
 		score.setBounds(479, 66, 439, 113);
 		score.setFont(font);
