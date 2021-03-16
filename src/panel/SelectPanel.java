@@ -68,7 +68,7 @@ public class SelectPanel extends JPanel {
 		btnStart.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.changeGamePanel();
+				frame.changePlayPanel();
 			}
 		});
 		add(btnStart);

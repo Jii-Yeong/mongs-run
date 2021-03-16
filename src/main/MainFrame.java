@@ -8,6 +8,9 @@ import javax.swing.JFrame;
 import panel.TestGamePanel;
 import panel.SelectPanel;
 import panel.StartPanel;
+import panel.PlayPanel;
+import ranking.RankData;
+import ranking.RankPanel;
 
 public class MainFrame extends JFrame {
 	// 레이아웃
@@ -16,7 +19,8 @@ public class MainFrame extends JFrame {
 	// 패널
 	private StartPanel startPanel;
 	private SelectPanel selectPanel;
-	private TestGamePanel gamePanel;
+	private PlayPanel playPanel;
+	private RankPanel rankPanel;
 	
 	// 메인 메소드
 	public static void main(String[] args) {
@@ -34,16 +38,20 @@ public class MainFrame extends JFrame {
 
 	// 생성자
 	public MainFrame() {
+
 		setTitle("Mongs Run");
 		getContentPane().setLayout(cards);
 		
 		startPanel = new StartPanel(this);
 		selectPanel = new SelectPanel(this);
-		gamePanel = new TestGamePanel(this);
+		playPanel = new PlayPanel(this);
+//		rankPanel = new RankPanel(new RankData("양종문", 1235));
+//		add(rankPanel);
 		
 		getContentPane().add("start", startPanel);
 		getContentPane().add("select", selectPanel);
-		getContentPane().add("game", gamePanel);
+		getContentPane().add("play", playPanel);
+		
 		
 		setSize(1000, 700);
 		setResizable(false);
@@ -58,8 +66,8 @@ public class MainFrame extends JFrame {
 	public void changeSelectPanel() {
 		cards.show(this.getContentPane(), "select");
 	}
-	public void changeGamePanel() {
-		cards.show(this.getContentPane(), "game");
+	public void changePlayPanel() {
+		cards.show(this.getContentPane(), "play");
 	}
 }
 
