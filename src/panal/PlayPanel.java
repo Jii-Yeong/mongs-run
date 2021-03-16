@@ -54,6 +54,15 @@ public class PlayPanel extends JPanel implements Runnable {
 		field.setBounds(0, 512, 150, 150);
 		background.add(field);
 		fieldList = new ArrayList<>();
+		JButton btn = new JButton("dkanrjsk");
+		btn.setBounds(0, 0, 100, 100);
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.changeRankPanel();
+			}
+		});
+		background.add(btn);
 		
 		for (int i = 0; i < 10; i++) { // 땅 채우기
 			fieldList.add(new Field());

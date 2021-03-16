@@ -13,6 +13,7 @@ import panel.SelectPanel;
 import panel.StartPanel;
 import ranking.RankData;
 import ranking.RankPanel;
+import result.ResultPanel;
 
 public class MainFrame extends JFrame {
 	// 레이아웃
@@ -40,6 +41,10 @@ public class MainFrame extends JFrame {
 
 	// 생성자
 	public MainFrame() {
+		
+		RankPanel rankPanel = new RankPanel(new RankData("양종문", 1234), this);
+		ResultPanel resultPanel = new ResultPanel(rankPanel);
+		
 
 		setTitle("Mongs Run");
 		getContentPane().setLayout(cards);
@@ -47,12 +52,12 @@ public class MainFrame extends JFrame {
 		startPanel = new StartPanel(this);
 		selectPanel = new SelectPanel(this);
 		playPanel = new PlayPanel(this);
-//		rankPanel = new RankPanel(new RankData("양종문", 1235));
-//		add(rankPanel);
 		
 		getContentPane().add("start", startPanel);
 		getContentPane().add("select", selectPanel);
 		getContentPane().add("play", playPanel);
+		getContentPane().add("rank", rankPanel);
+		getContentPane().add("result", resultPanel);
 		
 		setSize(1000, 700);
 		setResizable(false);
@@ -69,6 +74,14 @@ public class MainFrame extends JFrame {
 	}
 	public void changePlayPanel() {
 		cards.show(this.getContentPane(), "play");
+	}
+	
+	public void changeRankPanel() {
+		cards.show(this.getContentPane(), "rank");
+	}
+	
+	public void changeResultPanel() {
+		cards.show(this.getContentPane(), "result");
 	}
 }
 

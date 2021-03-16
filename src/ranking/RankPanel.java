@@ -1,6 +1,9 @@
 package ranking;
 
 import javax.swing.JPanel;
+
+import main.MainFrame;
+
 import javax.swing.JLabel;
 
 import java.awt.Font;
@@ -23,17 +26,24 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class RankPanel extends JPanel implements ActionListener, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4444137678317535870L;
 	private RankData score;
 	private List<RankData> scoreList;
 	private File file;
 	private Font font;
 	private ImageIcon background_image;
 	private ImageIcon mainButton_imgae;
+	private MainFrame frame;
 	/**
 	 * Create the panel.
 	 */
-	public RankPanel(RankData score) {
+	
+	public RankPanel(RankData score, MainFrame frame) {
 		file = new File(".\\rankScore.bin");
+		this.frame = frame;
 		this.score = score;
 		scoreList = new ArrayList<>(); 
 		font = new Font("맑은 고딕", Font.BOLD, 30);
@@ -121,6 +131,14 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		setSize(1000, 700);
 	}
 
+	public RankData getScore() {
+		return score;
+	}
+
+	public void setScore(RankData score) {
+		this.score = score;
+	}
+
 	public List<RankData> getScoreList() {
 		return scoreList;
 	}
@@ -132,20 +150,19 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("메인화면")) {
+			frame.changeStartPanel();
 			System.out.println("메인화면");
 		}
 	}
 	
 	// 데이터 로드
 	private void load() {
-		if (file.exists()) {
-			try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))){
-				scoreList = (List<RankData>) in.readObject();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+		try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))){
+			scoreList = (List<RankData>) in.readObject();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 	

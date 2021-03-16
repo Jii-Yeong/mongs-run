@@ -3,25 +3,30 @@ package ranking;
 import java.io.Serializable;
 
 public class RankData implements Comparable<RankData>, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7113901543373795492L;
 	private String name;
 	private int score;
 	
 	public RankData() {
 		super();
 	}
-	
+
 	public RankData(String name, int score) {
 		super();
 		this.name = name;
 		this.score = score;
 	}
+	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public long getScore() {
+	public int getScore() {
 		return score;
 	}
 	public void setScore(int score) {
