@@ -6,9 +6,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-import panal.PlayPanel;
-import panal.BackgroundPanel;
 import panel.TestGamePanel;
+import panel.BackgroundPanel;
+import panel.PlayPanel;
 import panel.SelectPanel;
 import panel.StartPanel;
 import ranking.RankData;
