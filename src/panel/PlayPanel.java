@@ -1,6 +1,7 @@
 package panel;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -26,16 +27,18 @@ import physical.Physical;
 
 public class PlayPanel extends JPanel {
 	BackgroundPanel background = new BackgroundPanel();
-	List<JPanel> fieldList;
-	int fieldX = 0;
+	int personY = 0;
+	Person person;
+	Component field;
 	
 	static int black = new Color(0, 0, 0).getRGB();
 	
 	public PlayPanel(MainFrame frame) {
+		field = new Field();
 		setPreferredSize(new Dimension(1000, 700));
 		setMaximumSize(new Dimension(1000, 700));
 		setLayout(null);
-		Person person = new Person();
+		person = new Person();
 		person.setOpaque(false);
 		background.setBounds(0, 0, 1000, 700);
 		person.setBounds(100, 225, 200, 400);
@@ -67,6 +70,9 @@ public class PlayPanel extends JPanel {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		Thread t = new Thread(new GravityRunnable());
+		t.start();
+		
 	}
 	
 	public void getBlack(BufferedImage image) {
@@ -83,5 +89,37 @@ public class PlayPanel extends JPanel {
 				}
 			}
 		}
+	}
+	
+	private class GravityRunnable implements Runnable {
+		@Override
+		public void run() {
+			while (!findPersonY()) {
+				person.setBounds(0, personY, 200, 400);
+				personY += 1;
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	public boolean findPersonY() {
+		if (person.getY() + 300 == getFieldY()) {
+			return true;
+		}
+		return false;
+	}
+	public int getFieldY() {
+		for (int h = 0; h < background.getHeight(); h++) {
+			if (background.getComponentAt(0, h) instanceof Field) {
+				field = background.getComponentAt(0, h);
+			} else if (background.getComponentAt(0, h) == null) {
+				break;
+			}
+		}
+		return field.getY();
+		
 	}
 }
