@@ -41,7 +41,7 @@ public class BackgroundPanel extends JPanel implements Runnable {
 			}
 			repaint();
 			try {
-				Thread.sleep(7);
+				Thread.sleep(2);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
