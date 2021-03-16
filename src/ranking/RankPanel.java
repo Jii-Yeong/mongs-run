@@ -1,6 +1,9 @@
 package ranking;
 
 import javax.swing.JPanel;
+
+import main.MainFrame;
+
 import javax.swing.JLabel;
 
 import java.awt.Font;
@@ -33,12 +36,14 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	private Font font;
 	private ImageIcon background_image;
 	private ImageIcon mainButton_imgae;
+	private MainFrame frame;
 	/**
 	 * Create the panel.
 	 */
 	
-	public RankPanel(RankData score) {
+	public RankPanel(RankData score, MainFrame frame) {
 		file = new File(".\\rankScore.bin");
+		this.frame = frame;
 		this.score = score;
 		scoreList = new ArrayList<>(); 
 		font = new Font("맑은 고딕", Font.BOLD, 30);
@@ -145,6 +150,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("메인화면")) {
+			frame.changeStartPanel();
 			System.out.println("메인화면");
 		}
 	}
