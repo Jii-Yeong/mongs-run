@@ -23,6 +23,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class RankPanel extends JPanel implements ActionListener, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4444137678317535870L;
 	private RankData score;
 	private List<RankData> scoreList;
 	private File file;
@@ -32,6 +36,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	/**
 	 * Create the panel.
 	 */
+	
 	public RankPanel(RankData score) {
 		file = new File(".\\rankScore.bin");
 		this.score = score;
@@ -121,6 +126,14 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		setSize(1000, 700);
 	}
 
+	public RankData getScore() {
+		return score;
+	}
+
+	public void setScore(RankData score) {
+		this.score = score;
+	}
+
 	public List<RankData> getScoreList() {
 		return scoreList;
 	}
@@ -138,14 +151,12 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	
 	// 데이터 로드
 	private void load() {
-		if (file.exists()) {
-			try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))){
-				scoreList = (List<RankData>) in.readObject();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+		try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))){
+			scoreList = (List<RankData>) in.readObject();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 	
