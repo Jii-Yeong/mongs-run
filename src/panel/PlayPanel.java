@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import img.Field;
 import img.Person;
 import main.MainFrame;
+import score.ScorePanel;
 import panel.BackgroundPanel;
 
 public class PlayPanel extends JPanel {
@@ -33,6 +34,7 @@ public class PlayPanel extends JPanel {
 		setPreferredSize(new Dimension(1000, 700));
 		setMaximumSize(new Dimension(1000, 700));
 		setLayout(null);
+		ScorePanel scorePanel = new ScorePanel();
 		Person person = new Person();
 		person.setOpaque(false);
 		background.setBounds(0, 0, 1000, 700);
@@ -40,6 +42,9 @@ public class PlayPanel extends JPanel {
 		person.setBackground(new Color(0, 0, 0, 1));
 		background.setLayout(null);
 		background.add(person); // 패널에 person을 추가하는게 아니라, background에 person을 추가.
+		scorePanel.setBounds(700, 0, 300, 100);
+		scorePanel.setBackground(new Color(0, 0, 0, 0));
+		background.add(scorePanel);
 		add(background);
 		JButton btn = new JButton("dkanrjsk");
 		btn.setBounds(0, 0, 100, 100);
