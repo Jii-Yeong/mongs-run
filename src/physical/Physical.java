@@ -39,17 +39,17 @@ public class Physical extends JLayeredPane implements Runnable {
 		this.life = life;
 	}
 	
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		Physical physical = new Physical();
-		physical.setBounds(60, 60, 560, 80);
-		
-		frame.getContentPane().setLayout(null);
-		frame.getContentPane().add(physical);
-		frame.setSize(1000, 700);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		JFrame frame = new JFrame();
+//		Physical physical = new Physical();
+//		physical.setBounds(60, 60, 560, 80);
+//		
+//		frame.getContentPane().setLayout(null);
+//		frame.getContentPane().add(physical);
+//		frame.setSize(1000, 700);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setVisible(true);
+//	}
 	
 	private void lifeMinus(int x) {
 		JLabel lifeMinus = new JLabel();
