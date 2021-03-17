@@ -83,5 +83,3 @@ public class MainFrame extends JFrame {
 		cards.show(this.getContentPane(), "result");
 	}
 }
-
-

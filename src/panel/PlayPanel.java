@@ -45,6 +45,7 @@ public class PlayPanel extends JPanel {
 	static int black = new Color(0, 0, 0).getRGB();
 	static int red = new Color(237, 28, 36).getRGB();
 	static int yellow = new Color(255, 242, 0).getRGB();
+
 	
 	public PlayPanel(MainFrame frame) {
 		field = new Field();
