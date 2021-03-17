@@ -22,7 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Jelly.Jelly;
+import img.Jelly;
 import img.Field;
 import img.Object;
 import img.Person;
@@ -57,6 +57,8 @@ public class PlayPanel extends JPanel {
 	private static int yellow = new Color(255, 242, 0).getRGB();
 	private Thread t3;
 	private Thread t;
+	BufferedImage image = null;
+
 	/**
 	 * Create the panel.
 	 */
@@ -100,9 +102,8 @@ public class PlayPanel extends JPanel {
 		add(background);
 		
 		
-		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File(".\\img\\black.png"));
+			image = ImageIO.read(new File(".\\img\\stage1.png"));
 			getBlack(image);
 			getRed(image);
 			getYellow(image);
@@ -118,6 +119,7 @@ public class PlayPanel extends JPanel {
 		
 		t3 = new Thread(new MoveRunnable());
 		t3.start();
+		
 		pnl = new JPanel();
 		background.add(pnl);
 		
@@ -151,6 +153,22 @@ public class PlayPanel extends JPanel {
 				for(int i = 0; i < jellyList.size(); i++) {
 					int X = jellyList.get(i).getX();
 					jellyList.get(i).setBounds(X - 5, jellyList.get(i).getY(), 50, 50);
+				}
+//				System.out.println(fieldList.size()); // 필드리스트 사이즈 = 168
+//				System.out.println(fieldList.get(168).getX());
+				if (fieldList.get(148).getX() == 0) {
+					System.out.println("1스테이지의 끝");
+					// 1스테이지가 끝남, 
+					try {
+						image = ImageIO.read(new File(".\\img\\stage2.png"));
+						getBlack(image);
+						getRed(image);
+						getYellow(image);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
+					// 2스테이지 필드리스트값 출력해보기
 				}
 			}
 		}
@@ -316,5 +334,4 @@ public class PlayPanel extends JPanel {
 			frame.changeResultPanel();
 		}
 	}
-	
 }
