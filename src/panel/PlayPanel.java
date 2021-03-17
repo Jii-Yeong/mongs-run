@@ -36,27 +36,29 @@ import result.ResultPanel;
 
 public class PlayPanel extends JPanel {
 	BackgroundPanel background = new BackgroundPanel();
-	int fieldX = 0;
-	Field field;
-	Object object;
-	img.Jelly jelly;
-	List<Field> fieldList = new ArrayList<Field>();
-	List<Object> objectList = new ArrayList<Object>();
-	List<img.Jelly> jellyList = new ArrayList<img.Jelly>();
-	boolean b = false;
-	int personY = 100;
-	Person person;
-	Thread t2;
+	private int fieldX = 0;
+	private Field field;
+	private Object object;
+	private img.Jelly jelly;
+	private List<Field> fieldList = new ArrayList<Field>();
+	private List<Object> objectList = new ArrayList<Object>();
+	private List<img.Jelly> jellyList = new ArrayList<img.Jelly>();
+	private boolean b = false;
+	private int personY = 100;
+	private Person person;
+	private Thread t2;
 	private Physical physical;
-	static int black = new Color(0, 0, 0).getRGB();
-	static int red = new Color(237, 28, 36).getRGB();
-	static int yellow = new Color(255, 242, 0).getRGB();
-
 	private RankPanel rankPanel;
+	private ResultPanel resultPanel;
 	private MainFrame frame;
-
-	Thread t3;
-	Thread t;
+	private static int black = new Color(0, 0, 0).getRGB();
+	private static int red = new Color(237, 28, 36).getRGB();
+	private static int yellow = new Color(255, 242, 0).getRGB();
+	private Thread t3;
+	private Thread t;
+	/**
+	 * Create the panel.
+	 */
 	JPanel pnl;
 	JPanel pnl2;
 	
@@ -102,9 +104,11 @@ public class PlayPanel extends JPanel {
 		btn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
+				frame.getContentPane().add("result", resultPanel);
 				rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
 				frame.getContentPane().add("rank", rankPanel);
-				frame.changeRankPanel();
+				frame.changeResultPanel();
 			}
 		});
 		background.add(btn);
