@@ -36,6 +36,7 @@ public class SelectPanel extends JPanel {
 	// 커서
 	private Cursor cursor;
 	
+	// 플레이 패널
 	private PlayPanel playPanel;
 
 	// 생성자
@@ -137,7 +138,6 @@ public class SelectPanel extends JPanel {
 					playPanel = new PlayPanel(frame);
 					frame.getContentPane().add("play", playPanel);
 					frame.changePlayPanel();
-					playPanel.getT2().start();
 					System.out.println("캐릭터 번호" + selectednum);
 				}
 			}

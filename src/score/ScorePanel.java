@@ -5,9 +5,6 @@ import java.awt.Font;
 import javax.swing.JLabel;
 
 public class ScorePanel extends JPanel implements Runnable {
-	
-	// 클래스 합칠 때 score 변수 변경 해야함************************************************************
-	
 	private int score;
 	private JLabel scoreLabel;
 	private Font font;
