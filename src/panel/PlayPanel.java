@@ -50,8 +50,11 @@ public class PlayPanel extends JPanel {
 	static int yellow = new Color(255, 242, 0).getRGB();
 	Thread t3;
 	Thread t;
+	JPanel pnl;
+	JPanel pnl2;
 	
 	public PlayPanel(MainFrame frame) {
+		
 		field = new Field();
 		JButton lifeUp = new JButton("Up");
 		lifeUp.setBounds(0, 300, 100, 100);
@@ -112,6 +115,13 @@ public class PlayPanel extends JPanel {
 //		t2.start();
 		
 		t3 = new Thread(new MoveRunnable());
+		pnl = new JPanel();
+		background.add(pnl);
+		
+		pnl2 = new JPanel();
+		pnl2.setBackground(new Color(2, 233, 44));
+		background.add(pnl2);
+
 	}
 	
 	private class fieldRunnable implements Runnable {
@@ -224,11 +234,24 @@ public class PlayPanel extends JPanel {
 	}
 	public boolean getFieldY() {
 		System.out.println("작동되는 중...");
-		if (background.getComponentAt(new Point(200, person.getY() + 300)) != null) {
-			if (background.getComponentAt(new Point(200, person.getY() + 300)).getClass().getName().equals("img.Field")) {
+//		if (background.getComponentAt(new Point(200, person.getY() + 300)) != null) {
+//			if (background.getComponentAt(new Point(200, person.getY() + 300)).getClass().getName().equals("img.Field")) {
+//				return true;
+//			}
+//		}
+		Rectangle personR = new Rectangle(new Point(0, person.getY() + 300), new Dimension(200, 10));
+		Rectangle fieldR = null;
+		pnl.setBounds(personR);
+		pnl.setBackground(new Color(2, 233, 44));
+		
+		for (int i = 0; i < fieldList.size(); i++) {
+			fieldR = new Rectangle(new Point(fieldList.get(i).getX(), fieldList.get(i).getY()), new Dimension(50, 10));
+			pnl2.setBounds(fieldR);
+			if (personR.intersects(fieldR)) {
 				return true;
 			}
 		}
+
 		return false;
 		
 	}
