@@ -2,6 +2,7 @@ package result;
 
 import javax.swing.JPanel;
 
+import main.MainFrame;
 import panel.StartPanel;
 import score.ScorePanel;
 import javax.swing.JLabel;
@@ -19,21 +20,23 @@ public class ResultPanel extends JPanel implements ActionListener {
 	private Font font;
 	private ImageIcon button_image;
 	private ImageIcon background_image;
+	private MainFrame frame;
 	/**
 	 * Create the panel.
 	 */
-	public ResultPanel(StartPanel name, ScorePanel currentScore) {
+	public ResultPanel(StartPanel name, ScorePanel currentScore, MainFrame frame) {
 		// 이미지 변경 작업필요 **************************************************************************************
 		// 배경 1000 * 700
 		// 버튼 230 * 70
 		this.name = name;
 		this.currentScore = currentScore;
+		this.frame = frame;
 		button_image = new ImageIcon(".\\img\\button\\btn_main.png");
 		background_image = new ImageIcon(".\\img\\ScoreBackground.jpg");
 		setLayout(null);
 		font = new Font("맑은 고딕", Font.BOLD, 30);
 		
-		JLabel score = new JLabel(name.getName() + " : " + currentScore.getScore() + "점");
+		JLabel score = new JLabel(name.getTfdName().getText() + " : " + currentScore.getScore() + "점");
 		score.setBounds(479, 66, 439, 113);
 		score.setFont(font);
 		add(score);
@@ -60,7 +63,7 @@ public class ResultPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("메인화면")) {
-			System.out.println("메인화면");
+			frame.changeStartPanel();
 		}
 	}
 }

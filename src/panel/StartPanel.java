@@ -21,9 +21,10 @@ import java.awt.Font;
 public class StartPanel extends JPanel {
 	public SelectPanel selectPanel;
 	private JTextField tfdName;
-
 	private Cursor cursor;
-	
+	/**
+	 * Create the panel.
+	 */
 	public StartPanel(MainFrame frame) {
 		// 배경 이미지
 		ImageIcon img = new ImageIcon(".\\img\\background\\test.png");
