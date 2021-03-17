@@ -2,9 +2,9 @@ package result;
 
 import javax.swing.JPanel;
 
-import ranking.RankData;
-import ranking.RankPanel;
-
+import main.MainFrame;
+import panel.StartPanel;
+import score.ScorePanel;
 import javax.swing.JLabel;
 
 import java.awt.Font;
@@ -15,24 +15,28 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class ResultPanel extends JPanel implements ActionListener {
-	private RankPanel rankPanel;
+	private StartPanel name;
+	private ScorePanel currentScore;
 	private Font font;
 	private ImageIcon button_image;
 	private ImageIcon background_image;
+	private MainFrame frame;
 	/**
 	 * Create the panel.
 	 */
-	public ResultPanel(RankPanel rankPanel) {
+	public ResultPanel(StartPanel name, ScorePanel currentScore, MainFrame frame) {
 		// 이미지 변경 작업필요 **************************************************************************************
 		// 배경 1000 * 700
 		// 버튼 230 * 70
+		this.name = name;
+		this.currentScore = currentScore;
+		this.frame = frame;
 		button_image = new ImageIcon(".\\img\\button\\btn_main.png");
 		background_image = new ImageIcon(".\\img\\ScoreBackground.jpg");
-		this.rankPanel = rankPanel;
 		setLayout(null);
 		font = new Font("맑은 고딕", Font.BOLD, 30);
 		
-		JLabel score = new JLabel(rankPanel.getScore().getName() + " : " + rankPanel.getScore().getScore() + "점");
+		JLabel score = new JLabel(name.getTfdName().getText() + " : " + currentScore.getScore() + "점");
 		score.setBounds(479, 66, 439, 113);
 		score.setFont(font);
 		add(score);
@@ -44,7 +48,7 @@ public class ResultPanel extends JPanel implements ActionListener {
 		mainButton.setFocusPainted(false);
 		mainButton.setContentAreaFilled(false);
 		mainButton.setIcon(button_image);
-		mainButton.setActionCommand("처음으로");
+		mainButton.setActionCommand("메인화면");
 		add(mainButton);
 
 		JLabel lblNewLabel = new JLabel();
@@ -58,8 +62,8 @@ public class ResultPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("처음으로")) {
-			System.out.println("처음으로");
+		if (e.getActionCommand().equals("메인화면")) {
+			frame.changeStartPanel();
 		}
 	}
 }

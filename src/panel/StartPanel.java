@@ -22,7 +22,9 @@ public class StartPanel extends JPanel {
 	public SelectPanel selectPanel;
 	private JTextField tfdName;
 	private Cursor cursor;
-	
+	/**
+	 * Create the panel.
+	 */
 	public StartPanel(MainFrame frame) {
 		// 배경 이미지
 		ImageIcon img = new ImageIcon(".\\img\\background\\test.png");
@@ -51,7 +53,6 @@ public class StartPanel extends JPanel {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				int length = ((JTextComponent) e.getSource()).getText().length();
-				System.out.println(length);
 				if (length > 5) {
 					e.consume();
 				}
@@ -124,5 +125,13 @@ public class StartPanel extends JPanel {
 		btn.setFocusPainted(false);
 		btn.setContentAreaFilled(false);
 		btn.setCursor(cursor);
+	}
+	
+	public JTextField getTfdName() {
+		return tfdName;
+	}
+
+	public void setTfdName(JTextField tfdName) {
+		this.tfdName = tfdName;
 	}
 }
