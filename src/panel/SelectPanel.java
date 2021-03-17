@@ -35,6 +35,8 @@ public class SelectPanel extends JPanel {
 
 	// 커서
 	private Cursor cursor;
+	
+	private PlayPanel playPanel;
 
 	// 생성자
 	public SelectPanel(MainFrame frame) {
@@ -132,7 +134,10 @@ public class SelectPanel extends JPanel {
 				if (selectednum == 0) {
 					JOptionPane.showMessageDialog(null, "캐릭터를 선택해주세요", "오류", JOptionPane.WARNING_MESSAGE);
 				} else {
+					playPanel = new PlayPanel(frame);
+					frame.getContentPane().add("play", playPanel);
 					frame.changePlayPanel();
+					playPanel.getT2().start();
 					System.out.println("캐릭터 번호" + selectednum);
 				}
 			}
