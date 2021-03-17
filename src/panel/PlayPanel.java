@@ -59,7 +59,11 @@ public class PlayPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	JPanel pnl;
+	JPanel pnl2;
+	
 	public PlayPanel(MainFrame frame) {
+		
 		field = new Field();
 		this.frame = frame;
 		
@@ -120,12 +124,20 @@ public class PlayPanel extends JPanel {
 		}
 		
 		t = new Thread(new fieldRunnable());
-//		t.start();
+		t.start();
 		
 		t2 = new Thread(new GravityRunnable());
-//		t2.start();
+		t2.start();
 		
 		t3 = new Thread(new MoveRunnable());
+		t3.start();
+		pnl = new JPanel();
+		background.add(pnl);
+		
+		pnl2 = new JPanel();
+		pnl2.setBackground(new Color(2, 233, 44));
+		background.add(pnl2);
+
 	}
 	
 	private class fieldRunnable implements Runnable {
@@ -238,11 +250,19 @@ public class PlayPanel extends JPanel {
 	}
 	public boolean getFieldY() {
 		System.out.println("작동되는 중...");
-		if (background.getComponentAt(new Point(200, person.getY() + 300)) != null) {
-			if (background.getComponentAt(new Point(200, person.getY() + 300)).getClass().getName().equals("img.Field")) {
+		Rectangle personR = new Rectangle(new Point(0, person.getY() + 300), new Dimension(200, 10));
+		Rectangle fieldR = null;
+		pnl.setBounds(personR);
+		pnl.setBackground(new Color(2, 233, 44));
+		
+		for (int i = 0; i < fieldList.size(); i++) {
+			fieldR = new Rectangle(new Point(fieldList.get(i).getX(), fieldList.get(i).getY()), new Dimension(50, 10));
+			pnl2.setBounds(fieldR);
+			if (personR.intersects(fieldR)) {
 				return true;
 			}
 		}
+
 		return false;
 		
 	}
