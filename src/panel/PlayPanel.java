@@ -30,6 +30,9 @@ import main.MainFrame;
 import score.ScorePanel;
 import panel.BackgroundPanel;
 import physical.Physical;
+import ranking.RankData;
+import ranking.RankPanel;
+import result.ResultPanel;
 
 public class PlayPanel extends JPanel {
 	BackgroundPanel background = new BackgroundPanel();
@@ -48,11 +51,17 @@ public class PlayPanel extends JPanel {
 	static int black = new Color(0, 0, 0).getRGB();
 	static int red = new Color(237, 28, 36).getRGB();
 	static int yellow = new Color(255, 242, 0).getRGB();
+
+	private RankPanel rankPanel;
+	private MainFrame frame;
+
 	Thread t3;
 	Thread t;
 	
 	public PlayPanel(MainFrame frame) {
 		field = new Field();
+		this.frame = frame;
+		
 		JButton lifeUp = new JButton("Up");
 		lifeUp.setBounds(0, 300, 100, 100);
 		lifeUp.addActionListener(new ActionListener() {
@@ -90,6 +99,8 @@ public class PlayPanel extends JPanel {
 		btn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
+				frame.getContentPane().add("rank", rankPanel);
 				frame.changeRankPanel();
 			}
 		});
