@@ -52,7 +52,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		// 배경 1000 * 700
 		// 버튼 230 * 70
 		background_image = new ImageIcon(".\\img\\ScoreBackground.jpg");
-		mainButton_imgae = new ImageIcon(".\\img\\MainButton.png");
+		mainButton_imgae = new ImageIcon(".\\img\\button\\btn_main.png");
 		
 		if (file.exists()) {
 			load();

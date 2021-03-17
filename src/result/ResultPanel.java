@@ -26,7 +26,7 @@ public class ResultPanel extends JPanel implements ActionListener {
 		// 이미지 변경 작업필요 **************************************************************************************
 		// 배경 1000 * 700
 		// 버튼 230 * 70
-		button_image = new ImageIcon(".\\img\\MainButton.PNG");
+		button_image = new ImageIcon(".\\img\\button\\btn_main.png");
 		background_image = new ImageIcon(".\\img\\ScoreBackground.jpg");
 		this.rankPanel = rankPanel;
 		setLayout(null);

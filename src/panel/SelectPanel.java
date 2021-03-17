@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,6 +30,8 @@ public class SelectPanel extends JPanel {
 	private JButton btnIcon2;
 	private JButton btnIcon3;
 	private JButton btnIcon4;
+	
+	int selectednum = 0;
 
 	// 커서
 	private Cursor cursor;
@@ -37,7 +40,7 @@ public class SelectPanel extends JPanel {
 	public SelectPanel(MainFrame frame) {
 		
 		// 시작 버튼, 배경 이미지
-		ImageIcon imgStart = new ImageIcon(".\\img\\button\\start_btn.png");
+		ImageIcon imgStart = new ImageIcon(".\\img\\button\\btn_start.png");
 		ImageIcon imgBackground = new ImageIcon(".\\img\\background\\test.png");
 		
 		// 캐릭터 이미지
@@ -61,17 +64,6 @@ public class SelectPanel extends JPanel {
 		add(lblSelected);
 		
 		
-		// 시작 버튼
-		btnStart = new JButton(imgStart);
-		btnStart.setBounds(333, 500, 300, 106);
-		setButton(btnStart);
-		btnStart.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				frame.changePlayPanel();
-			}
-		});
-		add(btnStart);
 		
 		// 캐릭터 선택 버튼 1 ~ 4
 		btnIcon1 = new JButton(btnCharacter1);
@@ -84,6 +76,7 @@ public class SelectPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				lblSelected.setVisible(true);
 				lblSelected.setBounds(55, 300, 176, 52);
+				selectednum = 1;
 			}
 		});
 
@@ -97,6 +90,7 @@ public class SelectPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				lblSelected.setVisible(true);
 				lblSelected.setBounds(300, 300, 176, 52);
+				selectednum = 2;
 			}
 		});
 
@@ -110,6 +104,7 @@ public class SelectPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				lblSelected.setVisible(true);
 				lblSelected.setBounds(530, 300, 176, 52);
+				selectednum = 3;
 			}
 		});
 		
@@ -123,9 +118,27 @@ public class SelectPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				lblSelected.setVisible(true);
 				lblSelected.setBounds(770, 300, 176, 52);
+				selectednum = 4;
 			}
 		});
 		
+		// 시작 버튼
+		btnStart = new JButton(imgStart);
+		btnStart.setBounds(333, 500, 300, 106);
+		setButton(btnStart);
+		btnStart.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (selectednum == 0) {
+					JOptionPane.showMessageDialog(null, "캐릭터를 선택해주세요", "오류", JOptionPane.WARNING_MESSAGE);
+				} else {
+					frame.changePlayPanel();
+					System.out.println("캐릭터 번호" + selectednum);
+				}
+			}
+		});
+		add(btnStart);
+
 		// 불투명 배경
 		JLabel lblBackground2 = new JLabel();
 		lblBackground2.setBackground(new Color(0, 0, 0, 190));

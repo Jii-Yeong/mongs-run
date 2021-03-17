@@ -29,6 +29,7 @@ public class PlayPanel extends JPanel {
 	int fieldX = 0;
 	
 	static int black = new Color(0, 0, 0).getRGB();
+	static int red = new Color(237, 28, 36).getRGB();
 	
 	public PlayPanel(MainFrame frame) {
 		setPreferredSize(new Dimension(1000, 700));
