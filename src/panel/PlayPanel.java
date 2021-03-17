@@ -1,6 +1,7 @@
 package panel;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -22,7 +23,9 @@ import img.Field;
 import img.Jelly;
 import img.Person;
 import main.MainFrame;
+import score.ScorePanel;
 import panel.BackgroundPanel;
+import physical.Physical;
 
 public class PlayPanel extends JPanel {
 	BackgroundPanel background = new BackgroundPanel();
@@ -30,21 +33,31 @@ public class PlayPanel extends JPanel {
 	Field field;
 	Jelly jelly;
 	List<Field> fieldList = new ArrayList<Field>();
+	int personY = 0;
+	Person person;
 	
 	static int black = new Color(0, 0, 0).getRGB();
 	static int red = new Color(237, 28, 36).getRGB();
 	
 	public PlayPanel(MainFrame frame) {
+		field = new Field();
 		setPreferredSize(new Dimension(1000, 700));
 		setMaximumSize(new Dimension(1000, 700));
 		setLayout(null);
-		Person person = new Person();
+		person = new Person();
 		person.setOpaque(false);
 		background.setBounds(0, 0, 1000, 700);
 		person.setBounds(100, 202, 200, 400);
 		person.setBackground(new Color(0, 0, 0, 1));
 		background.setLayout(null);
 		background.add(person); // 패널에 person을 추가하는게 아니라, background에 person을 추가.
+		ScorePanel scorePanel = new ScorePanel();
+		scorePanel.setBounds(700, 0, 300, 100);
+		scorePanel.setBackground(new Color(0, 0, 0, 0));
+		background.add(scorePanel);
+		Physical physical = new Physical();
+		physical.setBounds(0, 0, 560, 80);
+		background.add(physical);
 		add(background);
 		JButton btn = new JButton("종료,랭킹화면");
 		btn.setBounds(0, 0, 150, 50);
@@ -89,6 +102,9 @@ public class PlayPanel extends JPanel {
 				}
 			}
 		}
+		Thread t = new Thread(new GravityRunnable());
+//		t.start();
+		
 	}
 	
 	public void getBlack(BufferedImage image) {
@@ -123,4 +139,26 @@ public class PlayPanel extends JPanel {
 			}
 		}
 	}
+	
+	private class GravityRunnable implements Runnable {
+		@Override
+		public void run() {
+			while (!findPersonY()) {
+				person.setBounds(0, personY, 200, 400);
+				personY += 1;
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	public boolean findPersonY() {
+//		if (person.getY() + 300 == getFieldY()) {
+//			return true;
+//		}
+		return false;
+	}
+	
 }
