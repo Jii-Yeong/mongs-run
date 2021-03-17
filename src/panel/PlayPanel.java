@@ -35,25 +35,24 @@ import ranking.RankPanel;
 import result.ResultPanel;
 
 public class PlayPanel extends JPanel {
-	BackgroundPanel background = new BackgroundPanel();
+	private BackgroundPanel background;
 	private int fieldX = 0;
 	private Field field;
 	private Object object;
 	private img.Jelly jelly;
-	private List<Field> fieldList = new ArrayList<Field>();
-	private List<Object> objectList = new ArrayList<Object>();
-	private List<img.Jelly> jellyList = new ArrayList<img.Jelly>();
-	private boolean b = false;
-	private int personY = 100;
+	private List<Field> fieldList;
+	private List<Object> objectList;
+	private List<img.Jelly> jellyList;
+	private boolean b;
+	private int personY;
 	private Person person;
 	private Thread t2;
 	private Physical physical;
 	private RankPanel rankPanel;
 	private ResultPanel resultPanel;
-	private MainFrame frame;
-	private static int black = new Color(0, 0, 0).getRGB();
-	private static int red = new Color(237, 28, 36).getRGB();
-	private static int yellow = new Color(255, 242, 0).getRGB();
+	private static int black;
+	private static int red;
+	private static int yellow;
 	private Thread t3;
 	private Thread t;
 	/**
@@ -63,9 +62,16 @@ public class PlayPanel extends JPanel {
 	JPanel pnl2;
 	
 	public PlayPanel(MainFrame frame) {
-		
+		personY = 100;
 		field = new Field();
-		this.frame = frame;
+		b = false;
+		background = new BackgroundPanel();
+		fieldList = new ArrayList<Field>();
+		objectList = new ArrayList<Object>();
+		jellyList = new ArrayList<img.Jelly>();
+		black = new Color(0, 0, 0).getRGB();
+		red = new Color(237, 28, 36).getRGB();
+		yellow = new Color(255, 242, 0).getRGB();
 		
 		JButton lifeUp = new JButton("Up");
 		lifeUp.setBounds(0, 300, 100, 100);
@@ -99,19 +105,6 @@ public class PlayPanel extends JPanel {
 		physical.setBounds(0, 0, 560, 80);
 		background.add(physical);
 		add(background);
-		JButton btn = new JButton("종료,랭킹화면");
-		btn.setBounds(0, 100, 150, 50);
-		btn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
-				frame.getContentPane().add("result", resultPanel);
-				rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
-				frame.getContentPane().add("rank", rankPanel);
-				frame.changeResultPanel();
-			}
-		});
-		background.add(btn);
 		
 		BufferedImage image = null;
 		try {
@@ -262,9 +255,7 @@ public class PlayPanel extends JPanel {
 				return true;
 			}
 		}
-
 		return false;
-		
 	}
 	
 	public synchronized void startGravity() {
