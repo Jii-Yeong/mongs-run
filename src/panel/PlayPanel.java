@@ -41,12 +41,27 @@ public class PlayPanel extends JPanel {
 	int personY = 0;
 	Person person;
 	
+	private Physical physical;
 	static int black = new Color(0, 0, 0).getRGB();
 	static int red = new Color(237, 28, 36).getRGB();
 	static int yellow = new Color(255, 242, 0).getRGB();
 	
 	public PlayPanel(MainFrame frame) {
 		field = new Field();
+		JButton lifeUp = new JButton("Up");
+		lifeUp.setBounds(0, 300, 100, 100);
+		lifeUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				physical.lifePlus();
+				System.out.println("체력 늘리기");
+				System.out.println("x 좌표 : " + physical.getLife());
+			}
+		});
+		
+		// 추후에 체력물략 먹었을때 차는걸로 대체 해야함!************************************************
+		background.add(lifeUp);
+		
 		setPreferredSize(new Dimension(1000, 700));
 		setMaximumSize(new Dimension(1000, 700));
 		setLayout(null);
@@ -61,7 +76,7 @@ public class PlayPanel extends JPanel {
 		scorePanel.setBounds(700, 0, 300, 100);
 		scorePanel.setBackground(new Color(0, 0, 0, 0));
 		background.add(scorePanel);
-		Physical physical = new Physical();
+		physical = new Physical();
 		physical.setBounds(0, 0, 560, 80);
 		background.add(physical);
 		add(background);
