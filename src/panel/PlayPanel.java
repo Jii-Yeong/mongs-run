@@ -50,6 +50,7 @@ public class PlayPanel extends JPanel {
 	private Physical physical;
 	private RankPanel rankPanel;
 	private ResultPanel resultPanel;
+	private ScorePanel scorePanel;
 	private MainFrame frame;
 	private static int black = new Color(0, 0, 0).getRGB();
 	private static int red = new Color(237, 28, 36).getRGB();
@@ -63,10 +64,9 @@ public class PlayPanel extends JPanel {
 	JPanel pnl2;
 	
 	public PlayPanel(MainFrame frame) {
-		
 		field = new Field();
 		this.frame = frame;
-		
+		scorePanel = new ScorePanel();
 		JButton lifeUp = new JButton("Up");
 		lifeUp.setBounds(500, 0, 100, 100);
 		lifeUp.addActionListener(new ActionListener() {
@@ -91,7 +91,6 @@ public class PlayPanel extends JPanel {
 		person.setBackground(new Color(0, 0, 0, 1));
 		background.setLayout(null);
 		background.add(person); // 패널에 person을 추가하는게 아니라, background에 person을 추가.
-		ScorePanel scorePanel = new ScorePanel();
 		scorePanel.setBounds(700, 0, 300, 100);
 		scorePanel.setBackground(new Color(0, 0, 0, 0));
 		background.add(scorePanel);
@@ -99,19 +98,7 @@ public class PlayPanel extends JPanel {
 		physical.setBounds(0, 0, 560, 80);
 		background.add(physical);
 		add(background);
-		JButton btn = new JButton("종료,랭킹화면");
-		btn.setBounds(0, 100, 150, 50);
-		btn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
-				frame.getContentPane().add("result", resultPanel);
-				rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
-				frame.getContentPane().add("rank", rankPanel);
-				frame.changeResultPanel();
-			}
-		});
-		background.add(btn);
+		
 		
 		BufferedImage image = null;
 		try {
@@ -137,6 +124,9 @@ public class PlayPanel extends JPanel {
 		pnl2 = new JPanel();
 		pnl2.setBackground(new Color(2, 233, 44));
 		background.add(pnl2);
+		
+		Thread t4 = new Thread(new DropOverRunnable());
+		t4.start();
 
 	}
 	
@@ -253,6 +243,7 @@ public class PlayPanel extends JPanel {
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
+//		System.out.println(person.getY());
 		pnl.setBackground(new Color(2, 233, 44));
 		
 		for (int i = 0; i < fieldList.size(); i++) {
@@ -277,6 +268,15 @@ public class PlayPanel extends JPanel {
 		personY++;
 	}
 		
+	private class DropOverRunnable implements Runnable {
+		@Override
+		public void run() {
+			while (person.getY() <= 900) {
+				gameOver();
+			}
+		}
+	}
+	
 	public synchronized void stopGravity() {
 		notifyAll();
 	}
@@ -305,5 +305,16 @@ public class PlayPanel extends JPanel {
 		this.t = t;
 	}
 	
+	private void gameOver() {
+		System.out.println(person.getY());
+		if (person.getY() >= 900) {
+			System.out.println("쓰레드종료");
+			resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
+			frame.getContentPane().add("result", resultPanel);
+			rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
+			frame.getContentPane().add("rank", rankPanel);
+			frame.changeResultPanel();
+		}
+	}
 	
 }
