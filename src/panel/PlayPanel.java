@@ -68,7 +68,7 @@ public class PlayPanel extends JPanel {
 		this.frame = frame;
 		
 		JButton lifeUp = new JButton("Up");
-		lifeUp.setBounds(0, 300, 100, 100);
+		lifeUp.setBounds(500, 0, 100, 100);
 		lifeUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -250,7 +250,7 @@ public class PlayPanel extends JPanel {
 	}
 	public boolean getFieldY() {
 		System.out.println("작동되는 중...");
-		Rectangle personR = new Rectangle(new Point(0, person.getY() + 300), new Dimension(200, 10));
+		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
 		pnl.setBackground(new Color(2, 233, 44));
