@@ -23,8 +23,6 @@ public class MainFrame extends JFrame {
 	// 패널
 	private StartPanel startPanel;
 	private SelectPanel selectPanel;
-	private PlayPanel playPanel;
-	private RankPanel rankPanel;
 	
 	// 메인 메소드
 	public static void main(String[] args) {
@@ -42,21 +40,16 @@ public class MainFrame extends JFrame {
 
 	// 생성자
 	public MainFrame() {
-		RankPanel rankPanel = new RankPanel(new RankData("양종문", 1234), this);
-		ResultPanel resultPanel = new ResultPanel(rankPanel);
-		
 		setTitle("Mongs Run");
 		getContentPane().setLayout(cards);
 		
 		startPanel = new StartPanel(this);
 		selectPanel = new SelectPanel(this);
-		playPanel = new PlayPanel(this);
+		
 		
 		getContentPane().add("start", startPanel);
 		getContentPane().add("select", selectPanel);
-		getContentPane().add("play", playPanel);
-		getContentPane().add("rank", rankPanel);
-		getContentPane().add("result", resultPanel);
+		
 		
 		setSize(1000, 700);
 //		setResizable(false); 다 만들고 주석 풀것임
@@ -73,9 +66,6 @@ public class MainFrame extends JFrame {
 	}
 	public void changePlayPanel() {
 		cards.show(this.getContentPane(), "play");
-		playPanel.getT2().start();
-		playPanel.getT3().start();
-		playPanel.getT().start();
 	}
 	
 	public void changeRankPanel() {
@@ -84,5 +74,13 @@ public class MainFrame extends JFrame {
 	
 	public void changeResultPanel() {
 		cards.show(this.getContentPane(), "result");
+	}
+	
+	public StartPanel getStartPanel() {
+		return startPanel;
+	}
+
+	public void setStartPanel(StartPanel startPanel) {
+		this.startPanel = startPanel;
 	}
 }
