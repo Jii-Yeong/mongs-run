@@ -3,7 +3,10 @@ package panel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -38,14 +41,15 @@ public class PlayPanel extends JPanel {
 	List<Object> objectList = new ArrayList<Object>();
 	List<img.Jelly> jellyList = new ArrayList<img.Jelly>();
 	boolean b = false;
-	int personY = 0;
+	int personY = 100;
 	Person person;
 	Thread t2;
 	private Physical physical;
 	static int black = new Color(0, 0, 0).getRGB();
 	static int red = new Color(237, 28, 36).getRGB();
 	static int yellow = new Color(255, 242, 0).getRGB();
-
+	Thread t3;
+	Thread t;
 	
 	public PlayPanel(MainFrame frame) {
 		field = new Field();
@@ -101,14 +105,13 @@ public class PlayPanel extends JPanel {
 			e1.printStackTrace();
 		}
 		
-		Thread t = new Thread(new fieldRunnable());
-		t.start();
+		t = new Thread(new fieldRunnable());
+//		t.start();
 		
 		t2 = new Thread(new GravityRunnable());
 //		t2.start();
 		
-		Thread t3 = new Thread(new MoveRunnable());
-		t3.start();
+		t3 = new Thread(new MoveRunnable());
 	}
 	
 	private class fieldRunnable implements Runnable {
@@ -146,7 +149,7 @@ public class PlayPanel extends JPanel {
 					System.out.println("w" + w);
 					System.out.println("h" + h);
 					field = new Field();
-					field.setBounds(w * 50, h * 50, 50, 50);
+					field.setBounds(w * 50, h * 50, 50, 200);
 					background.add(field);
 					fieldList.add(field);
 				}
@@ -193,7 +196,7 @@ public class PlayPanel extends JPanel {
 		public void run() {
 			while(true) {
 				try {
-					Thread.sleep(7);
+					Thread.sleep(2);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -207,7 +210,7 @@ public class PlayPanel extends JPanel {
 		public void run() {
 			while (true) {
 				try {
-					Thread.sleep(10);
+					Thread.sleep(20);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -221,17 +224,8 @@ public class PlayPanel extends JPanel {
 	}
 	public boolean getFieldY() {
 		System.out.println("작동되는 중...");
-//		System.out.println("이건 사람 " + person.getBounds());
-		for (int i = 0; i < 200; i++) {
-//			System.out.println("이건 필드 " + fieldList.get(i).getBounds());
-		}
-		Component field22 = new Field();
-		if (background.findComponentAt(200, 650) == null) {
-		} else if (field22.getClass().getName().equals("img.Field")){
-			field22 = background.findComponentAt(200, 690);
-			System.out.println("필드 Y"  + field22.getY());
-			System.out.println("사람 Y" + (person.getY() + 300));
-			if (person.getBounds().intersects(field22.getBounds())) {
+		if (background.getComponentAt(new Point(200, person.getY() + 300)) != null) {
+			if (background.getComponentAt(new Point(200, person.getY() + 300)).getClass().getName().equals("img.Field")) {
 				return true;
 			}
 		}
@@ -259,6 +253,22 @@ public class PlayPanel extends JPanel {
 
 	public void setT2(Thread t2) {
 		this.t2 = t2;
+	}
+
+	public Thread getT3() {
+		return t3;
+	}
+
+	public void setT3(Thread t3) {
+		this.t3 = t3;
+	}
+
+	public Thread getT() {
+		return t;
+	}
+
+	public void setT(Thread t) {
+		this.t = t;
 	}
 	
 	
