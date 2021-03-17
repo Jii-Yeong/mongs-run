@@ -40,6 +40,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	/**
 	 * Create the panel.
 	 */
+	
 	public RankPanel(StartPanel name, ScorePanel currentScore, MainFrame frame) {
 		file = new File(".\\rankScore.bin");
 		this.name = name;
