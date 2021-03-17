@@ -19,8 +19,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Jelly.Jelly;
 import img.Field;
-import img.Jelly;
+import img.Object;
 import img.Person;
 import main.MainFrame;
 import score.ScorePanel;
@@ -31,13 +32,18 @@ public class PlayPanel extends JPanel {
 	BackgroundPanel background = new BackgroundPanel();
 	int fieldX = 0;
 	Field field;
-	Jelly jelly;
+	Object object;
+	img.Jelly jelly;
 	List<Field> fieldList = new ArrayList<Field>();
+	List<Object> objectList = new ArrayList<Object>();
+	List<img.Jelly> jellyList = new ArrayList<img.Jelly>();
+	
 	int personY = 0;
 	Person person;
 	
 	static int black = new Color(0, 0, 0).getRGB();
 	static int red = new Color(237, 28, 36).getRGB();
+	static int yellow = new Color(255, 242, 0).getRGB();
 	
 	public PlayPanel(MainFrame frame) {
 		field = new Field();
@@ -60,7 +66,7 @@ public class PlayPanel extends JPanel {
 		background.add(physical);
 		add(background);
 		JButton btn = new JButton("종료,랭킹화면");
-		btn.setBounds(0, 0, 150, 50);
+		btn.setBounds(0, 100, 150, 50);
 		btn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -74,6 +80,7 @@ public class PlayPanel extends JPanel {
 			image = ImageIO.read(new File(".\\img\\black.png"));
 			getBlack(image);
 			getRed(image);
+			getYellow(image);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -82,13 +89,9 @@ public class PlayPanel extends JPanel {
 		t.start();
 	}
 	
-	private class fieldRunnable implements Runnable { // 왜동작안함?
+	private class fieldRunnable implements Runnable {
 		@Override
 		public void run() {
-//			for (int i = 0; i < fieldList.size(); i++) {
-//				System.out.println(fieldList.get(i));
-//				fieldList.get(i).setLocation(fieldList.get(i).getX() + fieldX, fieldList.get(i).getY());
-//			}
 			while (true) {
 				try {
 					Thread.sleep(10);
@@ -100,11 +103,16 @@ public class PlayPanel extends JPanel {
 					int X = fieldList.get(i).getX();
 					fieldList.get(i).setBounds(X - 5, fieldList.get(i).getY(), 50, 50);
 				}
+				for(int i = 0; i < objectList.size(); i++) {
+					int X = objectList.get(i).getX();
+					objectList.get(i).setBounds(X - 5, objectList.get(i).getY(), 50, 50);
+				}
+				for(int i = 0; i < jellyList.size(); i++) {
+					int X = jellyList.get(i).getX();
+					jellyList.get(i).setBounds(X - 5, jellyList.get(i).getY(), 50, 50);
+				}
 			}
 		}
-		Thread t = new Thread(new GravityRunnable());
-//		t.start();
-		
 	}
 	
 	public void getBlack(BufferedImage image) {
@@ -132,9 +140,27 @@ public class PlayPanel extends JPanel {
 				if (image.getRGB(w, h) == red) {
 					System.out.println("w" + w);
 					System.out.println("h" + h);
-					jelly = new Jelly();
+					object = new Object();
+					object.setBounds(w * 50, h * 50, 50, 50);
+					background.add(object);
+					objectList.add(object);
+				}
+			}
+		}
+	}
+	
+	public void getYellow(BufferedImage image) {
+		int width = image.getWidth();
+		int height = image.getHeight();
+		for (int w = 0; w < width; w++) {
+			for (int h = 0; h < height; h++) {
+				if (image.getRGB(w, h) == yellow) {
+					System.out.println("w" + w);
+					System.out.println("h" + h);
+					jelly = new img.Jelly();
 					jelly.setBounds(w * 50, h * 50, 50, 50);
 					background.add(jelly);
+					jellyList.add(jelly);
 				}
 			}
 		}
@@ -160,5 +186,4 @@ public class PlayPanel extends JPanel {
 //		}
 		return false;
 	}
-	
 }
