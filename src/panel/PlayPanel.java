@@ -4,7 +4,10 @@ package panel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -34,19 +37,21 @@ public class PlayPanel extends JPanel {
 	int fieldX = 0;
 	Field field;
 	Object object;
-	Jelly jelly;
+	img.Jelly jelly;
 	List<Field> fieldList = new ArrayList<Field>();
 	List<Object> objectList = new ArrayList<Object>();
-	List<Jelly> jellyList = new ArrayList<Jelly>();
+	List<img.Jelly> jellyList = new ArrayList<img.Jelly>();
 	boolean b = false;
-	int personY = 0;
+	int personY = 100;
 	Person person;
 	Thread t2;
 	private Physical physical;
 	static int black = new Color(0, 0, 0).getRGB();
 	static int red = new Color(237, 28, 36).getRGB();
 	static int yellow = new Color(255, 242, 0).getRGB();
-
+	Thread t3;
+	Thread t;
+	BufferedImage image = null;
 	
 	public PlayPanel(MainFrame frame) {
 		field = new Field();
@@ -92,24 +97,22 @@ public class PlayPanel extends JPanel {
 		});
 		background.add(btn);
 		
-		BufferedImage image = null;
+		
 		try {
-			image = ImageIO.read(new File(".\\img\\black.png"));
+			image = ImageIO.read(new File(".\\img\\stage1.png"));
 			getBlack(image);
 			getRed(image);
 			getYellow(image);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
-		Thread t = new Thread(new fieldRunnable());
-		t.start();
+		t = new Thread(new fieldRunnable());
+//		t.start();
 		
 		t2 = new Thread(new GravityRunnable());
 //		t2.start();
 		
-		Thread t3 = new Thread(new MoveRunnable());
-		t3.start();
+		t3 = new Thread(new MoveRunnable());
 	}
 	
 	private class fieldRunnable implements Runnable {
@@ -134,6 +137,22 @@ public class PlayPanel extends JPanel {
 					int X = jellyList.get(i).getX();
 					jellyList.get(i).setBounds(X - 5, jellyList.get(i).getY(), 50, 50);
 				}
+//				System.out.println(fieldList.size()); // 필드리스트 사이즈 = 168
+//				System.out.println(fieldList.get(168).getX());
+				if (fieldList.get(148).getX() == 0) {
+					System.out.println("1스테이지의 끝");
+					// 1스테이지가 끝남, 
+					try {
+						image = ImageIO.read(new File(".\\img\\stage2.png"));
+						getBlack(image);
+						getRed(image);
+						getYellow(image);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
+					// 2스테이지 필드리스트값 출력해보기
+				}
 			}
 		}
 	}
@@ -144,10 +163,10 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == black) {
-					System.out.println("w" + w);
-					System.out.println("h" + h);
+//					System.out.println("w" + w);
+//					System.out.println("h" + h);
 					field = new Field();
-					field.setBounds(w * 50, h * 50, 50, 50);
+					field.setBounds(w * 50, h * 50, 50, 200);
 					background.add(field);
 					fieldList.add(field);
 				}
@@ -161,8 +180,8 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == red) {
-					System.out.println("w" + w);
-					System.out.println("h" + h);
+//					System.out.println("w" + w);
+//					System.out.println("h" + h);
 					object = new Object();
 					object.setBounds(w * 50, h * 50, 50, 50);
 					background.add(object);
@@ -178,9 +197,9 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == yellow) {
-					System.out.println("w" + w);
-					System.out.println("h" + h);
-					jelly = new Jelly();
+//					System.out.println("w" + w);
+//					System.out.println("h" + h);
+					jelly = new img.Jelly();
 					jelly.setBounds(w * 50, h * 50, 50, 50);
 					background.add(jelly);
 					jellyList.add(jelly);
@@ -194,7 +213,7 @@ public class PlayPanel extends JPanel {
 		public void run() {
 			while(true) {
 				try {
-					Thread.sleep(7);
+					Thread.sleep(2);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -208,12 +227,12 @@ public class PlayPanel extends JPanel {
 		public void run() {
 			while (true) {
 				try {
-					Thread.sleep(10);
+					Thread.sleep(20);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				b = getFieldY();
-				System.out.println("test:" + b);
+//				System.out.println("test:" + b);
 				if (!b) {
 					stopGravity();
 				}
@@ -221,18 +240,9 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	public boolean getFieldY() {
-		System.out.println("작동되는 중...");
-//		System.out.println("이건 사람 " + person.getBounds());
-		for (int i = 0; i < 200; i++) {
-//			System.out.println("이건 필드 " + fieldList.get(i).getBounds());
-		}
-		Component field22 = new Field();
-		if (background.findComponentAt(200, 650) == null) {
-		} else if (field22.getClass().getName().equals("img.Field")){
-			field22 = background.findComponentAt(200, 690);
-			System.out.println("필드 Y"  + field22.getY());
-			System.out.println("사람 Y" + (person.getY() + 300));
-			if (person.getBounds().intersects(field22.getBounds())) {
+//		System.out.println("작동되는 중...");
+		if (background.getComponentAt(new Point(200, person.getY() + 300)) != null) {
+			if (background.getComponentAt(new Point(200, person.getY() + 300)).getClass().getName().equals("img.Field")) {
 				return true;
 			}
 		}
@@ -260,6 +270,22 @@ public class PlayPanel extends JPanel {
 
 	public void setT2(Thread t2) {
 		this.t2 = t2;
+	}
+
+	public Thread getT3() {
+		return t3;
+	}
+
+	public void setT3(Thread t3) {
+		this.t3 = t3;
+	}
+
+	public Thread getT() {
+		return t;
+	}
+
+	public void setT(Thread t) {
+		this.t = t;
 	}
 	
 	
