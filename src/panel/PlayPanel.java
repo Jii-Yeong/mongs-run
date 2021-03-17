@@ -72,9 +72,31 @@ public class PlayPanel extends JPanel {
 				System.out.println("x 좌표 : " + physical.getLife());
 			}
 		});
+		background.add(lifeUp);
+		
+		
+		
+		JButton btnChange = new JButton("fade");
+		btnChange.setBounds(800, 300, 100, 100);
+		btnChange.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JLabel lblBlack = new JLabel();
+				lblBlack.setBackground(new Color(0, 0, 0, 255));
+				lblBlack.setOpaque(true);
+				lblBlack.setPreferredSize(new Dimension(1000, 700));
+				lblBlack.setBounds(0, 0, 1000, 700);
+				background.add(lblBlack);
+			}
+		});
+		background.add(btnChange);
+
+		
+		
+		
 		
 		// 추후에 체력물략 먹었을때 차는걸로 대체 해야함!************************************************
-		background.add(lifeUp);
 		
 		setPreferredSize(new Dimension(1000, 700));
 		setMaximumSize(new Dimension(1000, 700));
