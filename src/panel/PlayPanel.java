@@ -3,7 +3,10 @@ package panel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -37,15 +40,16 @@ public class PlayPanel extends JPanel {
 	List<Field> fieldList = new ArrayList<Field>();
 	List<Object> objectList = new ArrayList<Object>();
 	List<img.Jelly> jellyList = new ArrayList<img.Jelly>();
-	
-	int personY = 0;
+	boolean b = false;
+	int personY = 100;
 	Person person;
-	
+	Thread t2;
 	private Physical physical;
 	static int black = new Color(0, 0, 0).getRGB();
 	static int red = new Color(237, 28, 36).getRGB();
 	static int yellow = new Color(255, 242, 0).getRGB();
-
+	Thread t3;
+	Thread t;
 	
 	public PlayPanel(MainFrame frame) {
 		field = new Field();
@@ -101,8 +105,13 @@ public class PlayPanel extends JPanel {
 			e1.printStackTrace();
 		}
 		
-		Thread t = new Thread(new fieldRunnable());
-		t.start();
+		t = new Thread(new fieldRunnable());
+//		t.start();
+		
+		t2 = new Thread(new GravityRunnable());
+//		t2.start();
+		
+		t3 = new Thread(new MoveRunnable());
 	}
 	
 	private class fieldRunnable implements Runnable {
@@ -140,7 +149,7 @@ public class PlayPanel extends JPanel {
 					System.out.println("w" + w);
 					System.out.println("h" + h);
 					field = new Field();
-					field.setBounds(w * 50, h * 50, 50, 50);
+					field.setBounds(w * 50, h * 50, 50, 200);
 					background.add(field);
 					fieldList.add(field);
 				}
@@ -185,21 +194,82 @@ public class PlayPanel extends JPanel {
 	private class GravityRunnable implements Runnable {
 		@Override
 		public void run() {
-			while (!findPersonY()) {
-				person.setBounds(0, personY, 200, 400);
-				personY += 1;
+			while(true) {
 				try {
-					Thread.sleep(10);
+					Thread.sleep(2);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
+				}
+				startGravity();
+			}
+		}
+	}
+	
+	private class MoveRunnable implements Runnable {
+		@Override
+		public void run() {
+			while (true) {
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				b = getFieldY();
+				System.out.println("test:" + b);
+				if (!b) {
+					stopGravity();
 				}
 			}
 		}
 	}
-	public boolean findPersonY() {
-//		if (person.getY() + 300 == getFieldY()) {
-//			return true;
-//		}
+	public boolean getFieldY() {
+		System.out.println("작동되는 중...");
+		if (background.getComponentAt(new Point(200, person.getY() + 300)) != null) {
+			if (background.getComponentAt(new Point(200, person.getY() + 300)).getClass().getName().equals("img.Field")) {
+				return true;
+			}
+		}
 		return false;
+		
 	}
+	
+	public synchronized void startGravity() {
+		if (b) {
+			try {
+				wait();
+			} catch (InterruptedException e) {}
+		} 
+		person.setLocation(0, personY);
+		personY++;
+	}
+		
+	public synchronized void stopGravity() {
+		notifyAll();
+	}
+
+	public Thread getT2() {
+		return t2;
+	}
+
+	public void setT2(Thread t2) {
+		this.t2 = t2;
+	}
+
+	public Thread getT3() {
+		return t3;
+	}
+
+	public void setT3(Thread t3) {
+		this.t3 = t3;
+	}
+
+	public Thread getT() {
+		return t;
+	}
+
+	public void setT(Thread t) {
+		this.t = t;
+	}
+	
+	
 }
