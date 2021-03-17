@@ -1,20 +1,10 @@
 package main;
 
-import java.awt.Container;
 import java.awt.CardLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-
-import panel.TestGamePanel;
-import panel.BackgroundPanel;
-import panel.PlayPanel;
 import panel.SelectPanel;
 import panel.StartPanel;
-import ranking.RankData;
-import ranking.RankPanel;
-import result.ResultPanel;
-import score.ScorePanel;
 
 public class MainFrame extends JFrame {
 	// 레이아웃

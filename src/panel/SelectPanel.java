@@ -36,6 +36,7 @@ public class SelectPanel extends JPanel {
 	// 커서
 	private Cursor cursor;
 	
+	// 플레이 패널
 	private PlayPanel playPanel;
 
 	// 생성자

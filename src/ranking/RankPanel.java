@@ -28,9 +28,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class RankPanel extends JPanel implements ActionListener, Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4444137678317535870L;
 	private File file;
 	private Font font;
@@ -43,7 +40,6 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	/**
 	 * Create the panel.
 	 */
-	
 	public RankPanel(StartPanel name, ScorePanel currentScore, MainFrame frame) {
 		file = new File(".\\rankScore.bin");
 		this.name = name;
@@ -169,6 +165,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	private void save() {
 		try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))){
 			RankData rankData = new RankData(name.getTfdName().getText(), currentScore.getScore());
+			name.getTfdName().setText("");
 			scoreList.add(rankData);
 			Collections.sort(scoreList, Collections.reverseOrder());
 			out.writeObject(scoreList);
