@@ -15,7 +15,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+<<<<<<< HEAD
 
+=======
+>>>>>>> c7174391ae44033ce7bb4bcbc03b17f5749e4eb5
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -334,4 +337,8 @@ public class PlayPanel extends JPanel {
 			frame.changeResultPanel();
 		}
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> c7174391ae44033ce7bb4bcbc03b17f5749e4eb5

@@ -16,12 +16,19 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.MaskFormatter;
 
 import main.MainFrame;
+import ranking.RankPanel;
+import result.ResultPanel;
+import score.ScorePanel;
+
 import java.awt.Font;
 
 public class StartPanel extends JPanel {
 	public SelectPanel selectPanel;
 	private JTextField tfdName;
 	private Cursor cursor;
+	private RankPanel rankPanel;
+	private ScorePanel currentScore;
+	private MainFrame frame;
 	/**
 	 * Create the panel.
 	 */
@@ -87,7 +94,6 @@ public class StartPanel extends JPanel {
 		setButton(btnRanking);
 		add(btnRanking);
 		btnRanking.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.changeRankPanel();
