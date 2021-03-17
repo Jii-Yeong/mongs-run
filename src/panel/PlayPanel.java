@@ -19,8 +19,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Jelly.Jelly;
 import img.Field;
+import img.Jelly;
 import img.Object;
 import img.Person;
 import main.MainFrame;
@@ -33,10 +33,10 @@ public class PlayPanel extends JPanel {
 	int fieldX = 0;
 	Field field;
 	Object object;
-	img.Jelly jelly;
+	Jelly jelly;
 	List<Field> fieldList = new ArrayList<Field>();
 	List<Object> objectList = new ArrayList<Object>();
-	List<img.Jelly> jellyList = new ArrayList<img.Jelly>();
+	List<Jelly> jellyList = new ArrayList<Jelly>();
 	
 	int personY = 0;
 	Person person;
@@ -172,7 +172,7 @@ public class PlayPanel extends JPanel {
 				if (image.getRGB(w, h) == yellow) {
 					System.out.println("w" + w);
 					System.out.println("h" + h);
-					jelly = new img.Jelly();
+					jelly = new Jelly();
 					jelly.setBounds(w * 50, h * 50, 50, 50);
 					background.add(jelly);
 					jellyList.add(jelly);
