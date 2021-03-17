@@ -15,14 +15,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Jelly.Jelly;
+import img.Jelly;
 import img.Field;
 import img.Object;
 import img.Person;
@@ -35,26 +34,30 @@ import ranking.RankPanel;
 import result.ResultPanel;
 
 public class PlayPanel extends JPanel {
-	private BackgroundPanel background;
+	BackgroundPanel background = new BackgroundPanel();
 	private int fieldX = 0;
 	private Field field;
 	private Object object;
 	private img.Jelly jelly;
-	private List<Field> fieldList;
-	private List<Object> objectList;
-	private List<img.Jelly> jellyList;
-	private boolean b;
-	private int personY;
+	private List<Field> fieldList = new ArrayList<Field>();
+	private List<Object> objectList = new ArrayList<Object>();
+	private List<img.Jelly> jellyList = new ArrayList<img.Jelly>();
+	private boolean b = false;
+	private int personY = 100;
 	private Person person;
 	private Thread t2;
 	private Physical physical;
 	private RankPanel rankPanel;
 	private ResultPanel resultPanel;
-	private static int black;
-	private static int red;
-	private static int yellow;
+	private ScorePanel scorePanel;
+	private MainFrame frame;
+	private static int black = new Color(0, 0, 0).getRGB();
+	private static int red = new Color(237, 28, 36).getRGB();
+	private static int yellow = new Color(255, 242, 0).getRGB();
 	private Thread t3;
 	private Thread t;
+	BufferedImage image = null;
+
 	/**
 	 * Create the panel.
 	 */
@@ -62,19 +65,11 @@ public class PlayPanel extends JPanel {
 	JPanel pnl2;
 	
 	public PlayPanel(MainFrame frame) {
-		personY = 100;
 		field = new Field();
-		b = false;
-		background = new BackgroundPanel();
-		fieldList = new ArrayList<Field>();
-		objectList = new ArrayList<Object>();
-		jellyList = new ArrayList<img.Jelly>();
-		black = new Color(0, 0, 0).getRGB();
-		red = new Color(237, 28, 36).getRGB();
-		yellow = new Color(255, 242, 0).getRGB();
-		
+		this.frame = frame;
+		scorePanel = new ScorePanel();
 		JButton lifeUp = new JButton("Up");
-		lifeUp.setBounds(0, 300, 100, 100);
+		lifeUp.setBounds(500, 0, 100, 100);
 		lifeUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -97,7 +92,6 @@ public class PlayPanel extends JPanel {
 		person.setBackground(new Color(0, 0, 0, 1));
 		background.setLayout(null);
 		background.add(person); // 패널에 person을 추가하는게 아니라, background에 person을 추가.
-		ScorePanel scorePanel = new ScorePanel();
 		scorePanel.setBounds(700, 0, 300, 100);
 		scorePanel.setBackground(new Color(0, 0, 0, 0));
 		background.add(scorePanel);
@@ -106,9 +100,9 @@ public class PlayPanel extends JPanel {
 		background.add(physical);
 		add(background);
 		
-		BufferedImage image = null;
+		
 		try {
-			image = ImageIO.read(new File(".\\img\\black.png"));
+			image = ImageIO.read(new File(".\\img\\stage1.png"));
 			getBlack(image);
 			getRed(image);
 			getYellow(image);
@@ -124,12 +118,16 @@ public class PlayPanel extends JPanel {
 		
 		t3 = new Thread(new MoveRunnable());
 		t3.start();
+		
 		pnl = new JPanel();
 		background.add(pnl);
 		
 		pnl2 = new JPanel();
 		pnl2.setBackground(new Color(2, 233, 44));
 		background.add(pnl2);
+		
+		Thread t4 = new Thread(new DropOverRunnable());
+		t4.start();
 
 	}
 	
@@ -154,6 +152,22 @@ public class PlayPanel extends JPanel {
 				for(int i = 0; i < jellyList.size(); i++) {
 					int X = jellyList.get(i).getX();
 					jellyList.get(i).setBounds(X - 5, jellyList.get(i).getY(), 50, 50);
+				}
+//				System.out.println(fieldList.size()); // 필드리스트 사이즈 = 168
+//				System.out.println(fieldList.get(168).getX());
+				if (fieldList.get(148).getX() == 0) {
+					System.out.println("1스테이지의 끝");
+					// 1스테이지가 끝남, 
+					try {
+						image = ImageIO.read(new File(".\\img\\stage2.png"));
+						getBlack(image);
+						getRed(image);
+						getYellow(image);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
+					// 2스테이지 필드리스트값 출력해보기
 				}
 			}
 		}
@@ -243,9 +257,10 @@ public class PlayPanel extends JPanel {
 	}
 	public boolean getFieldY() {
 		System.out.println("작동되는 중...");
-		Rectangle personR = new Rectangle(new Point(0, person.getY() + 300), new Dimension(200, 10));
+		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
+//		System.out.println(person.getY());
 		pnl.setBackground(new Color(2, 233, 44));
 		
 		for (int i = 0; i < fieldList.size(); i++) {
@@ -255,7 +270,9 @@ public class PlayPanel extends JPanel {
 				return true;
 			}
 		}
+
 		return false;
+		
 	}
 	
 	public synchronized void startGravity() {
@@ -268,6 +285,15 @@ public class PlayPanel extends JPanel {
 		personY++;
 	}
 		
+	private class DropOverRunnable implements Runnable {
+		@Override
+		public void run() {
+			while (person.getY() <= 900) {
+				gameOver();
+			}
+		}
+	}
+	
 	public synchronized void stopGravity() {
 		notifyAll();
 	}
@@ -296,5 +322,15 @@ public class PlayPanel extends JPanel {
 		this.t = t;
 	}
 	
-	
+	private void gameOver() {
+		System.out.println(person.getY());
+		if (person.getY() >= 900) {
+			System.out.println("쓰레드종료");
+			resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
+			frame.getContentPane().add("result", resultPanel);
+			rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
+			frame.getContentPane().add("rank", rankPanel);
+			frame.changeResultPanel();
+		}
+	}
 }
