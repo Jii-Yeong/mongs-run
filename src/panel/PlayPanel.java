@@ -32,9 +32,22 @@ public class PlayPanel extends JPanel {
 	Component field;
 	
 	static int black = new Color(0, 0, 0).getRGB();
+	private Physical physical;
 	
 	public PlayPanel(MainFrame frame) {
 		field = new Field();
+		JButton lifeUp = new JButton("Up");
+		lifeUp.setBounds(0, 300, 100, 100);
+		lifeUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				physical.lifePlus();
+				System.out.println("체력 늘리기");
+				System.out.println("x 좌표 : " + physical.getLife());
+			}
+		});
+		background.add(lifeUp);
+		
 		setPreferredSize(new Dimension(1000, 700));
 		setMaximumSize(new Dimension(1000, 700));
 		setLayout(null);
@@ -49,7 +62,7 @@ public class PlayPanel extends JPanel {
 		scorePanel.setBounds(700, 0, 300, 100);
 		scorePanel.setBackground(new Color(0, 0, 0, 0));
 		background.add(scorePanel);
-		Physical physical = new Physical();
+		physical = new Physical();
 		physical.setBounds(0, 0, 560, 80);
 		background.add(physical);
 		add(background);
@@ -81,8 +94,8 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == black) {
-					System.out.println("w" + w);
-					System.out.println("h" + h);
+//					System.out.println("w" + w);
+//					System.out.println("h" + h);
 					Field field = new Field();
 					field.setBounds(w * 17, h * 25, 100, 100);
 					background.add(field);
