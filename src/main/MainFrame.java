@@ -2,6 +2,9 @@ package main;
 
 import java.awt.CardLayout;
 import java.awt.EventQueue;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JFrame;
 import panel.SelectPanel;
 import panel.StartPanel;
@@ -59,6 +62,7 @@ public class MainFrame extends JFrame {
 	}
 	public void changePlayPanel() {
 		cards.show(this.getContentPane(), "play");
+		
 	}
 	
 	public void changeRankPanel() {

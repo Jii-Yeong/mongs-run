@@ -9,6 +9,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -129,6 +131,9 @@ public class PlayPanel extends JPanel {
 		
 		gameOverState = new Thread(new GameOverRunnable());
 		gameOverState.start();
+		
+		setFocusable(true);
+		addKeyListener(new SlideKeyListener());
 	}
 	
 	private class fieldRunnable implements Runnable {
@@ -334,5 +339,23 @@ public class PlayPanel extends JPanel {
 		rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
 		frame.getContentPane().add("rank", rankPanel);
 		frame.changeResultPanel();
+	}
+	
+	private class SlideKeyListener extends KeyAdapter {
+		Thread t = new Thread();
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				System.out.println("시작");
+				person.setIm(new ImageIcon(".\\img\\jelly1.png").getImage());
+			}
+		}
+		@Override
+		public void keyReleased(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				System.out.println("뗌");
+				person.setIm(new ImageIcon(".\\img\\Person.gif").getImage());
+			}
+		}
 	}
 }
