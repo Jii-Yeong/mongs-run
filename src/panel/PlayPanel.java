@@ -59,7 +59,10 @@ public class PlayPanel extends JPanel {
 	private Thread t3;
 	private Thread t;
 	private Thread gameOverState;
+	private JLabel blackLabel;
+	private Thread blackDraw;
 	BufferedImage image = null;
+
 
 	/**
 	 * Create the panel.
@@ -69,6 +72,8 @@ public class PlayPanel extends JPanel {
 	JPanel pnl4; // 깜빡이용 히트박스표시패널
 	
 	public PlayPanel(MainFrame frame) {
+		
+		
 		field = new Field();
 		this.frame = frame;
 		scorePanel = new ScorePanel();
@@ -123,8 +128,12 @@ public class PlayPanel extends JPanel {
 		t3 = new Thread(new MoveRunnable());
 		t3.start();
 		
+		
+		
 		pnl = new JPanel();
 		background.add(pnl);
+		
+		
 		
 		pnl2 = new JPanel();
 		pnl2.setBackground(new Color(2, 233, 44));
@@ -250,6 +259,13 @@ public class PlayPanel extends JPanel {
 					jellyList.add(jelly);
 				}
 			}
+		}
+	}
+	private class backFade implements Runnable {
+		@Override
+		public void run() {
+			backFadeOut();
+			backFadeIn();
 		}
 	}
 	
@@ -387,6 +403,30 @@ public class PlayPanel extends JPanel {
 		rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
 		frame.getContentPane().add("rank", rankPanel);
 		frame.changeResultPanel();
+	}
+	
+	private void backFadeOut() {
+		for (int i = 0; i < 256; i += 5) {
+			blackLabel.setBackground(new Color(0, 0, 0, i));
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void backFadeIn() {
+		for (int i = 255; i >= 0; i -= 5) {
+			blackLabel.setBackground(new Color(0, 0, 0, i));
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		// ********************************************************** setVisible 말고 대체 방법 생각해야함
+		blackLabel.setVisible(false);
 	}
 	
 	private class SlideKeyListener extends KeyAdapter {
