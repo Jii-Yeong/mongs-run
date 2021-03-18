@@ -65,6 +65,7 @@ public class PlayPanel extends JPanel {
 	 */
 	JPanel pnl;
 	JPanel pnl2;
+	JPanel pnl4; // 깜빡이용 히트박스표시패널
 	
 	public PlayPanel(MainFrame frame) {
 		field = new Field();
@@ -90,7 +91,7 @@ public class PlayPanel extends JPanel {
 		person = new Person();
 		person.setOpaque(false);
 		background.setBounds(0, 0, 1000, 700);
-		person.setBounds(100, 202, 200, 400);
+		person.setBounds(100, 202, 100, 165);
 		person.setBackground(new Color(0, 0, 0, 1));
 		background.setLayout(null);
 		background.add(person); // 패널에 person을 추가하는게 아니라, background에 person을 추가.
@@ -127,6 +128,10 @@ public class PlayPanel extends JPanel {
 		pnl2 = new JPanel();
 		pnl2.setBackground(new Color(2, 233, 44));
 		background.add(pnl2);
+		
+		pnl4 = new JPanel();
+		pnl4.setBackground(new Color(255, 174, 201));
+		background.add(pnl4);
 		
 		Thread t4 = new Thread(new DropOverRunnable());
 		t4.start();
@@ -266,9 +271,34 @@ public class PlayPanel extends JPanel {
 				if (!b) {
 					stopGravity();
 				}
+				characterHitbox();
 			}
 		}
 	}
+	
+	public void characterHitbox() { // 히트박스 메소드, 장애물에 닿는거 처리할것, 젤리에 닿을때도 처리가능.
+		Rectangle personHitR = new Rectangle(new Point(0, person.getY())
+				, new Dimension(person.getWidth(), person.getHeight() - 10));
+		Rectangle objectR = null;
+		Rectangle jellyR = null;
+		pnl4.setBounds(personHitR);
+		for (int i = 0; i < objectList.size(); i++) {
+			objectR = new Rectangle(new Point(objectList.get(i).getX(), objectList.get(i).getY()), new Dimension(10, 10));
+			if (personHitR.intersects(objectR)) {
+				System.out.println("오브젝트 닿았다!");
+			}
+		}
+		
+		for (int i = 0; i < jellyList.size(); i++) {
+			jellyR = new Rectangle(new Point(jellyList.get(i).getX(), jellyList.get(i).getY()), new Dimension(10, 10));
+			if (personHitR.intersects(jellyR)) {
+				System.out.println("젤리 닿았다!");
+			}
+		}
+		// if문의 조건 = 캐릭터의 히트박스가 오브젝트나 젤리와 겹칠때
+		// physical.lifeminus 
+	}
+	
 	public boolean getFieldY() {
 //		System.out.println("작동되는 중...");
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
