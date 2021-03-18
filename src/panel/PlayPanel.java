@@ -62,7 +62,7 @@ public class PlayPanel extends JPanel {
 	private JLabel blackLabel;
 	private Thread blackDraw;
 	BufferedImage image = null;
-
+	boolean isJump;
 
 	/**
 	 * Create the panel.
@@ -380,16 +380,17 @@ public class PlayPanel extends JPanel {
 				return true;
 			}
 		}
+		
 		return false;
 	}
 	
 	public synchronized void startGravity() {
-		if (b) {
+		if (b || isJump) {
 			try {
 				wait();
 			} catch (InterruptedException e) {}
 		} 
-		person.setLocation(0, personY);
+		person.setLocation(0, person.getY() + 1);
 		personY++;
 	}
 		
@@ -461,6 +462,13 @@ public class PlayPanel extends JPanel {
 				System.out.println("시작");
 				person.setIm(new ImageIcon(".\\img\\jelly1.png").getImage());
 			}
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				System.out.println("스페이스 입력");
+				Thread t = new Thread(new JumpRunnable());
+				t.start();
+				
+				
+			}
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
@@ -469,5 +477,33 @@ public class PlayPanel extends JPanel {
 				person.setIm(new ImageIcon(".\\img\\Person.gif").getImage());
 			}
 		}
+
+	}
+	
+	private class JumpRunnable implements Runnable {
+		private int gravity = 1;
+		private int dy = -20;
+		@Override
+		public void run() {
+			int y = person.getY();
+			while (true) {
+				isJump = true;
+				y += dy;
+				if (y > person.getY()) {
+					isJump = false;
+					break;
+				}
+				person.setLocation(person.getX(), y);
+				dy += gravity;
+				
+				try {
+					Thread.sleep(17);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	
 	}
 }
