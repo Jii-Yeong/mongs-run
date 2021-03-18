@@ -81,7 +81,7 @@ public class Physical extends JLayeredPane {
 		public void run() {
 			try {
 				while (life >= 40) {
-					Thread.sleep(1000);
+					Thread.sleep(10000);
 					lifeMinus(life);
 				}
 			} catch (InterruptedException e) {
