@@ -1,4 +1,3 @@
-
 package panel;
 
 import java.awt.Color;
@@ -16,7 +15,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -58,6 +56,7 @@ public class PlayPanel extends JPanel {
 	private static int yellow = new Color(255, 242, 0).getRGB();
 	private Thread t3;
 	private Thread t;
+	private Thread gameOverState;
 	BufferedImage image = null;
 
 	/**
@@ -71,7 +70,7 @@ public class PlayPanel extends JPanel {
 		this.frame = frame;
 		scorePanel = new ScorePanel();
 		JButton lifeUp = new JButton("Up");
-		lifeUp.setBounds(500, 0, 100, 100);
+		lifeUp.setBounds(0, 100, 100, 100);
 		lifeUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -128,15 +127,13 @@ public class PlayPanel extends JPanel {
 		pnl2.setBackground(new Color(2, 233, 44));
 		background.add(pnl2);
 		
-		Thread t4 = new Thread(new DropOverRunnable());
-		t4.start();
-
+		gameOverState = new Thread(new GameOverRunnable());
+		gameOverState.start();
 	}
 	
 	private class fieldRunnable implements Runnable {
 		@Override
 		public void run() {
-			int stagestate = 240; // 스테이지.png파일의 길이
 			while (true) {
 				try {
 					Thread.sleep(10);
@@ -156,38 +153,21 @@ public class PlayPanel extends JPanel {
 					int X = jellyList.get(i).getX();
 					jellyList.get(i).setBounds(X - 5, jellyList.get(i).getY(), 50, 50);
 				}
-				
-//				System.out.println(fieldList.size()); //
-//				System.out.println(fieldList.get(fieldList.size()-1).getX());
-				
-				if (fieldList.size() <= stagestate) { // 1스테이지에서 2스테이지로 넘어감 
-					if (fieldList.get(200).getX() == 0) { // 1스테이지의 필드리스트 사이즈-1만큼 get()에 입력
-						try {
-							image = ImageIO.read(new File(".\\img\\stage2.png"));
-							getBlack(image);
-							getRed(image);
-							getYellow(image);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
-						
-						
+//				System.out.println(fieldList.size()); // 필드리스트 사이즈 = 168
+//				System.out.println(fieldList.get(168).getX());
+				if (fieldList.get(148).getX() == 0) {
+					System.out.println("1스테이지의 끝");
+					// 1스테이지가 끝남, 
+					try {
+						image = ImageIO.read(new File(".\\img\\stage2.png"));
+						getBlack(image);
+						getRed(image);
+						getYellow(image);
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-				}
-				
-				if (fieldList.size() > stagestate) { // 2스테이지에서 3스테이지로 넘어감
-					if (fieldList.get(400).getX() == 0) {
-						try {
-							image = ImageIO.read(new File(".\\img\\stage3.png"));
-							getBlack(image);
-							getRed(image);
-							getYellow(image);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						background.setBackImg1(new ImageIcon(".\\img\\bg3.png").getImage());
-					}
+					background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
+					// 2스테이지 필드리스트값 출력해보기
 				}
 			}
 		}
@@ -199,6 +179,8 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == black) {
+					System.out.println("w" + w);
+					System.out.println("h" + h);
 					field = new Field();
 					field.setBounds(w * 50, h * 50, 50, 200);
 					background.add(field);
@@ -214,6 +196,8 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == red) {
+					System.out.println("w" + w);
+					System.out.println("h" + h);
 					object = new Object();
 					object.setBounds(w * 50, h * 50, 50, 50);
 					background.add(object);
@@ -229,6 +213,8 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == yellow) {
+					System.out.println("w" + w);
+					System.out.println("h" + h);
 					jelly = new img.Jelly();
 					jelly.setBounds(w * 50, h * 50, 50, 50);
 					background.add(jelly);
@@ -269,12 +255,29 @@ public class PlayPanel extends JPanel {
 			}
 		}
 	}
+	
+	// Y좌표가 900이상 or 체력이 40 이하가 되면 게임 종료 및 결과창 출력
+	private class GameOverRunnable implements Runnable {
+		@Override
+		public void run() {
+			System.out.println("게임종료 확인용");
+			while (true) {
+				try {
+					Thread.sleep(500);
+					if (person.getY() >= 900 || physical.getLife() <= 40) {
+						gameOver();
+						break;
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 	public boolean getFieldY() {
-//		System.out.println("작동되는 중...");
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
-//		System.out.println(person.getY());
 		pnl.setBackground(new Color(2, 233, 44));
 		
 		for (int i = 0; i < fieldList.size(); i++) {
@@ -284,9 +287,7 @@ public class PlayPanel extends JPanel {
 				return true;
 			}
 		}
-
 		return false;
-		
 	}
 	
 	public synchronized void startGravity() {
@@ -299,15 +300,6 @@ public class PlayPanel extends JPanel {
 		personY++;
 	}
 		
-	private class DropOverRunnable implements Runnable {
-		@Override
-		public void run() {
-			while (person.getY() <= 900) {
-				gameOver();
-			}
-		}
-	}
-	
 	public synchronized void stopGravity() {
 		notifyAll();
 	}
@@ -337,14 +329,10 @@ public class PlayPanel extends JPanel {
 	}
 	
 	private void gameOver() {
-//		System.out.println(person.getY());
-		if (person.getY() >= 900) {
-			System.out.println("쓰레드종료");
-			resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
-			frame.getContentPane().add("result", resultPanel);
-			rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
-			frame.getContentPane().add("rank", rankPanel);
-			frame.changeResultPanel();
-		}
+		resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
+		frame.getContentPane().add("result", resultPanel);
+		rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
+		frame.getContentPane().add("rank", rankPanel);
+		frame.changeResultPanel();
 	}
 }
