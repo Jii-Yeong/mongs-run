@@ -147,6 +147,7 @@ public class PlayPanel extends JPanel {
 	private class fieldRunnable implements Runnable {
 		@Override
 		public void run() {
+			int stagestate = 240; // 스테이지.png파일의 길이
 			while (true) {
 				try {
 					Thread.sleep(10);
@@ -166,21 +167,36 @@ public class PlayPanel extends JPanel {
 					int X = jellyList.get(i).getX();
 					jellyList.get(i).setBounds(X - 5, jellyList.get(i).getY(), 50, 50);
 				}
-//				System.out.println(fieldList.size()); // 필드리스트 사이즈 = 168
-//				System.out.println(fieldList.get(168).getX());
-				if (fieldList.get(148).getX() == 0) {
-					System.out.println("1스테이지의 끝");
-					// 1스테이지가 끝남, 
-					try {
-						image = ImageIO.read(new File(".\\img\\stage2.png"));
-						getBlack(image);
-						getRed(image);
-						getYellow(image);
-					} catch (IOException e) {
-						e.printStackTrace();
+				
+//				System.out.println(fieldList.size()); //
+//				System.out.println(fieldList.get(fieldList.size()-1).getX());
+				
+				if (fieldList.size() <= stagestate) { // 1스테이지에서 2스테이지로 넘어감 
+					if (fieldList.get(200).getX() == 0) { // 1스테이지의 필드리스트 사이즈-1만큼 get()에 입력
+						try {
+							image = ImageIO.read(new File(".\\img\\stage2.png"));
+							getBlack(image);
+							getRed(image);
+							getYellow(image);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
 					}
-					background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
-					// 2스테이지 필드리스트값 출력해보기
+				}
+				
+				if (fieldList.size() > stagestate) { // 2스테이지에서 3스테이지로 넘어감
+					if (fieldList.get(400).getX() == 0) {
+						try {
+							image = ImageIO.read(new File(".\\img\\stage3.png"));
+							getBlack(image);
+							getRed(image);
+							getYellow(image);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						background.setBackImg1(new ImageIcon(".\\img\\bg3.png").getImage());
+					}
 				}
 			}
 		}
