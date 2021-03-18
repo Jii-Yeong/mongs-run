@@ -12,8 +12,8 @@ public class BackgroundPanel extends JPanel implements Runnable {
 	ImageIcon backIc2 = new ImageIcon(".\\img\\bg2.png");
 	ImageIcon backIc3 = new ImageIcon(".\\img\\bg3.png");
 	Image backImg1 = new ImageIcon(".\\img\\bg1.png").getImage();
-	Image backImg2 = backIc2.getImage();
-	Image backImg3 = backIc3.getImage();
+	Image backImg2 = new ImageIcon(".\\img\\bg2.png").getImage();
+	Image backImg3 = new ImageIcon(".\\img\\bg3.png").getImage();
 	
 	public void setBackImg1(Image backImg1) {
 		this.backImg1 = backImg1;
