@@ -74,6 +74,7 @@ public class PlayPanel extends JPanel {
 	File redskyBGM;
 	File spaceBGM;
 	File jumpBGM;
+	File slideBGM;
 	Clip sound;
 	Clip tempSound;
 
@@ -89,6 +90,7 @@ public class PlayPanel extends JPanel {
 		redskyBGM = new File(".\\sound\\redsky_map2.wav");
 		spaceBGM = new File(".\\sound\\space_map3.wav");
 		jumpBGM = new File(".\\sound\\jump.wav");
+		slideBGM = new File(".\\\\sound\\\\slide.wav");
 		
 		field = new Field();
 		this.frame = frame;
@@ -178,8 +180,6 @@ public class PlayPanel extends JPanel {
 				Thread.sleep(17000);
 				tempSound.stop();
 				tempSound = soundStart(spaceBGM);
-				Thread.sleep(20000);
-				tempSound.stop();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -423,6 +423,7 @@ public class PlayPanel extends JPanel {
 					Thread.sleep(500);
 					if (person.getY() >= 900 || physical.getLife() <= 40) {
 						gameOver();
+						tempSound.stop();
 						break;
 					}
 				} catch (InterruptedException e) {
@@ -540,6 +541,7 @@ public class PlayPanel extends JPanel {
 				System.out.println("슬라이딩!!");
 				person.setIm(new ImageIcon(".\\img\\jelly1.png").getImage());
 				isSlide = true;
+				soundStart(slideBGM);
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				System.out.println("스페이스 입력");
