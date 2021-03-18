@@ -1,3 +1,4 @@
+
 package panel;
 
 import java.awt.Color;
@@ -156,7 +157,7 @@ public class PlayPanel extends JPanel {
 				}
 //				System.out.println(fieldList.size()); // 필드리스트 사이즈 = 168
 //				System.out.println(fieldList.get(168).getX());
-				if (fieldList.get(160).getX() == 0) { // 스테이지1의 필드리스트 사이즈-1만큼 get()에 입력 
+				if (fieldList.get(160).getX() == 0) { // 스테이지1의 필드리스트 사이즈-1만큼 get()에 입력
 					try {
 						image = ImageIO.read(new File(".\\img\\stage2.png"));
 						getBlack(image);
@@ -166,8 +167,7 @@ public class PlayPanel extends JPanel {
 						e.printStackTrace();
 					}
 					background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
-//					if (fieldList.get(399).getX() == 0) {
-//						System.out.println("1스테이지의 끝");
+//					if (fieldList.get(399).getX() == 0) { // 스테이지2 끝나면 스테이지3를 불러와줘
 //						try {
 //							image = ImageIO.read(new File(".\\img\\stage3.png"));
 //							getBlack(image);
@@ -179,9 +179,6 @@ public class PlayPanel extends JPanel {
 //						background.setBackImg1(new ImageIcon(".\\img\\bg3.png").getImage());
 //					}
 				}
-				
-				//=======================2스테이지 끝나면 3스테이지로 바껴야하는데 왜안바뀜?
-				// else if 써보기
 			}
 		}
 	}
@@ -192,8 +189,6 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == black) {
-//					System.out.println("w" + w);
-//					System.out.println("h" + h);
 					field = new Field();
 					field.setBounds(w * 50, h * 50, 50, 200);
 					background.add(field);
@@ -209,8 +204,6 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == red) {
-//					System.out.println("w" + w);
-//					System.out.println("h" + h);
 					object = new Object();
 					object.setBounds(w * 50, h * 50, 50, 50);
 					background.add(object);
@@ -226,8 +219,6 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == yellow) {
-//					System.out.println("w" + w);
-//					System.out.println("h" + h);
 					jelly = new img.Jelly();
 					jelly.setBounds(w * 50, h * 50, 50, 50);
 					background.add(jelly);
@@ -261,7 +252,7 @@ public class PlayPanel extends JPanel {
 					e.printStackTrace();
 				}
 				b = getFieldY();
-//				System.out.println("test:" + b);
+				System.out.println("test:" + b);
 				if (!b) {
 					stopGravity();
 				}
@@ -269,7 +260,7 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	public boolean getFieldY() {
-//		System.out.println("작동되는 중...");
+		System.out.println("작동되는 중...");
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
@@ -336,7 +327,7 @@ public class PlayPanel extends JPanel {
 	}
 	
 	private void gameOver() {
-//		System.out.println(person.getY());
+		System.out.println(person.getY());
 		if (person.getY() >= 900) {
 			System.out.println("쓰레드종료");
 			resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
