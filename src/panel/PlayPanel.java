@@ -9,6 +9,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -64,6 +66,8 @@ public class PlayPanel extends JPanel {
 	 */
 	JPanel pnl;
 	JPanel pnl2;
+	
+	JPanel pnl3;
 	
 	public PlayPanel(MainFrame frame) {
 		field = new Field();
@@ -127,9 +131,15 @@ public class PlayPanel extends JPanel {
 		pnl2.setBackground(new Color(2, 233, 44));
 		background.add(pnl2);
 		
+		pnl3 = new JPanel();
+		pnl3.setBackground(new Color(2, 233, 44));
+		background.add(pnl3);
+		
 		Thread t4 = new Thread(new DropOverRunnable());
 		t4.start();
-
+		
+		setFocusable(true);
+		addKeyListener(new SlideKeyListener());
 	}
 	
 	private class fieldRunnable implements Runnable {
@@ -249,7 +259,8 @@ public class PlayPanel extends JPanel {
 					e.printStackTrace();
 				}
 				b = getFieldY();
-				System.out.println("test:" + b);
+//				System.out.println("test:" + b);
+				
 				if (!b) {
 					stopGravity();
 				}
@@ -257,7 +268,7 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	public boolean getFieldY() {
-		System.out.println("작동되는 중...");
+//		System.out.println("작동되는 중...");
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
@@ -271,10 +282,16 @@ public class PlayPanel extends JPanel {
 				return true;
 			}
 		}
-
 		return false;
-		
 	}
+	
+	public boolean getPersonHitbox() {
+		Rectangle personR = new Rectangle(new Point(person.getX(), person.getY()), new Dimension(200, 100));
+		pnl3.setBounds(personR);
+		pnl3.setBackground(new Color(223, 233, 44));
+		return false;
+	}
+	
 	
 	public synchronized void startGravity() {
 		if (b) {
@@ -324,7 +341,7 @@ public class PlayPanel extends JPanel {
 	}
 	
 	private void gameOver() {
-		System.out.println(person.getY());
+//		System.out.println(person.getY());
 		if (person.getY() >= 900) {
 			System.out.println("쓰레드종료");
 			resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
@@ -332,6 +349,33 @@ public class PlayPanel extends JPanel {
 			rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
 			frame.getContentPane().add("rank", rankPanel);
 			frame.changeResultPanel();
+		}
+	}
+	
+	private class SlideRunnable implements Runnable {
+		@Override
+		public void run() {
+			while (true) {
+				getPersonHitbox();
+			}
+		}
+	}
+	
+	private class SlideKeyListener extends KeyAdapter {
+		Thread t = new Thread();
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				System.out.println("시작");
+				person.setIm(new ImageIcon(".\\img\\jelly1.png").getImage());
+			}
+		}
+		@Override
+		public void keyReleased(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				System.out.println("뗌");
+				person.setIm(new ImageIcon(".\\img\\Person.gif").getImage());
+			}
 		}
 	}
 }
