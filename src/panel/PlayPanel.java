@@ -63,6 +63,8 @@ public class PlayPanel extends JPanel {
 	private Thread blackDraw;
 	BufferedImage image = null;
 	boolean isJump;
+	Rectangle personHitR;
+	boolean isSlide = false;
 
 	/**
 	 * Create the panel.
@@ -327,10 +329,17 @@ public class PlayPanel extends JPanel {
 	}
 	
 	public void characterHitbox() { // 히트박스 메소드, 장애물에 닿는거 처리할것, 젤리에 닿을때도 처리가능.
-		Rectangle personHitR = new Rectangle(new Point(0, person.getY())
-				, new Dimension(person.getWidth(), person.getHeight() - 10));
+//		personHitR = new Rectangle(new Point(0, person.getY())
+//				, new Dimension(person.getWidth(), person.getHeight() - 10));
 		Rectangle objectR = null;
 		Rectangle jellyR = null;
+		if (!isSlide) { // down키 눌러질때 true
+			personHitR = new Rectangle(new Point(0, person.getY())
+					, new Dimension(person.getWidth(), person.getHeight() - 10));
+		} else {
+			personHitR = new Rectangle(new Point(0, person.getY() + 80)
+					, new Dimension(person.getWidth(), (person.getHeight() - 10) / 2));
+		}
 		pnl4.setBounds(personHitR);
 		for (int i = 0; i < objectList.size(); i++) {
 			objectR = new Rectangle(new Point(objectList.get(i).getX(), objectList.get(i).getY()), new Dimension(10, 10));
@@ -380,7 +389,6 @@ public class PlayPanel extends JPanel {
 				return true;
 			}
 		}
-		
 		return false;
 	}
 	
@@ -459,15 +467,14 @@ public class PlayPanel extends JPanel {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				System.out.println("시작");
+				System.out.println("슬라이딩!!");
 				person.setIm(new ImageIcon(".\\img\\jelly1.png").getImage());
+				isSlide = true;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				System.out.println("스페이스 입력");
 				Thread t = new Thread(new JumpRunnable());
 				t.start();
-				
-				
 			}
 		}
 		@Override
@@ -475,9 +482,9 @@ public class PlayPanel extends JPanel {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 				System.out.println("뗌");
 				person.setIm(new ImageIcon(".\\img\\Person.gif").getImage());
+				isSlide = false;
 			}
 		}
-
 	}
 	
 	private class JumpRunnable implements Runnable {
@@ -504,6 +511,5 @@ public class PlayPanel extends JPanel {
 				}
 			}
 		}
-	
 	}
 }
