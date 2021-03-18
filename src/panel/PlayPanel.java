@@ -180,7 +180,19 @@ public class PlayPanel extends JPanel {
 //				System.out.println(fieldList.size()); //
 //				System.out.println(fieldList.get(fieldList.size()-1).getX());
 				
+				
 				if (fieldList.size() <= stagestate) { // 1스테이지에서 2스테이지로 넘어감 
+//				***********************************************************깜빡
+					if (fieldList.get(195).getX() == 0) {
+						blackLabel = new JLabel();
+						blackLabel.setBounds(0, 0, 1000, 660);
+						blackLabel.setText("테스트용");
+						blackLabel.setOpaque(true);
+						background.add(blackLabel);
+						blackDraw = new Thread(new backFade());
+						blackDraw.start();
+					}
+//				***********************************************************깜빡
 					if (fieldList.get(200).getX() == 0) { // 1스테이지의 필드리스트 사이즈-1만큼 get()에 입력
 						try {
 							image = ImageIO.read(new File(".\\img\\stage2.png"));
@@ -194,7 +206,19 @@ public class PlayPanel extends JPanel {
 					}
 				}
 				
+				
 				if (fieldList.size() > stagestate) { // 2스테이지에서 3스테이지로 넘어감
+//				***********************************************************깜빡
+					if (fieldList.get(395).getX() == 0) {
+						blackLabel = new JLabel();
+						blackLabel.setBounds(0, 0, 1000, 660);
+						blackLabel.setText("테스트용");
+						blackLabel.setOpaque(true);
+						background.add(blackLabel);
+						blackDraw = new Thread(new backFade());
+						blackDraw.start();
+					}
+//				***********************************************************깜빡
 					if (fieldList.get(400).getX() == 0) {
 						try {
 							image = ImageIO.read(new File(".\\img\\stage3.png"));
