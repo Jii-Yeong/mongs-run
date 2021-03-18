@@ -18,6 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -59,10 +63,17 @@ public class PlayPanel extends JPanel {
 	private Thread t3;
 	private Thread t;
 	private Thread gameOverState;
+	private Thread soundThread;
 	private JLabel blackLabel;
 	private Thread blackDraw;
 	BufferedImage image = null;
 	boolean isJump;
+	File skyBGM;
+	File redskyBGM;
+	File spaceBGM;
+	File jumpBGM;
+	Clip sound;
+	Clip tempSound;
 
 	/**
 	 * Create the panel.
@@ -72,7 +83,10 @@ public class PlayPanel extends JPanel {
 	JPanel pnl4; // 깜빡이용 히트박스표시패널
 	
 	public PlayPanel(MainFrame frame) {
-		
+		skyBGM = new File(".\\sound\\sky_map1.wav");
+		redskyBGM = new File(".\\sound\\redsky_map2.wav");
+		spaceBGM = new File(".\\sound\\space_map3.wav");
+		jumpBGM = new File(".\\sound\\jump.wav");
 		
 		field = new Field();
 		this.frame = frame;
@@ -109,7 +123,6 @@ public class PlayPanel extends JPanel {
 		background.add(physical);
 		add(background);
 		
-		
 		try {
 			image = ImageIO.read(new File(".\\img\\stage1.png"));
 			getBlack(image);
@@ -128,12 +141,11 @@ public class PlayPanel extends JPanel {
 		t3 = new Thread(new MoveRunnable());
 		t3.start();
 		
-		
+		soundThread = new Thread(new SoundRunnable());
+		soundThread.start();
 		
 		pnl = new JPanel();
 		background.add(pnl);
-		
-		
 		
 		pnl2 = new JPanel();
 		pnl2.setBackground(new Color(2, 233, 44));
@@ -151,6 +163,25 @@ public class PlayPanel extends JPanel {
 		
 		setFocusable(true);
 		addKeyListener(new SlideKeyListener());
+	}
+	
+	private class SoundRunnable implements Runnable {
+		@Override
+		public void run() {
+			try {
+				tempSound = soundStart(skyBGM);
+				Thread.sleep(20000);
+				tempSound.stop();
+				tempSound = soundStart(redskyBGM);
+				Thread.sleep(17000);
+				tempSound.stop();
+				tempSound = soundStart(spaceBGM);
+				Thread.sleep(20000);
+				tempSound.stop();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private class fieldRunnable implements Runnable {
@@ -180,7 +211,6 @@ public class PlayPanel extends JPanel {
 //				System.out.println(fieldList.size()); //
 //				System.out.println(fieldList.get(fieldList.size()-1).getX());
 				
-				
 				if (fieldList.size() <= stagestate) { // 1스테이지에서 2스테이지로 넘어감 
 //				***********************************************************깜빡
 					if (fieldList.get(195).getX() == 0) {
@@ -205,7 +235,6 @@ public class PlayPanel extends JPanel {
 						background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
 					}
 				}
-				
 				
 				if (fieldList.size() > stagestate) { // 2스테이지에서 3스테이지로 넘어감
 //				***********************************************************깜빡
@@ -285,6 +314,32 @@ public class PlayPanel extends JPanel {
 			}
 		}
 	}
+	
+	private class JumpRunnable implements Runnable {
+		private int gravity = 1;
+		private int dy = -20;
+		@Override
+		public void run() {
+			int y = person.getY();
+			while (true) {
+				isJump = true;
+				y += dy;
+				if (y > person.getY()) {
+					isJump = false;
+					break;
+				}
+				person.setLocation(person.getX(), y);
+				dy += gravity;
+				
+				try {
+					Thread.sleep(17);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	private class backFade implements Runnable {
 		@Override
 		public void run() {
@@ -440,6 +495,21 @@ public class PlayPanel extends JPanel {
 			}
 		}
 	}
+	
+	private Clip soundStart(File path) {
+		try {
+			sound = AudioSystem.getClip();
+			sound.open(AudioSystem.getAudioInputStream(path));
+			sound.start();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} 
+		return sound;
+	}
 
 	private void backFadeIn() {
 		for (int i = 255; i >= 0; i -= 5) {
@@ -466,8 +536,7 @@ public class PlayPanel extends JPanel {
 				System.out.println("스페이스 입력");
 				Thread t = new Thread(new JumpRunnable());
 				t.start();
-				
-				
+				soundStart(jumpBGM);
 			}
 		}
 		@Override
@@ -478,32 +547,5 @@ public class PlayPanel extends JPanel {
 			}
 		}
 
-	}
-	
-	private class JumpRunnable implements Runnable {
-		private int gravity = 1;
-		private int dy = -20;
-		@Override
-		public void run() {
-			int y = person.getY();
-			while (true) {
-				isJump = true;
-				y += dy;
-				if (y > person.getY()) {
-					isJump = false;
-					break;
-				}
-				person.setLocation(person.getX(), y);
-				dy += gravity;
-				
-				try {
-					Thread.sleep(17);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	
 	}
 }

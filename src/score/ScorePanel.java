@@ -1,6 +1,8 @@
 package score;
 
 import javax.swing.JPanel;
+
+import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JLabel;
 
@@ -13,10 +15,10 @@ public class ScorePanel extends JPanel implements Runnable {
 		setLayout(null);
 		Thread thread = new Thread(this);
 		font = new Font("맑은 고딕", Font.BOLD, 30);
-		
 		scoreLabel = new JLabel("점수 : " + score);
 		scoreLabel.setBounds(0, 0, 300, 100);
 		scoreLabel.setFont(font);
+		scoreLabel.setForeground(Color.white);
 		add(scoreLabel);
 		setSize(300, 100);
 		
