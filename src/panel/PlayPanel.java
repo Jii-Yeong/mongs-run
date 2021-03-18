@@ -59,7 +59,10 @@ public class PlayPanel extends JPanel {
 	private Thread t3;
 	private Thread t;
 	private Thread gameOverState;
+	private JLabel blackLabel;
+	private Thread blackDraw;
 	BufferedImage image = null;
+
 
 	/**
 	 * Create the panel.
@@ -68,6 +71,8 @@ public class PlayPanel extends JPanel {
 	JPanel pnl2;
 	
 	public PlayPanel(MainFrame frame) {
+		
+		
 		field = new Field();
 		this.frame = frame;
 		scorePanel = new ScorePanel();
@@ -122,8 +127,12 @@ public class PlayPanel extends JPanel {
 		t3 = new Thread(new MoveRunnable());
 		t3.start();
 		
+		
+		
 		pnl = new JPanel();
 		background.add(pnl);
+		
+		
 		
 		pnl2 = new JPanel();
 		pnl2.setBackground(new Color(2, 233, 44));
@@ -136,47 +145,7 @@ public class PlayPanel extends JPanel {
 		addKeyListener(new SlideKeyListener());
 	}
 	
-	private class fieldRunnable implements Runnable {
-		@Override
-		public void run() {
-			while (true) {
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-				for(int i = 0; i < fieldList.size(); i++) {
-					int X = fieldList.get(i).getX();
-					fieldList.get(i).setBounds(X - 5, fieldList.get(i).getY(), 50, 50);
-				}
-				for(int i = 0; i < objectList.size(); i++) {
-					int X = objectList.get(i).getX();
-					objectList.get(i).setBounds(X - 5, objectList.get(i).getY(), 50, 50);
-				}
-				for(int i = 0; i < jellyList.size(); i++) {
-					int X = jellyList.get(i).getX();
-					jellyList.get(i).setBounds(X - 5, jellyList.get(i).getY(), 50, 50);
-				}
-//				System.out.println(fieldList.size()); // 필드리스트 사이즈 = 168
-//				System.out.println(fieldList.get(168).getX());
-				if (fieldList.get(148).getX() == 0) {
-					System.out.println("1스테이지의 끝");
-					// 1스테이지가 끝남, 
-					try {
-						image = ImageIO.read(new File(".\\img\\stage2.png"));
-						getBlack(image);
-						getRed(image);
-						getYellow(image);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
-					// 2스테이지 필드리스트값 출력해보기
-				}
-			}
-		}
-	}
+	
 	
 	public void getBlack(BufferedImage image) {
 		int width = image.getWidth();
@@ -224,6 +193,70 @@ public class PlayPanel extends JPanel {
 					jelly.setBounds(w * 50, h * 50, 50, 50);
 					background.add(jelly);
 					jellyList.add(jelly);
+				}
+			}
+		}
+	}
+	private class backFade implements Runnable {
+		@Override
+		public void run() {
+			backFadeOut();
+			backFadeIn();
+		}
+	}
+	
+	private class fieldRunnable implements Runnable {
+		@Override
+		public void run() {
+			while (true) {
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				for(int i = 0; i < fieldList.size(); i++) {
+					int X = fieldList.get(i).getX();
+					fieldList.get(i).setBounds(X - 5, fieldList.get(i).getY(), 50, 50);
+				}
+				for(int i = 0; i < objectList.size(); i++) {
+					int X = objectList.get(i).getX();
+					objectList.get(i).setBounds(X - 5, objectList.get(i).getY(), 50, 50);
+				}
+				for(int i = 0; i < jellyList.size(); i++) {
+					int X = jellyList.get(i).getX();
+					jellyList.get(i).setBounds(X - 5, jellyList.get(i).getY(), 50, 50);
+				}
+//				System.out.println(fieldList.size()); // 필드리스트 사이즈 = 168
+//				System.out.println(fieldList.get(168).getX());
+				
+//				***********************************************************깜빡
+				if (fieldList.get(143).getX() == 0) {
+					blackLabel = new JLabel();
+					blackLabel.setBounds(0, 0, 1000, 660);
+					blackLabel.setText("테스트용");
+					blackLabel.setOpaque(true);
+					background.add(blackLabel);
+					blackDraw = new Thread(new backFade());
+					blackDraw.start();
+				}
+//				***********************************************************깜빡
+				
+				if (fieldList.get(148).getX() == 0) {
+					System.out.println("1스테이지의 끝");
+					// 1스테이지가 끝남, 
+					
+					
+					try {
+						image = ImageIO.read(new File(".\\img\\stage2.png"));
+						getBlack(image);
+						getRed(image);
+						getYellow(image);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
+					// 2스테이지 필드리스트값 출력해보기
 				}
 			}
 		}
@@ -339,6 +372,30 @@ public class PlayPanel extends JPanel {
 		rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
 		frame.getContentPane().add("rank", rankPanel);
 		frame.changeResultPanel();
+	}
+	
+	private void backFadeOut() {
+		for (int i = 0; i < 256; i += 5) {
+			blackLabel.setBackground(new Color(0, 0, 0, i));
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void backFadeIn() {
+		for (int i = 255; i >= 0; i -= 5) {
+			blackLabel.setBackground(new Color(0, 0, 0, i));
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		// ********************************************************** setVisible 말고 대체 방법 생각해야함
+		blackLabel.setVisible(false);
 	}
 	
 	private class SlideKeyListener extends KeyAdapter {
