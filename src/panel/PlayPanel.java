@@ -466,8 +466,6 @@ public class PlayPanel extends JPanel {
 				System.out.println("스페이스 입력");
 				Thread t = new Thread(new JumpRunnable());
 				t.start();
-				
-				
 			}
 		}
 		@Override
