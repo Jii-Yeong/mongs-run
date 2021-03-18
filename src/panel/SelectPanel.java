@@ -138,6 +138,7 @@ public class SelectPanel extends JPanel {
 					playPanel = new PlayPanel(frame);
 					frame.getContentPane().add("play", playPanel);
 					frame.changePlayPanel();
+					playPanel.requestFocus(); // 포커스 요청
 					System.out.println("캐릭터 번호" + selectednum);
 				}
 			}
