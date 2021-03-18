@@ -136,6 +136,7 @@ public class PlayPanel extends JPanel {
 	private class fieldRunnable implements Runnable {
 		@Override
 		public void run() {
+			int stagestate = 240; // 스테이지.png파일의 길이
 			while (true) {
 				try {
 					Thread.sleep(10);
@@ -155,29 +156,38 @@ public class PlayPanel extends JPanel {
 					int X = jellyList.get(i).getX();
 					jellyList.get(i).setBounds(X - 5, jellyList.get(i).getY(), 50, 50);
 				}
-//				System.out.println(fieldList.size()); // 필드리스트 사이즈 = 168
-//				System.out.println(fieldList.get(168).getX());
-				if (fieldList.get(160).getX() == 0) { // 스테이지1의 필드리스트 사이즈-1만큼 get()에 입력
-					try {
-						image = ImageIO.read(new File(".\\img\\stage2.png"));
-						getBlack(image);
-						getRed(image);
-						getYellow(image);
-					} catch (IOException e) {
-						e.printStackTrace();
+				
+//				System.out.println(fieldList.size()); //
+//				System.out.println(fieldList.get(fieldList.size()-1).getX());
+				
+				if (fieldList.size() <= stagestate) { // 1스테이지에서 2스테이지로 넘어감 
+					if (fieldList.get(200).getX() == 0) { // 1스테이지의 필드리스트 사이즈-1만큼 get()에 입력
+						try {
+							image = ImageIO.read(new File(".\\img\\stage2.png"));
+							getBlack(image);
+							getRed(image);
+							getYellow(image);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
+						
+						
 					}
-					background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
-//					if (fieldList.get(399).getX() == 0) { // 스테이지2 끝나면 스테이지3를 불러와줘
-//						try {
-//							image = ImageIO.read(new File(".\\img\\stage3.png"));
-//							getBlack(image);
-//							getRed(image);
-//							getYellow(image);
-//						} catch (IOException e) {
-//							e.printStackTrace();
-//						}
-//						background.setBackImg1(new ImageIcon(".\\img\\bg3.png").getImage());
-//					}
+				}
+				
+				if (fieldList.size() > stagestate) { // 2스테이지에서 3스테이지로 넘어감
+					if (fieldList.get(400).getX() == 0) {
+						try {
+							image = ImageIO.read(new File(".\\img\\stage3.png"));
+							getBlack(image);
+							getRed(image);
+							getYellow(image);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						background.setBackImg1(new ImageIcon(".\\img\\bg3.png").getImage());
+					}
 				}
 			}
 		}
@@ -252,7 +262,7 @@ public class PlayPanel extends JPanel {
 					e.printStackTrace();
 				}
 				b = getFieldY();
-				System.out.println("test:" + b);
+//				System.out.println("test:" + b);
 				if (!b) {
 					stopGravity();
 				}
@@ -260,7 +270,7 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	public boolean getFieldY() {
-		System.out.println("작동되는 중...");
+//		System.out.println("작동되는 중...");
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
@@ -327,7 +337,7 @@ public class PlayPanel extends JPanel {
 	}
 	
 	private void gameOver() {
-		System.out.println(person.getY());
+//		System.out.println(person.getY());
 		if (person.getY() >= 900) {
 			System.out.println("쓰레드종료");
 			resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
