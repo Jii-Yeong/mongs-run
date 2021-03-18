@@ -7,13 +7,23 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
-public class Physical extends JLayeredPane implements Runnable {
+import main.MainFrame;
+import ranking.RankPanel;
+import result.ResultPanel;
+import score.ScorePanel;
+
+public class Physical extends JLayeredPane {
 	private ImageIcon lifeBar_image;
 	private ImageIcon lifeMinus_image;
 	private int life;
 	private int cnt;
 	private List<JLabel> lifeList;
 	private JLabel lifeMinus;
+	private ResultPanel resultPanel;
+	private RankPanel rankPanel;
+	private ScorePanel scorePanel;
+	private MainFrame frame;
+	private Thread physicalTimeLow;
 
 	public Physical() {
 		setLayout(null);
@@ -31,9 +41,8 @@ public class Physical extends JLayeredPane implements Runnable {
 		lifebar.setIcon(lifeBar_image);
 		add(lifebar, new Integer(0));
 		setSize(560, 80);
-		Thread thread = new Thread(this);
-		thread.start();
-		
+		physicalTimeLow = new Thread(new physicalTimeLows());
+		physicalTimeLow.start();
 	}
 	
 	public int getLife() {
@@ -66,17 +75,18 @@ public class Physical extends JLayeredPane implements Runnable {
 			life += 25;
 		}
 	}
-
-	@Override
-	public void run() {
-		try {
-			while (life >= 40) {
-				Thread.sleep(1000);
-				lifeMinus(life);
+	
+	private class physicalTimeLows implements Runnable {
+		@Override
+		public void run() {
+			try {
+				while (life >= 40) {
+					Thread.sleep(1000);
+					lifeMinus(life);
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 	}
-	
 }

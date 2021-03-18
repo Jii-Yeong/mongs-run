@@ -8,6 +8,8 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import panel.SelectPanel;
 import panel.StartPanel;
+import ranking.RankPanel;
+import score.ScorePanel;
 
 public class MainFrame extends JFrame {
 	// 레이아웃
@@ -16,6 +18,8 @@ public class MainFrame extends JFrame {
 	// 패널
 	private StartPanel startPanel;
 	private SelectPanel selectPanel;
+	private RankPanel rankPanel;
+	private ScorePanel currentScore;
 	
 	// 메인 메소드
 	public static void main(String[] args) {
@@ -38,7 +42,6 @@ public class MainFrame extends JFrame {
 		
 		startPanel = new StartPanel(this);
 		selectPanel = new SelectPanel(this);
-		
 		
 		getContentPane().add("start", startPanel);
 		getContentPane().add("select", selectPanel);

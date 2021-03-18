@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -59,6 +58,7 @@ public class PlayPanel extends JPanel {
 	private static int yellow = new Color(255, 242, 0).getRGB();
 	private Thread t3;
 	private Thread t;
+	private Thread gameOverState;
 	BufferedImage image = null;
 
 	/**
@@ -67,14 +67,12 @@ public class PlayPanel extends JPanel {
 	JPanel pnl;
 	JPanel pnl2;
 	
-	JPanel pnl3;
-	
 	public PlayPanel(MainFrame frame) {
 		field = new Field();
 		this.frame = frame;
 		scorePanel = new ScorePanel();
 		JButton lifeUp = new JButton("Up");
-		lifeUp.setBounds(500, 0, 100, 100);
+		lifeUp.setBounds(0, 100, 100, 100);
 		lifeUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -131,12 +129,8 @@ public class PlayPanel extends JPanel {
 		pnl2.setBackground(new Color(2, 233, 44));
 		background.add(pnl2);
 		
-		pnl3 = new JPanel();
-		pnl3.setBackground(new Color(2, 233, 44));
-		background.add(pnl3);
-		
-		Thread t4 = new Thread(new DropOverRunnable());
-		t4.start();
+		gameOverState = new Thread(new GameOverRunnable());
+		gameOverState.start();
 		
 		setFocusable(true);
 		addKeyListener(new SlideKeyListener());
@@ -260,19 +254,35 @@ public class PlayPanel extends JPanel {
 				}
 				b = getFieldY();
 //				System.out.println("test:" + b);
-				
 				if (!b) {
 					stopGravity();
 				}
 			}
 		}
 	}
+	
+	// Y좌표가 900이상 or 체력이 40 이하가 되면 게임 종료 및 결과창 출력
+	private class GameOverRunnable implements Runnable {
+		@Override
+		public void run() {
+			System.out.println("게임종료 확인용");
+			while (true) {
+				try {
+					Thread.sleep(500);
+					if (person.getY() >= 900 || physical.getLife() <= 40) {
+						gameOver();
+						break;
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 	public boolean getFieldY() {
-//		System.out.println("작동되는 중...");
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
-//		System.out.println(person.getY());
 		pnl.setBackground(new Color(2, 233, 44));
 		
 		for (int i = 0; i < fieldList.size(); i++) {
@@ -285,14 +295,6 @@ public class PlayPanel extends JPanel {
 		return false;
 	}
 	
-	public boolean getPersonHitbox() {
-		Rectangle personR = new Rectangle(new Point(person.getX(), person.getY()), new Dimension(200, 100));
-		pnl3.setBounds(personR);
-		pnl3.setBackground(new Color(223, 233, 44));
-		return false;
-	}
-	
-	
 	public synchronized void startGravity() {
 		if (b) {
 			try {
@@ -303,15 +305,6 @@ public class PlayPanel extends JPanel {
 		personY++;
 	}
 		
-	private class DropOverRunnable implements Runnable {
-		@Override
-		public void run() {
-			while (person.getY() <= 900) {
-				gameOver();
-			}
-		}
-	}
-	
 	public synchronized void stopGravity() {
 		notifyAll();
 	}
@@ -341,24 +334,11 @@ public class PlayPanel extends JPanel {
 	}
 	
 	private void gameOver() {
-//		System.out.println(person.getY());
-		if (person.getY() >= 900) {
-			System.out.println("쓰레드종료");
-			resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
-			frame.getContentPane().add("result", resultPanel);
-			rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
-			frame.getContentPane().add("rank", rankPanel);
-			frame.changeResultPanel();
-		}
-	}
-	
-	private class SlideRunnable implements Runnable {
-		@Override
-		public void run() {
-			while (true) {
-				getPersonHitbox();
-			}
-		}
+		resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
+		frame.getContentPane().add("result", resultPanel);
+		rankPanel = new RankPanel(frame.getStartPanel() , scorePanel, frame);
+		frame.getContentPane().add("rank", rankPanel);
+		frame.changeResultPanel();
 	}
 	
 	private class SlideKeyListener extends KeyAdapter {

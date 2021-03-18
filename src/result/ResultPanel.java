@@ -15,8 +15,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class ResultPanel extends JPanel implements ActionListener {
-	private StartPanel name;
-	private ScorePanel currentScore;
 	private Font font;
 	private ImageIcon button_image;
 	private ImageIcon background_image;
@@ -28,8 +26,6 @@ public class ResultPanel extends JPanel implements ActionListener {
 		// 이미지 변경 작업필요 **************************************************************************************
 		// 배경 1000 * 700
 		// 버튼 230 * 70
-		this.name = name;
-		this.currentScore = currentScore;
 		this.frame = frame;
 		button_image = new ImageIcon(".\\img\\button\\btn_main.png");
 		background_image = new ImageIcon(".\\img\\ScoreBackground.jpg");

@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.text.ParseException;
 
 import javax.swing.*;
@@ -16,12 +17,25 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.MaskFormatter;
 
 import main.MainFrame;
+import ranking.RankPanel;
+import result.ResultPanel;
+import score.ScorePanel;
+
 import java.awt.Font;
 
-public class StartPanel extends JPanel {
+public class StartPanel extends JPanel implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7054782096550336725L;
 	public SelectPanel selectPanel;
 	private JTextField tfdName;
 	private Cursor cursor;
+	private JButton btnRanking;
+	private boolean firstPlayGame;
+	private RankPanel rankPanel;
+
+
 	/**
 	 * Create the panel.
 	 */
@@ -67,7 +81,6 @@ public class StartPanel extends JPanel {
 		setButton(btnStart);
 		add(btnStart);
 		btnStart.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (tfdName.getText().contains(" ")) {
@@ -80,14 +93,14 @@ public class StartPanel extends JPanel {
 			}
 		});
 		
-		
 		// 랭킹 버튼 - RankPanel 전환
-		JButton btnRanking = new JButton(imgRank);
+		firstPlayGame = false; 
+		btnRanking = new JButton(imgRank);
 		btnRanking.setBounds(513, 396, 197, 80);
+		btnRanking.setEnabled(false);
 		setButton(btnRanking);
 		add(btnRanking);
 		btnRanking.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.changeRankPanel();
@@ -133,5 +146,9 @@ public class StartPanel extends JPanel {
 
 	public void setTfdName(JTextField tfdName) {
 		this.tfdName = tfdName;
+	}
+	
+	public JButton getBtnRanking() {
+		return btnRanking;
 	}
 }

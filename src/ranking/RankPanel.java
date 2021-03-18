@@ -40,6 +40,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	/**
 	 * Create the panel.
 	 */
+	
 	public RankPanel(StartPanel name, ScorePanel currentScore, MainFrame frame) {
 		file = new File(".\\rankScore.bin");
 		this.name = name;
@@ -54,7 +55,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		background_image = new ImageIcon(".\\img\\ScoreBackground.jpg");
 		mainButton_imgae = new ImageIcon(".\\img\\button\\btn_main.png");
 		
-		if (file.exists()) {
+		if(file.exists()) {
 			load();
 			save();
 		} else {
@@ -85,7 +86,6 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		rank5_Score.setBounds(265, 407, 333, 64);
 		rank5_Score.setFont(font);
 		add(rank5_Score);
-		
 		
 		JButton MainButton = new JButton();
 		MainButton.addActionListener(this);
@@ -169,6 +169,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 			scoreList.add(rankData);
 			Collections.sort(scoreList, Collections.reverseOrder());
 			out.writeObject(scoreList);
+			name.getBtnRanking().setEnabled(true);
 			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
