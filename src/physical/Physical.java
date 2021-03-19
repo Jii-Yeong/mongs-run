@@ -53,7 +53,7 @@ public class Physical extends JLayeredPane {
 		this.life = life;
 	}
 	
-	private void lifeMinus(int x) {
+	public void lifeMinus(int x) {
 		if (!(x <= 40)) {
 			lifeMinus = new JLabel();
 			lifeMinus.setBounds(x, 34, 25, 21);

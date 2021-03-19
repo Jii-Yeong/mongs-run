@@ -369,6 +369,7 @@ public class PlayPanel extends JPanel {
 	private class MoveRunnable implements Runnable {
 		@Override
 		public void run() {
+			
 			while (true) {
 				try {
 					Thread.sleep(20);
@@ -390,6 +391,7 @@ public class PlayPanel extends JPanel {
 //				, new Dimension(person.getWidth(), person.getHeight() - 10));
 		Rectangle objectR = null;
 		Rectangle jellyR = null;
+		
 		if (!isSlide) { // down키 눌러질때 true
 			personHitR = new Rectangle(new Point(0, person.getY())
 					, new Dimension(person.getWidth(), person.getHeight() - 10));
@@ -401,6 +403,7 @@ public class PlayPanel extends JPanel {
 		for (int i = 0; i < objectList.size(); i++) {
 			objectR = new Rectangle(new Point(objectList.get(i).getX(), objectList.get(i).getY()), new Dimension(10, 10));
 			if (personHitR.intersects(objectR)) {
+				physical.lifeMinus(physical.getLife());
 				System.out.println("오브젝트 닿았다!");
 			}
 		}
@@ -408,11 +411,18 @@ public class PlayPanel extends JPanel {
 		for (int i = 0; i < jellyList.size(); i++) {
 			jellyR = new Rectangle(new Point(jellyList.get(i).getX(), jellyList.get(i).getY()), new Dimension(10, 10));
 			if (personHitR.intersects(jellyR)) {
+				jellyList.get(i).setJelly(new ImageIcon(".\\img\\effect.png").getImage());
+				int temp = scorePanel.getScore();
+				temp += 1234;
+				scorePanel.setScore(temp);
 				System.out.println("젤리 닿았다!");
-			}
+				if (jellyList.get(i).getAlpha() > 20) {
+					jellyList.get(i).setAlpha(jellyList.get(i).getAlpha() - 19);
+				}
+			} 
 		}
 		// if문의 조건 = 캐릭터의 히트박스가 오브젝트나 젤리와 겹칠때
-		// physical.lifeminus 
+		// physical.lifeminus
 	}
 	
 	// Y좌표가 900이상 or 체력이 40 이하가 되면 게임 종료 및 결과창 출력
@@ -544,8 +554,8 @@ public class PlayPanel extends JPanel {
 				System.out.println("슬라이딩!!");
 				person.setIm(new ImageIcon(".\\img\\Person_sliding.png").getImage());
 				isSlide = true;
-				soundStart(slideBGM);
 				person.setBounds(person.getX(), person.getY(), 150, 150);
+				soundStart(slideBGM);
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				System.out.println("스페이스 입력");
