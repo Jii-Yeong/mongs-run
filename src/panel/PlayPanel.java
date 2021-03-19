@@ -23,6 +23,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -30,7 +31,6 @@ import img.Jelly;
 import img.Field;
 import img.Object;
 import img.Person;
-import img.Potion;
 import main.MainFrame;
 import score.ScorePanel;
 import panel.BackgroundPanel;
@@ -40,16 +40,14 @@ import ranking.RankPanel;
 import result.ResultPanel;
 
 public class PlayPanel extends JPanel {
-	private BackgroundPanel background = new BackgroundPanel();
+	BackgroundPanel background = new BackgroundPanel();
 	private int fieldX = 0;
 	private Field field;
 	private Object object;
 	private img.Jelly jelly;
-	private Potion potion;
 	private List<Field> fieldList = new ArrayList<Field>();
 	private List<Object> objectList = new ArrayList<Object>();
 	private List<img.Jelly> jellyList = new ArrayList<img.Jelly>();
-	private List<Potion> potionList = new ArrayList<Potion>();
 	private boolean b = false;
 	private int personY = 100;
 	private Person person;
@@ -62,29 +60,23 @@ public class PlayPanel extends JPanel {
 	private static int black = new Color(0, 0, 0).getRGB();
 	private static int red = new Color(237, 28, 36).getRGB();
 	private static int yellow = new Color(255, 242, 0).getRGB();
-	private static int green = new Color(34, 177, 76).getRGB();
 	private Thread t3;
 	private Thread t;
 	private Thread gameOverState;
 	private Thread soundThread;
-	private Thread doseNotDecreaseLifeThread;
-	private Thread blackDrawThread;
-	private Thread jellyThread;
-	private Thread healingThread;
-	private Thread slideBGMThread;
 	private JLabel blackLabel;
-	private BufferedImage image = null;
-	private boolean isJump;
-	private boolean isSlide = false;
-	private boolean isSlideBGM = false;
-	private Rectangle personHitR;
-	private File skyBGM;
-	private File redskyBGM;
-	private File spaceBGM;
-	private File jumpBGM;
-	private File slideBGM;
-	private Clip sound;
-	private Clip tempSound;
+	private Thread blackDraw;
+	BufferedImage image = null;
+	boolean isJump;
+	Rectangle personHitR;
+	boolean isSlide = false;
+	File skyBGM;
+	File redskyBGM;
+	File spaceBGM;
+	File jumpBGM;
+	File slideBGM;
+	Clip sound;
+	Clip tempSound;
 
 	/**
 	 * Create the panel.
@@ -99,9 +91,23 @@ public class PlayPanel extends JPanel {
 		spaceBGM = new File(".\\sound\\space_map3.wav");
 		jumpBGM = new File(".\\sound\\jump.wav");
 		slideBGM = new File(".\\\\sound\\\\slide.wav");
+		
 		field = new Field();
 		this.frame = frame;
 		scorePanel = new ScorePanel();
+		JButton lifeUp = new JButton("Up");
+		lifeUp.setBounds(0, 100, 100, 100);
+		lifeUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				physical.lifePlus();
+				System.out.println("체력 늘리기");
+				System.out.println("x 좌표 : " + physical.getLife());
+			}
+		});
+		
+		// 추후에 체력물략 먹었을때 차는걸로 대체 해야함!************************************************
+		background.add(lifeUp);
 		
 		setPreferredSize(new Dimension(1000, 700));
 		setMaximumSize(new Dimension(1000, 700));
@@ -126,7 +132,6 @@ public class PlayPanel extends JPanel {
 			getBlack(image);
 			getRed(image);
 			getYellow(image);
-			getGreen(image);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -204,11 +209,9 @@ public class PlayPanel extends JPanel {
 					int X = jellyList.get(i).getX();
 					jellyList.get(i).setBounds(X - 5, jellyList.get(i).getY(), 50, 50);
 				}
-				for(int i = 0; i < potionList.size(); i++) {
-					int X = potionList.get(i).getX();
-					potionList.get(i).setBounds(X - 5, potionList.get(i).getY(), 50, 50);
-				}
 				
+//				System.out.println(fieldList.size()); //
+//				System.out.println(fieldList.get(fieldList.size()-1).getX());
 				
 				if (fieldList.size() <= stagestate) { // 1스테이지에서 2스테이지로 넘어감 
 //				***********************************************************깜빡
@@ -218,8 +221,8 @@ public class PlayPanel extends JPanel {
 						blackLabel.setText("테스트용");
 						blackLabel.setOpaque(true);
 						background.add(blackLabel);
-						blackDrawThread = new Thread(new backFade());
-						blackDrawThread.start();
+						blackDraw = new Thread(new backFade());
+						blackDraw.start();
 					}
 //				***********************************************************깜빡
 					if (fieldList.get(200).getX() == 0) { // 1스테이지의 필드리스트 사이즈-1만큼 get()에 입력
@@ -228,7 +231,6 @@ public class PlayPanel extends JPanel {
 							getBlack(image);
 							getRed(image);
 							getYellow(image);
-							getGreen(image);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -244,8 +246,8 @@ public class PlayPanel extends JPanel {
 						blackLabel.setText("테스트용");
 						blackLabel.setOpaque(true);
 						background.add(blackLabel);
-						blackDrawThread = new Thread(new backFade());
-						blackDrawThread.start();
+						blackDraw = new Thread(new backFade());
+						blackDraw.start();
 					}
 //				***********************************************************깜빡
 					if (fieldList.get(400).getX() == 0) {
@@ -254,7 +256,6 @@ public class PlayPanel extends JPanel {
 							getBlack(image);
 							getRed(image);
 							getYellow(image);
-							getGreen(image);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -265,12 +266,14 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	
-	private void getBlack(BufferedImage image) {
+	public void getBlack(BufferedImage image) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == black) {
+					System.out.println("w" + w);
+					System.out.println("h" + h);
 					field = new Field();
 					field.setBounds(w * 50, h * 50, 50, 200);
 					background.add(field);
@@ -280,12 +283,14 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	
-	private void getRed(BufferedImage image) {
+	public void getRed(BufferedImage image) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == red) {
+					System.out.println("w" + w);
+					System.out.println("h" + h);
 					object = new Object();
 					object.setBounds(w * 50, h * 50, 50, 50);
 					background.add(object);
@@ -295,31 +300,18 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	
-	private void getYellow(BufferedImage image) {
+	public void getYellow(BufferedImage image) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == yellow) {
+					System.out.println("w" + w);
+					System.out.println("h" + h);
 					jelly = new img.Jelly();
 					jelly.setBounds(w * 50, h * 50, 50, 50);
 					background.add(jelly);
 					jellyList.add(jelly);
-				}
-			}
-		}
-	}
-	
-	public void getGreen(BufferedImage image) {
-		int width = image.getWidth();
-		int height = image.getHeight();
-		for (int w = 0; w < width; w++) {
-			for (int h = 0; h < height; h++) {
-				if (image.getRGB(w, h) == green) {
-					potion = new Potion();
-					potion.setBounds(w * 50, h * 50, 50, 50);
-					background.add(potion);
-					potionList.add(potion);
 				}
 			}
 		}
@@ -333,16 +325,17 @@ public class PlayPanel extends JPanel {
 			int y = person.getY();
 			person.setIm(new ImageIcon(".\\img\\Person_jumping.png").getImage());
 			while (true) {
+				isJump = true;
+				y += dy;
+				if (y > person.getY()) {
+					isJump = false;
+					person.setIm(new ImageIcon(".\\img\\person.gif").getImage());
+					break;
+				}
+				person.setLocation(person.getX(), y);
+				dy += gravity;
+				
 				try {
-					isJump = true;
-					y += dy;
-					if (y > person.getY()) {
-						isJump = false;
-						person.setIm(new ImageIcon(".\\img\\person.gif").getImage());
-						break;
-					}
-					person.setLocation(person.getX(), y);
-					dy += gravity;
 					Thread.sleep(17);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -384,6 +377,7 @@ public class PlayPanel extends JPanel {
 					e.printStackTrace();
 				}
 				b = getFieldY();
+//				System.out.println("test:" + b);
 				if (!b) {
 					stopGravity();
 				}
@@ -392,14 +386,12 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	
-	private void characterHitbox() { // 히트박스 메소드, 장애물에 닿는거 처리할것, 젤리에 닿을때도 처리가능.
+	public void characterHitbox() { // 히트박스 메소드, 장애물에 닿는거 처리할것, 젤리에 닿을때도 처리가능.
+//		personHitR = new Rectangle(new Point(0, person.getY())
+//				, new Dimension(person.getWidth(), person.getHeight() - 10));
 		Rectangle objectR = null;
 		Rectangle jellyR = null;
-<<<<<<< HEAD
 		
-=======
-		Rectangle potionR = null;
->>>>>>> branch 'master' of https://github.com/Jii-Yeong/mongs-run.git
 		if (!isSlide) { // down키 눌러질때 true
 			personHitR = new Rectangle(new Point(0, person.getY())
 					, new Dimension(person.getWidth(), person.getHeight() - 10));
@@ -411,54 +403,33 @@ public class PlayPanel extends JPanel {
 		for (int i = 0; i < objectList.size(); i++) {
 			objectR = new Rectangle(new Point(objectList.get(i).getX(), objectList.get(i).getY()), new Dimension(10, 10));
 			if (personHitR.intersects(objectR)) {
-				if (physical.isDoseNotDecreaseLife() == false) {
-					physical.lifeMinus(physical.getLife());
-					physical.lifeMinus(physical.getLife());
-					physical.lifeMinus(physical.getLife());
-				}
-				doseNotDecreaseLifeThread = new Thread(new doseNotDecreaseLifeRunnable());
-				doseNotDecreaseLifeThread.start();
+				physical.lifeMinus(physical.getLife());
+				System.out.println("오브젝트 닿았다!");
 			}
 		}
 		
 		for (int i = 0; i < jellyList.size(); i++) {
 			jellyR = new Rectangle(new Point(jellyList.get(i).getX(), jellyList.get(i).getY()), new Dimension(10, 10));
-<<<<<<< HEAD
 			if (personHitR.intersects(jellyR)) {
 				jellyList.get(i).setJelly(new ImageIcon(".\\img\\effect.png").getImage());
-=======
-			if (personHitR.intersects(jellyR) && physical.isJellyEat() == false) {
->>>>>>> branch 'master' of https://github.com/Jii-Yeong/mongs-run.git
 				int temp = scorePanel.getScore();
-				temp += 12345; // 젤리 점수
+				temp += 1234;
 				scorePanel.setScore(temp);
-<<<<<<< HEAD
 				System.out.println("젤리 닿았다!");
 				if (jellyList.get(i).getAlpha() > 20) {
 					jellyList.get(i).setAlpha(jellyList.get(i).getAlpha() - 19);
 				}
 			} 
-=======
-				jellyThread = new Thread(new JellyRunnable());
-				jellyThread.start();
-			}
->>>>>>> branch 'master' of https://github.com/Jii-Yeong/mongs-run.git
 		}
-		
-		for (int i = 0; i < potionList.size(); i++) {
-			potionR = new Rectangle(new Point(potionList.get(i).getX(), potionList.get(i).getY()), new Dimension(10, 10));
-			if (personHitR.intersects(potionR) && physical.isHealing() == false) {
-				physical.lifePlus();
-				healingThread = new Thread(new HealingRunnable());
-				healingThread.start();
-			}
-		}
+		// if문의 조건 = 캐릭터의 히트박스가 오브젝트나 젤리와 겹칠때
+		// physical.lifeminus
 	}
 	
 	// Y좌표가 900이상 or 체력이 40 이하가 되면 게임 종료 및 결과창 출력
 	private class GameOverRunnable implements Runnable {
 		@Override
 		public void run() {
+			System.out.println("게임종료 확인용");
 			while (true) {
 				try {
 					Thread.sleep(500);
@@ -473,86 +444,23 @@ public class PlayPanel extends JPanel {
 			}
 		}
 	}
-	
-	private class SlideBGMRunnable implements Runnable {
-		@Override
-		public void run() {
-			try {
-				if (isSlideBGM == false) {
-					isSlideBGM = true;
-					soundStart(slideBGM);
-					Thread.sleep(500);
-					isSlideBGM = false;
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	private class HealingRunnable implements Runnable {
-		@Override
-		public void run() {
-			if (physical.isHealing() == false) {
-				try {
-					physical.setHealing(true);
-					Thread.sleep(1000);
-					physical.setHealing(false);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	private class JellyRunnable implements Runnable {
-		@Override
-		public void run() {
-			if (physical.isJellyEat() == false) {
-				try {
-					physical.setJellyEat(true);
-					Thread.sleep(250);
-					physical.setJellyEat(false);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	private class doseNotDecreaseLifeRunnable implements Runnable {
-		@Override
-		public void run() {
-			if (physical.isDoseNotDecreaseLife() == false) {
-				try {
-					physical.setDoseNotDecreaseLife(true);
-					System.out.println("3초간 무적");
-					Thread.sleep(3000);
-					physical.setDoseNotDecreaseLife(false);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	private boolean getFieldY() {
+	public boolean getFieldY() {
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
+		pnl.setBackground(new Color(2, 233, 44));
 		
 		for (int i = 0; i < fieldList.size(); i++) {
 			fieldR = new Rectangle(new Point(fieldList.get(i).getX(), fieldList.get(i).getY()), new Dimension(50, 10));
 			pnl2.setBounds(fieldR);
 			if (personR.intersects(fieldR)) {
-				physical.setJumpStatus(0);
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	private synchronized void startGravity() {
+	public synchronized void startGravity() {
 		int gravity = 1;
 		if (b || isJump) {
 			try {
@@ -563,8 +471,28 @@ public class PlayPanel extends JPanel {
 		gravity += 5;
 	}
 		
-	private synchronized void stopGravity() {
+	public synchronized void stopGravity() {
 		notifyAll();
+	}
+
+	public Thread getT2() {
+		return t2;
+	}
+
+	public void setT2(Thread t2) {
+		this.t2 = t2;
+	}
+
+	public Thread getT3() {
+		return t3;
+	}
+
+	public void setT3(Thread t3) {
+		this.t3 = t3;
+	}
+
+	public Thread getT() {
+		return t;
 	}
 
 	public void setT(Thread t) {
@@ -623,30 +551,23 @@ public class PlayPanel extends JPanel {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				System.out.println("슬라이딩!!");
 				person.setIm(new ImageIcon(".\\img\\Person_sliding.png").getImage());
 				isSlide = true;
 				person.setBounds(person.getX(), person.getY(), 150, 150);
-<<<<<<< HEAD
 				soundStart(slideBGM);
-=======
-				slideBGMThread = new Thread(new SlideBGMRunnable());
-				slideBGMThread.start();
->>>>>>> branch 'master' of https://github.com/Jii-Yeong/mongs-run.git
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				if (physical.getJumpStatus() <= 1) {
-					Thread t = new Thread(new JumpRunnable());
-					t.start();
-					int temp = physical.getJumpStatus();
-					temp++;
-					physical.setJumpStatus(temp);
-					soundStart(jumpBGM);
-				}
+				System.out.println("스페이스 입력");
+				Thread t = new Thread(new JumpRunnable());
+				t.start();
+				soundStart(jumpBGM);
 			}
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				System.out.println("뗌");
 				person.setIm(new ImageIcon(".\\img\\Person.gif").getImage());
 				person.setBounds(person.getX(), person.getY(), 100, 150);
 				isSlide = false;
