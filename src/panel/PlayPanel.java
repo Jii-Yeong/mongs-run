@@ -522,26 +522,6 @@ public class PlayPanel extends JPanel {
 		notifyAll();
 	}
 
-	private Thread getT2() {
-		return t2;
-	}
-
-	private void setT2(Thread t2) {
-		this.t2 = t2;
-	}
-
-	private Thread getT3() {
-		return t3;
-	}
-
-	private void setT3(Thread t3) {
-		this.t3 = t3;
-	}
-
-	private Thread getT() {
-		return t;
-	}
-
 	public void setT(Thread t) {
 		this.t = t;
 	}
