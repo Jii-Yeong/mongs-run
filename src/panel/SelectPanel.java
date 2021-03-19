@@ -47,7 +47,7 @@ public class SelectPanel extends JPanel {
 		ImageIcon imgBackground = new ImageIcon(".\\img\\background\\test.png");
 		
 		// 캐릭터 이미지
-		ImageIcon btnCharacter1 = new ImageIcon(".\\img\\Person_jumping.png");
+		ImageIcon btnCharacter1 = new ImageIcon(".\\img\\person_jump.png");
 		ImageIcon btnCharacter2 = new ImageIcon(".\\img\\chick_jump.png");
 		ImageIcon btnCharacter3 = new ImageIcon(".\\img\\character\\char3.png");
 		ImageIcon btnCharacter4 = new ImageIcon(".\\img\\character\\char4.png");

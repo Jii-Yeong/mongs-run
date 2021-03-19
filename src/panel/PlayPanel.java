@@ -115,7 +115,7 @@ public class PlayPanel extends JPanel {
  		person = new Person(selectedNum);
 		person.setOpaque(false);
 		background.setBounds(0, 0, 1000, 700);
-		person.setBounds(100, 202, 150, 150);
+//		person.setBounds(100, 202, person.getIm().getWidth(null), person.getIm().getHeight(null));
 		person.setBackground(new Color(0, 0, 0, 1));
 		background.setLayout(null);
 		background.add(person); // 패널에 person을 추가하는게 아니라, background에 person을 추가.
@@ -386,6 +386,7 @@ public class PlayPanel extends JPanel {
 			while (true) {
 				try {
 					Thread.sleep(20);
+					person.switchSize(selectedNum);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -442,6 +443,10 @@ public class PlayPanel extends JPanel {
 		for (int i = 0; i < potionList.size(); i++) {
 			potionR = new Rectangle(new Point(potionList.get(i).getX(), potionList.get(i).getY()), new Dimension(10, 10));
 			if (personHitR.intersects(potionR) && physical.isHealing() == false) {
+				potionList.get(i).setPotion((new ImageIcon(".\\img\\effect.png").getImage()));
+				if (potionList.get(i).getAlpha() > 20) {
+					potionList.get(i).setAlpha(potionList.get(i).getAlpha() - 19);
+				}
 				physical.lifePlus();
 				healingThread = new Thread(new HealingRunnable());
 				healingThread.start();
@@ -531,7 +536,7 @@ public class PlayPanel extends JPanel {
 	}
 	
 	private boolean getFieldY() {
-		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
+		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 4));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
 		

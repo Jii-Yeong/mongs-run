@@ -16,7 +16,7 @@ public class Person extends JPanel {
 	public Image chick_run = new ImageIcon(".\\img\\chick_run.gif").getImage();
 	
 	// 점프 캐릭터
-	public Image person_jump = new ImageIcon(".\\img\\person_jumping.png").getImage();
+	public Image person_jump = new ImageIcon(".\\img\\person_jump.png").getImage();
 	public Image chick_jump = new ImageIcon(".\\img\\chick_jump.png").getImage();
 	
 	// 슬라이딩 캐릭터
@@ -28,8 +28,12 @@ public class Person extends JPanel {
 	public Image slide;
 	public Image jump;
 	
+	private int width;
+	private int height;
 	
 	public Person(int selectedNum) {
+		
+		System.out.println(person_run.getWidth(null));
 		
 		switch (selectedNum) {
 		case 1:
@@ -39,6 +43,7 @@ public class Person extends JPanel {
 			setIm(chick_run);
 			break;
 		}
+		switchSize(selectedNum);
 		switchRun(selectedNum);
 		switchSlid(selectedNum);
 		switchJump(selectedNum);
@@ -88,6 +93,21 @@ public class Person extends JPanel {
 	public void setJump(Image jump) {
 		this.jump = jump;
 	}
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
 
 	public void switchSlid(int selectedNum) {
 		switch (selectedNum) {
@@ -119,5 +139,16 @@ public class Person extends JPanel {
 			break;
 		}
 	}
-	
+	public void switchSize(int selectedNum) {
+		switch (selectedNum) {
+		case 1:
+			setWidth(im.getWidth(null));
+			setHeight(im.getHeight(null));
+			break;
+		case 2:
+			setWidth(im.getWidth(null));
+			setHeight(im.getHeight(null));
+			break;
+		}
+	}
 }
