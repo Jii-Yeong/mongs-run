@@ -421,6 +421,7 @@ public class PlayPanel extends JPanel {
 //				, new Dimension(person.getWidth(), person.getHeight() - 10));
 		Rectangle objectR = null;
 		Rectangle jellyR = null;
+		Rectangle potionR = null;
 		if (!isSlide) { // down키 눌러질때 true
 			personHitR = new Rectangle(new Point(0, person.getY())
 					, new Dimension(person.getWidth(), person.getHeight() - 10));
@@ -450,6 +451,13 @@ public class PlayPanel extends JPanel {
 				temp += 1234; // 젤리 점수
 				scorePanel.setScore(temp);
 //				System.out.println("젤리 닿았다!");
+			}
+		}
+		
+		for (int i = 0; i < potionList.size(); i++) {
+			potionR = new Rectangle(new Point(potionList.get(i).getX(), potionList.get(i).getY()), new Dimension(10, 10));
+			if (personHitR.intersects(potionR)) {
+//				System.out.println("포션 닿았다!");
 			}
 		}
 	}
@@ -494,7 +502,7 @@ public class PlayPanel extends JPanel {
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
-		pnl.setBackground(new Color(2, 233, 44));
+//		pnl.setBackground(new Color(2, 233, 44));
 		
 		for (int i = 0; i < fieldList.size(); i++) {
 			fieldR = new Rectangle(new Point(fieldList.get(i).getX(), fieldList.get(i).getY()), new Dimension(50, 10));
