@@ -457,6 +457,9 @@ public class PlayPanel extends JPanel {
 		for (int i = 0; i < potionList.size(); i++) {
 			potionR = new Rectangle(new Point(potionList.get(i).getX(), potionList.get(i).getY()), new Dimension(10, 10));
 			if (personHitR.intersects(potionR)) {
+				physical.lifePlus();
+				physical.lifePlus();
+				physical.lifePlus();
 //				System.out.println("포션 닿았다!");
 			}
 		}
