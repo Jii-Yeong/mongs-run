@@ -48,7 +48,7 @@ public class MainFrame extends JFrame {
 		
 		
 		setSize(1000, 700);
-//		setResizable(false); 다 만들고 주석 풀것임
+		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		System.out.println(getBounds());
