@@ -514,7 +514,13 @@ public class PlayPanel extends JPanel {
 				try {
 					physical.setDoseNotDecreaseLife(true);
 					System.out.println("3초간 무적");
-					Thread.sleep(3000);
+					person.setAlpha(100);
+					Thread.sleep(1000);
+					person.setAlpha(255);
+					Thread.sleep(1000);
+					person.setAlpha(100);
+					Thread.sleep(1000);
+					person.setAlpha(255);
 					physical.setDoseNotDecreaseLife(false);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
