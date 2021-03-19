@@ -31,6 +31,7 @@ import img.Jelly;
 import img.Field;
 import img.Object;
 import img.Person;
+import img.Potion;
 import main.MainFrame;
 import score.ScorePanel;
 import panel.BackgroundPanel;
@@ -45,9 +46,11 @@ public class PlayPanel extends JPanel {
 	private Field field;
 	private Object object;
 	private img.Jelly jelly;
+	private Potion potion;
 	private List<Field> fieldList = new ArrayList<Field>();
 	private List<Object> objectList = new ArrayList<Object>();
 	private List<img.Jelly> jellyList = new ArrayList<img.Jelly>();
+	private List<Potion> potionList = new ArrayList<Potion>();
 	private boolean b = false;
 	private int personY = 100;
 	private Person person;
@@ -60,6 +63,7 @@ public class PlayPanel extends JPanel {
 	private static int black = new Color(0, 0, 0).getRGB();
 	private static int red = new Color(237, 28, 36).getRGB();
 	private static int yellow = new Color(255, 242, 0).getRGB();
+	private static int green = new Color(34, 177, 76).getRGB();
 	private Thread t3;
 	private Thread t;
 	private Thread gameOverState;
@@ -133,6 +137,7 @@ public class PlayPanel extends JPanel {
 			getBlack(image);
 			getRed(image);
 			getYellow(image);
+			getGreen(image);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -213,6 +218,10 @@ public class PlayPanel extends JPanel {
 					int X = jellyList.get(i).getX();
 					jellyList.get(i).setBounds(X - 5, jellyList.get(i).getY(), 50, 50);
 				}
+				for(int i = 0; i < potionList.size(); i++) {
+					int X = potionList.get(i).getX();
+					potionList.get(i).setBounds(X - 5, potionList.get(i).getY(), 50, 50);
+				}
 				
 //				System.out.println(fieldList.size()); //
 //				System.out.println(fieldList.get(fieldList.size()-1).getX());
@@ -235,6 +244,7 @@ public class PlayPanel extends JPanel {
 							getBlack(image);
 							getRed(image);
 							getYellow(image);
+							getGreen(image);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -260,6 +270,7 @@ public class PlayPanel extends JPanel {
 							getBlack(image);
 							getRed(image);
 							getYellow(image);
+							getGreen(image);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -316,6 +327,23 @@ public class PlayPanel extends JPanel {
 					jelly.setBounds(w * 50, h * 50, 50, 50);
 					background.add(jelly);
 					jellyList.add(jelly);
+				}
+			}
+		}
+	}
+	
+	public void getGreen(BufferedImage image) {
+		int width = image.getWidth();
+		int height = image.getHeight();
+		for (int w = 0; w < width; w++) {
+			for (int h = 0; h < height; h++) {
+				if (image.getRGB(w, h) == green) {
+					System.out.println("w" + w);
+					System.out.println("h" + h);
+					potion = new Potion();
+					potion.setBounds(w * 50, h * 50, 50, 50);
+					background.add(potion);
+					potionList.add(potion);
 				}
 			}
 		}
@@ -573,8 +601,8 @@ public class PlayPanel extends JPanel {
 //				System.out.println("슬라이딩!!");
 				person.setIm(new ImageIcon(".\\img\\Person_sliding.png").getImage());
 				isSlide = true;
-				soundStart(slideBGM);
 				person.setBounds(person.getX(), person.getY(), 150, 150);
+				soundStart(slideBGM);
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 //				System.out.println("스페이스 입력");
