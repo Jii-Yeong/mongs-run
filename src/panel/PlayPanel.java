@@ -419,11 +419,16 @@ public class PlayPanel extends JPanel {
 		for (int i = 0; i < jellyList.size(); i++) {
 			jellyR = new Rectangle(new Point(jellyList.get(i).getX(), jellyList.get(i).getY()), new Dimension(10, 10));
 			if (personHitR.intersects(jellyR) && physical.isJellyEat() == false) {
+				jellyList.get(i).setJelly(new ImageIcon(".\\img\\effect.png").getImage());
 				int temp = scorePanel.getScore();
 				temp += 12345; // 젤리 점수
 				scorePanel.setScore(temp);
+				if (jellyList.get(i).getAlpha() > 20) {
+					jellyList.get(i).setAlpha(jellyList.get(i).getAlpha() - 19);
+				}
 				jellyThread = new Thread(new JellyRunnable());
 				jellyThread.start();
+				
 			}
 		}
 		
