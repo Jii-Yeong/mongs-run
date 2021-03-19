@@ -25,12 +25,16 @@ public class Physical extends JLayeredPane {
 	private MainFrame frame;
 	private Thread physicalTimeLow;
 	private boolean doseNotDecreaseLife;
+	private boolean jellyEat;
+	private boolean healing;
 	private int jumpStatus;
 
 	public Physical() {
 		setLayout(null);
 		lifeList = new ArrayList<>();
 		doseNotDecreaseLife = false;
+		jellyEat = false;
+		healing = false;
 		life = 515;
 		cnt = 0;
 		jumpStatus = 0;
@@ -71,6 +75,22 @@ public class Physical extends JLayeredPane {
 
 	public void setJumpStatus(int jumpStatus) {
 		this.jumpStatus = jumpStatus;
+	}
+	
+	public boolean isJellyEat() {
+		return jellyEat;
+	}
+
+	public void setJellyEat(boolean jellyEat) {
+		this.jellyEat = jellyEat;
+	}
+
+	public boolean isHealing() {
+		return healing;
+	}
+
+	public void setHealing(boolean healing) {
+		this.healing = healing;
 	}
 	
 	public void lifeMinus(int x) {
