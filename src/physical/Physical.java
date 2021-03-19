@@ -24,12 +24,16 @@ public class Physical extends JLayeredPane {
 	private ScorePanel scorePanel;
 	private MainFrame frame;
 	private Thread physicalTimeLow;
+	private boolean doseNotDecreaseLife;
+	private int jumpStatus;
 
 	public Physical() {
 		setLayout(null);
 		lifeList = new ArrayList<>();
+		doseNotDecreaseLife = false;
 		life = 515;
 		cnt = 0;
+		jumpStatus = 0;
 		
 		lifeMinus_image = new ImageIcon(".\\img\\lifebar\\lifeMinus.png");
 		lifeBar_image = new ImageIcon(".\\img\\lifebar\\lifeBar.png");
@@ -51,6 +55,22 @@ public class Physical extends JLayeredPane {
 
 	public void setLife(int life) {
 		this.life = life;
+	}
+	
+	public boolean isDoseNotDecreaseLife() {
+		return doseNotDecreaseLife;
+	}
+
+	public void setDoseNotDecreaseLife(boolean doseNotDecreaseLife) {
+		this.doseNotDecreaseLife = doseNotDecreaseLife;
+	}
+
+	public int getJumpStatus() {
+		return jumpStatus;
+	}
+
+	public void setJumpStatus(int jumpStatus) {
+		this.jumpStatus = jumpStatus;
 	}
 	
 	public void lifeMinus(int x) {

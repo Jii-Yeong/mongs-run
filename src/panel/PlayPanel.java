@@ -64,8 +64,9 @@ public class PlayPanel extends JPanel {
 	private Thread t;
 	private Thread gameOverState;
 	private Thread soundThread;
-	private JLabel blackLabel;
+	private Thread doseNotDecreaseLifeThread;
 	private Thread blackDraw;
+	private JLabel blackLabel;
 	BufferedImage image = null;
 	boolean isJump;
 	Rectangle personHitR;
@@ -147,6 +148,9 @@ public class PlayPanel extends JPanel {
 		
 		soundThread = new Thread(new SoundRunnable());
 		soundThread.start();
+		
+//		doseNotDecreaseLifeThread = new Thread(new doseNotDecreaseLifeRunnable());
+//		doseNotDecreaseLifeThread.start();
 		
 		pnl = new JPanel();
 		background.add(pnl);
@@ -266,7 +270,7 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	
-	public void getBlack(BufferedImage image) {
+	private void getBlack(BufferedImage image) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		for (int w = 0; w < width; w++) {
@@ -283,7 +287,7 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	
-	public void getRed(BufferedImage image) {
+	private void getRed(BufferedImage image) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		for (int w = 0; w < width; w++) {
@@ -300,7 +304,7 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	
-	public void getYellow(BufferedImage image) {
+	private void getYellow(BufferedImage image) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		for (int w = 0; w < width; w++) {
@@ -325,17 +329,16 @@ public class PlayPanel extends JPanel {
 			int y = person.getY();
 			person.setIm(new ImageIcon(".\\img\\Person_jumping.png").getImage());
 			while (true) {
-				isJump = true;
-				y += dy;
-				if (y > person.getY()) {
-					isJump = false;
-					person.setIm(new ImageIcon(".\\img\\person.gif").getImage());
-					break;
-				}
-				person.setLocation(person.getX(), y);
-				dy += gravity;
-				
 				try {
+					isJump = true;
+					y += dy;
+					if (y > person.getY()) {
+						isJump = false;
+						person.setIm(new ImageIcon(".\\img\\person.gif").getImage());
+						break;
+					}
+					person.setLocation(person.getX(), y);
+					dy += gravity;
 					Thread.sleep(17);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -385,7 +388,7 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	
-	public void characterHitbox() { // 히트박스 메소드, 장애물에 닿는거 처리할것, 젤리에 닿을때도 처리가능.
+	private void characterHitbox() { // 히트박스 메소드, 장애물에 닿는거 처리할것, 젤리에 닿을때도 처리가능.
 //		personHitR = new Rectangle(new Point(0, person.getY())
 //				, new Dimension(person.getWidth(), person.getHeight() - 10));
 		Rectangle objectR = null;
@@ -401,8 +404,14 @@ public class PlayPanel extends JPanel {
 		for (int i = 0; i < objectList.size(); i++) {
 			objectR = new Rectangle(new Point(objectList.get(i).getX(), objectList.get(i).getY()), new Dimension(10, 10));
 			if (personHitR.intersects(objectR)) {
-				physical.lifeMinus(physical.getLife());
-				System.out.println("오브젝트 닿았다!");
+				if (physical.isDoseNotDecreaseLife() == false) {
+					physical.lifeMinus(physical.getLife());
+					physical.lifeMinus(physical.getLife());
+					physical.lifeMinus(physical.getLife());
+				}
+				doseNotDecreaseLifeThread = new Thread(new doseNotDecreaseLifeRunnable());
+				doseNotDecreaseLifeThread.start();
+//				System.out.println("오브젝트 닿았다!");
 			}
 		}
 		
@@ -410,13 +419,11 @@ public class PlayPanel extends JPanel {
 			jellyR = new Rectangle(new Point(jellyList.get(i).getX(), jellyList.get(i).getY()), new Dimension(10, 10));
 			if (personHitR.intersects(jellyR)) {
 				int temp = scorePanel.getScore();
-				temp += 1234;
+				temp += 1234; // 젤리 점수
 				scorePanel.setScore(temp);
-				System.out.println("젤리 닿았다!");
+//				System.out.println("젤리 닿았다!");
 			}
 		}
-		// if문의 조건 = 캐릭터의 히트박스가 오브젝트나 젤리와 겹칠때
-		// physical.lifeminus
 	}
 	
 	// Y좌표가 900이상 or 체력이 40 이하가 되면 게임 종료 및 결과창 출력
@@ -438,7 +445,24 @@ public class PlayPanel extends JPanel {
 			}
 		}
 	}
-	public boolean getFieldY() {
+	
+	private class doseNotDecreaseLifeRunnable implements Runnable {
+		@Override
+		public void run() {
+			if (physical.isDoseNotDecreaseLife() == false) {
+				try {
+					physical.setDoseNotDecreaseLife(true);
+					System.out.println("3초간 무적");
+					Thread.sleep(3000);
+					physical.setDoseNotDecreaseLife(false);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	private boolean getFieldY() {
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
@@ -448,13 +472,14 @@ public class PlayPanel extends JPanel {
 			fieldR = new Rectangle(new Point(fieldList.get(i).getX(), fieldList.get(i).getY()), new Dimension(50, 10));
 			pnl2.setBounds(fieldR);
 			if (personR.intersects(fieldR)) {
+				physical.setJumpStatus(0);
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public synchronized void startGravity() {
+	private synchronized void startGravity() {
 		int gravity = 1;
 		if (b || isJump) {
 			try {
@@ -465,27 +490,27 @@ public class PlayPanel extends JPanel {
 		gravity += 5;
 	}
 		
-	public synchronized void stopGravity() {
+	private synchronized void stopGravity() {
 		notifyAll();
 	}
 
-	public Thread getT2() {
+	private Thread getT2() {
 		return t2;
 	}
 
-	public void setT2(Thread t2) {
+	private void setT2(Thread t2) {
 		this.t2 = t2;
 	}
 
-	public Thread getT3() {
+	private Thread getT3() {
 		return t3;
 	}
 
-	public void setT3(Thread t3) {
+	private void setT3(Thread t3) {
 		this.t3 = t3;
 	}
 
-	public Thread getT() {
+	private Thread getT() {
 		return t;
 	}
 
@@ -545,23 +570,28 @@ public class PlayPanel extends JPanel {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				System.out.println("슬라이딩!!");
+//				System.out.println("슬라이딩!!");
 				person.setIm(new ImageIcon(".\\img\\Person_sliding.png").getImage());
 				isSlide = true;
 				soundStart(slideBGM);
 				person.setBounds(person.getX(), person.getY(), 150, 150);
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				System.out.println("스페이스 입력");
-				Thread t = new Thread(new JumpRunnable());
-				t.start();
-				soundStart(jumpBGM);
+//				System.out.println("스페이스 입력");
+				if (physical.getJumpStatus() <= 1) {
+					Thread t = new Thread(new JumpRunnable());
+					t.start();
+					int temp = physical.getJumpStatus();
+					temp++;
+					physical.setJumpStatus(temp);
+					soundStart(jumpBGM);
+				}
 			}
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				System.out.println("뗌");
+//				System.out.println("뗌");
 				person.setIm(new ImageIcon(".\\img\\Person.gif").getImage());
 				person.setBounds(person.getX(), person.getY(), 100, 150);
 				isSlide = false;
