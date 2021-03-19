@@ -323,11 +323,13 @@ public class PlayPanel extends JPanel {
 		@Override
 		public void run() {
 			int y = person.getY();
+			person.setIm(new ImageIcon(".\\img\\Person_jumping.png").getImage());
 			while (true) {
 				isJump = true;
 				y += dy;
 				if (y > person.getY()) {
 					isJump = false;
+					person.setIm(new ImageIcon(".\\img\\person.gif").getImage());
 					break;
 				}
 				person.setLocation(person.getX(), y);
@@ -355,7 +357,7 @@ public class PlayPanel extends JPanel {
 		public void run() {
 			while(true) {
 				try {
-					Thread.sleep(2);
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -453,13 +455,14 @@ public class PlayPanel extends JPanel {
 	}
 	
 	public synchronized void startGravity() {
+		int gravity = 1;
 		if (b || isJump) {
 			try {
 				wait();
 			} catch (InterruptedException e) {}
 		} 
-		person.setLocation(0, person.getY() + 1);
-		personY++;
+		person.setLocation(0, person.getY() + gravity);
+		gravity += 5;
 	}
 		
 	public synchronized void stopGravity() {
@@ -543,9 +546,10 @@ public class PlayPanel extends JPanel {
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 				System.out.println("슬라이딩!!");
-				person.setIm(new ImageIcon(".\\img\\jelly1.png").getImage());
+				person.setIm(new ImageIcon(".\\img\\Person_sliding.png").getImage());
 				isSlide = true;
 				soundStart(slideBGM);
+				person.setBounds(person.getX(), person.getY(), 150, 150);
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				System.out.println("스페이스 입력");
@@ -559,6 +563,7 @@ public class PlayPanel extends JPanel {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 				System.out.println("뗌");
 				person.setIm(new ImageIcon(".\\img\\Person.gif").getImage());
+				person.setBounds(person.getX(), person.getY(), 100, 150);
 				isSlide = false;
 			}
 		}

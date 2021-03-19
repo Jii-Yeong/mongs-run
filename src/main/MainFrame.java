@@ -51,6 +51,7 @@ public class MainFrame extends JFrame {
 //		setResizable(false); 다 만들고 주석 풀것임
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		System.out.println(getBounds());
 	}
 	
 	// 패널 전환 메소드
