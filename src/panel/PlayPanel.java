@@ -247,17 +247,17 @@ public class PlayPanel extends JPanel {
 				}
 				
 				if (fieldList.size() > stagestate) { // 2스테이지에서 3스테이지로 넘어감
-//				***********************************************************깜빡
-					if (fieldList.get(395).getX() == 0) {
-						blackLabel = new JLabel();
-						blackLabel.setBounds(0, 0, 1000, 660);
-						blackLabel.setOpaque(true);
-						background.add(blackLabel);
-						blackDrawThread = new Thread(new backFade());
-						blackDrawThread.start();
-					}
-//				***********************************************************깜빡
-					if (fieldList.get(400).getX() == 0) {
+////				***********************************************************깜빡
+//					if (fieldList.get(395).getX() == 0) {
+//						blackLabel = new JLabel();
+//						blackLabel.setBounds(0, 0, 1000, 660);
+//						blackLabel.setOpaque(true);
+//						background.add(blackLabel);
+//						blackDrawThread = new Thread(new backFade());
+//						blackDrawThread.start();
+//					}
+////				***********************************************************깜빡
+					if (fieldList.get(1180).getX() == 0) {
 						try {
 							System.out.println("맵3번 : " + fieldList.size());
 							image = ImageIO.read(new File(".\\img\\stage3.png"));
@@ -542,6 +542,10 @@ public class PlayPanel extends JPanel {
 				physical.lifePlus();
 				healingThread = new Thread(new HealingRunnable());
 				healingThread.start();
+				potionList.get(i).setPotion(new ImageIcon(".\\img\\effect.png").getImage());
+				if (potionList.get(i).getAlpha() > 20) {
+					potionList.get(i).setAlpha(potionList.get(i).getAlpha() - 19);
+				}
 			}
 		}
 	}	
