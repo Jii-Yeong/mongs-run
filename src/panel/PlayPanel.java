@@ -399,6 +399,7 @@ public class PlayPanel extends JPanel {
 		for (int i = 0; i < objectList.size(); i++) {
 			objectR = new Rectangle(new Point(objectList.get(i).getX(), objectList.get(i).getY()), new Dimension(10, 10));
 			if (personHitR.intersects(objectR)) {
+				physical.lifeMinus(physical.getLife());
 				System.out.println("오브젝트 닿았다!");
 			}
 		}
@@ -406,11 +407,14 @@ public class PlayPanel extends JPanel {
 		for (int i = 0; i < jellyList.size(); i++) {
 			jellyR = new Rectangle(new Point(jellyList.get(i).getX(), jellyList.get(i).getY()), new Dimension(10, 10));
 			if (personHitR.intersects(jellyR)) {
+				int temp = scorePanel.getScore();
+				temp += 1234;
+				scorePanel.setScore(temp);
 				System.out.println("젤리 닿았다!");
 			}
 		}
 		// if문의 조건 = 캐릭터의 히트박스가 오브젝트나 젤리와 겹칠때
-		// physical.lifeminus 
+		// physical.lifeminus
 	}
 	
 	// Y좌표가 900이상 or 체력이 40 이하가 되면 게임 종료 및 결과창 출력
