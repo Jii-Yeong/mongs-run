@@ -209,8 +209,6 @@ public class PlayPanel extends JPanel {
 					potionList.get(i).setBounds(X - 5, potionList.get(i).getY(), 50, 50);
 				}
 				
-//				System.out.println(fieldList.size()); //
-//				System.out.println(fieldList.get(fieldList.size()-1).getX());
 				
 				if (fieldList.size() <= stagestate) { // 1스테이지에서 2스테이지로 넘어감 
 //				***********************************************************깜빡
@@ -273,8 +271,6 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == black) {
-//					System.out.println("w" + w);
-//					System.out.println("h" + h);
 					field = new Field();
 					field.setBounds(w * 50, h * 50, 50, 200);
 					background.add(field);
@@ -290,8 +286,6 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == red) {
-					System.out.println("w" + w);
-					System.out.println("h" + h);
 					object = new Object();
 					object.setBounds(w * 50, h * 50, 50, 50);
 					background.add(object);
@@ -307,8 +301,6 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == yellow) {
-					System.out.println("w" + w);
-					System.out.println("h" + h);
 					jelly = new img.Jelly();
 					jelly.setBounds(w * 50, h * 50, 50, 50);
 					background.add(jelly);
@@ -324,8 +316,6 @@ public class PlayPanel extends JPanel {
 		for (int w = 0; w < width; w++) {
 			for (int h = 0; h < height; h++) {
 				if (image.getRGB(w, h) == green) {
-					System.out.println("w" + w);
-					System.out.println("h" + h);
 					potion = new Potion();
 					potion.setBounds(w * 50, h * 50, 50, 50);
 					background.add(potion);
@@ -393,7 +383,6 @@ public class PlayPanel extends JPanel {
 					e.printStackTrace();
 				}
 				b = getFieldY();
-//				System.out.println("test:" + b);
 				if (!b) {
 					stopGravity();
 				}
@@ -403,8 +392,6 @@ public class PlayPanel extends JPanel {
 	}
 	
 	private void characterHitbox() { // 히트박스 메소드, 장애물에 닿는거 처리할것, 젤리에 닿을때도 처리가능.
-//		personHitR = new Rectangle(new Point(0, person.getY())
-//				, new Dimension(person.getWidth(), person.getHeight() - 10));
 		Rectangle objectR = null;
 		Rectangle jellyR = null;
 		Rectangle potionR = null;
@@ -426,7 +413,6 @@ public class PlayPanel extends JPanel {
 				}
 				doseNotDecreaseLifeThread = new Thread(new doseNotDecreaseLifeRunnable());
 				doseNotDecreaseLifeThread.start();
-//				System.out.println("오브젝트 닿았다!");
 			}
 		}
 		
@@ -434,11 +420,10 @@ public class PlayPanel extends JPanel {
 			jellyR = new Rectangle(new Point(jellyList.get(i).getX(), jellyList.get(i).getY()), new Dimension(10, 10));
 			if (personHitR.intersects(jellyR) && physical.isJellyEat() == false) {
 				int temp = scorePanel.getScore();
-				temp += 1000; // 젤리 점수
+				temp += 12345; // 젤리 점수
 				scorePanel.setScore(temp);
 				jellyThread = new Thread(new JellyRunnable());
 				jellyThread.start();
-//				System.out.println("젤리 닿았다!");
 			}
 		}
 		
@@ -448,7 +433,6 @@ public class PlayPanel extends JPanel {
 				physical.lifePlus();
 				healingThread = new Thread(new HealingRunnable());
 				healingThread.start();
-//				System.out.println("포션 닿았다!");
 			}
 		}
 	}
@@ -457,7 +441,6 @@ public class PlayPanel extends JPanel {
 	private class GameOverRunnable implements Runnable {
 		@Override
 		public void run() {
-			System.out.println("게임종료 확인용");
 			while (true) {
 				try {
 					Thread.sleep(500);
@@ -495,7 +478,6 @@ public class PlayPanel extends JPanel {
 			if (physical.isHealing() == false) {
 				try {
 					physical.setHealing(true);
-//					System.out.println("1초에 포션 한 번 먹음");
 					Thread.sleep(1000);
 					physical.setHealing(false);
 				} catch (InterruptedException e) {
@@ -511,7 +493,6 @@ public class PlayPanel extends JPanel {
 			if (physical.isJellyEat() == false) {
 				try {
 					physical.setJellyEat(true);
-//					System.out.println("0.25초에 젤리 한 번 먹음");
 					Thread.sleep(250);
 					physical.setJellyEat(false);
 				} catch (InterruptedException e) {
@@ -541,7 +522,6 @@ public class PlayPanel extends JPanel {
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
-//		pnl.setBackground(new Color(2, 233, 44));
 		
 		for (int i = 0; i < fieldList.size(); i++) {
 			fieldR = new Rectangle(new Point(fieldList.get(i).getX(), fieldList.get(i).getY()), new Dimension(50, 10));
@@ -625,7 +605,6 @@ public class PlayPanel extends JPanel {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-//				System.out.println("슬라이딩!!");
 				person.setIm(new ImageIcon(".\\img\\Person_sliding.png").getImage());
 				isSlide = true;
 				person.setBounds(person.getX(), person.getY(), 150, 150);
@@ -633,7 +612,6 @@ public class PlayPanel extends JPanel {
 				slideBGMThread.start();
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-//				System.out.println("스페이스 입력");
 				if (physical.getJumpStatus() <= 1) {
 					Thread t = new Thread(new JumpRunnable());
 					t.start();
@@ -647,7 +625,6 @@ public class PlayPanel extends JPanel {
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-//				System.out.println("뗌");
 				person.setIm(new ImageIcon(".\\img\\Person.gif").getImage());
 				person.setBounds(person.getX(), person.getY(), 100, 150);
 				isSlide = false;
