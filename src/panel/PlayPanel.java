@@ -457,6 +457,9 @@ public class PlayPanel extends JPanel {
 		for (int i = 0; i < potionList.size(); i++) {
 			potionR = new Rectangle(new Point(potionList.get(i).getX(), potionList.get(i).getY()), new Dimension(10, 10));
 			if (personHitR.intersects(potionR)) {
+				physical.lifePlus();
+				physical.lifePlus();
+				physical.lifePlus();
 //				System.out.println("포션 닿았다!");
 			}
 		}
@@ -528,26 +531,6 @@ public class PlayPanel extends JPanel {
 		
 	private synchronized void stopGravity() {
 		notifyAll();
-	}
-
-	private Thread getT2() {
-		return t2;
-	}
-
-	private void setT2(Thread t2) {
-		this.t2 = t2;
-	}
-
-	private Thread getT3() {
-		return t3;
-	}
-
-	private void setT3(Thread t3) {
-		this.t3 = t3;
-	}
-
-	private Thread getT() {
-		return t;
 	}
 
 	public void setT(Thread t) {
