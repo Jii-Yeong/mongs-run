@@ -2,26 +2,26 @@ package panel;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
 
+import img.Person;
 import main.MainFrame;
 
-import java.awt.Font;
-
 public class SelectPanel extends JPanel {
+	// 캐릭터 클래스
+	Person person;
+	
 	// 시작 버튼
 	private JButton btnStart;
 	
@@ -31,7 +31,7 @@ public class SelectPanel extends JPanel {
 	private JButton btnIcon3;
 	private JButton btnIcon4;
 	
-	int selectednum = 0;
+	int selectedNum = 0;
 
 	// 커서
 	private Cursor cursor;
@@ -47,8 +47,8 @@ public class SelectPanel extends JPanel {
 		ImageIcon imgBackground = new ImageIcon(".\\img\\background\\test.png");
 		
 		// 캐릭터 이미지
-		ImageIcon btnCharacter1 = new ImageIcon(".\\img\\character\\char1.png");
-		ImageIcon btnCharacter2 = new ImageIcon(".\\img\\character\\char2.png");
+		ImageIcon btnCharacter1 = new ImageIcon(".\\img\\person_jump.png");
+		ImageIcon btnCharacter2 = new ImageIcon(".\\img\\chick_jump.png");
 		ImageIcon btnCharacter3 = new ImageIcon(".\\img\\character\\char3.png");
 		ImageIcon btnCharacter4 = new ImageIcon(".\\img\\character\\char4.png");
 		
@@ -79,7 +79,7 @@ public class SelectPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				lblSelected.setVisible(true);
 				lblSelected.setBounds(55, 300, 176, 52);
-				selectednum = 1;
+				selectedNum = 1;
 			}
 		});
 
@@ -93,7 +93,7 @@ public class SelectPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				lblSelected.setVisible(true);
 				lblSelected.setBounds(300, 300, 176, 52);
-				selectednum = 2;
+				selectedNum = 2;
 			}
 		});
 
@@ -107,7 +107,7 @@ public class SelectPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				lblSelected.setVisible(true);
 				lblSelected.setBounds(530, 300, 176, 52);
-				selectednum = 3;
+				selectedNum = 3;
 			}
 		});
 		
@@ -121,7 +121,7 @@ public class SelectPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				lblSelected.setVisible(true);
 				lblSelected.setBounds(770, 300, 176, 52);
-				selectednum = 4;
+				selectedNum = 4;
 			}
 		});
 		
@@ -132,14 +132,15 @@ public class SelectPanel extends JPanel {
 		btnStart.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (selectednum == 0) {
+				System.out.println("캐릭터 번호" + selectedNum);
+				if (selectedNum == 0) {
 					JOptionPane.showMessageDialog(null, "캐릭터를 선택해주세요", "오류", JOptionPane.WARNING_MESSAGE);
 				} else {
-					playPanel = new PlayPanel(frame);
+					playPanel = new PlayPanel(frame, selectedNum);
 					frame.getContentPane().add("play", playPanel);
 					frame.changePlayPanel();
 					playPanel.requestFocus(); // 포커스 요청
-					System.out.println("캐릭터 번호" + selectednum);
+					
 				}
 			}
 		});

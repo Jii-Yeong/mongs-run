@@ -85,6 +85,8 @@ public class PlayPanel extends JPanel {
 	private File slideBGM;
 	private Clip sound;
 	private Clip tempSound;
+	
+	private int selectedNum;
 
 	/**
 	 * Create the panel.
@@ -93,7 +95,11 @@ public class PlayPanel extends JPanel {
 	JPanel pnl2;
 	JPanel pnl4; // 깜빡이용 히트박스표시패널
 	
-	public PlayPanel(MainFrame frame) {
+	public PlayPanel(MainFrame frame, int selectedNum) {
+		this.selectedNum = selectedNum;
+		System.out.println("buygy8ug"+selectedNum);
+
+		
 		skyBGM = new File(".\\sound\\sky_map1.wav");
 		redskyBGM = new File(".\\sound\\redsky_map2.wav");
 		spaceBGM = new File(".\\sound\\space_map3.wav");
@@ -106,10 +112,10 @@ public class PlayPanel extends JPanel {
 		setPreferredSize(new Dimension(1000, 700));
 		setMaximumSize(new Dimension(1000, 700));
 		setLayout(null);
-		person = new Person();
+ 		person = new Person(selectedNum);
 		person.setOpaque(false);
 		background.setBounds(0, 0, 1000, 700);
-		person.setBounds(100, 202, 100, 165);
+//		person.setBounds(100, 202, person.getIm().getWidth(null), person.getIm().getHeight(null));
 		person.setBackground(new Color(0, 0, 0, 1));
 		background.setLayout(null);
 		background.add(person); // 패널에 person을 추가하는게 아니라, background에 person을 추가.
@@ -241,17 +247,17 @@ public class PlayPanel extends JPanel {
 				}
 				
 				if (fieldList.size() > stagestate) { // 2스테이지에서 3스테이지로 넘어감
-////				***********************************************************깜빡
-//					if (fieldList.get(400).getX() == 0) {
-//						blackLabel = new JLabel();
-//						blackLabel.setBounds(0, 0, 1000, 660);
-//						blackLabel.setOpaque(true);
-//						background.add(blackLabel);
-//						blackDrawThread = new Thread(new backFade());
-//						blackDrawThread.start();
-//					}
-////				***********************************************************깜빡
-					if (fieldList.get(1180).getX() == 0) {
+//				***********************************************************깜빡
+					if (fieldList.get(395).getX() == 0) {
+						blackLabel = new JLabel();
+						blackLabel.setBounds(0, 0, 1000, 660);
+						blackLabel.setOpaque(true);
+						background.add(blackLabel);
+						blackDrawThread = new Thread(new backFade());
+						blackDrawThread.start();
+					}
+//				***********************************************************깜빡
+					if (fieldList.get(400).getX() == 0) {
 						try {
 							System.out.println("맵3번 : " + fieldList.size());
 							image = ImageIO.read(new File(".\\img\\stage3.png"));
@@ -332,17 +338,19 @@ public class PlayPanel extends JPanel {
 	private class JumpRunnable implements Runnable {
 		private int gravity = 1;
 		private int dy = -20;
+		
+// *********************************************************점프 이미지
 		@Override
 		public void run() {
 			int y = person.getY();
-			person.setIm(new ImageIcon(".\\img\\Person_jumping.png").getImage());
+			person.setIm(person.getJump());
 			while (true) {
 				try {
 					isJump = true;
 					y += dy;
 					if (y > person.getY()) {
 						isJump = false;
-						person.setIm(new ImageIcon(".\\img\\person.gif").getImage());
+						person.setIm(person.getRun());
 						break;
 					}
 					person.setLocation(person.getX(), y);
@@ -383,6 +391,7 @@ public class PlayPanel extends JPanel {
 			while (true) {
 				try {
 					Thread.sleep(20);
+					person.switchSize(selectedNum);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -394,7 +403,7 @@ public class PlayPanel extends JPanel {
 			}
 		}
 	}
-
+	
 	// Y좌표가 900이상 or 체력이 40 이하가 되면 게임 종료 및 결과창 출력
 	private class GameOverRunnable implements Runnable {
 		@Override
@@ -467,7 +476,17 @@ public class PlayPanel extends JPanel {
 				try {
 					physical.setDoseNotDecreaseLife(true);
 					System.out.println("3초간 무적");
-					Thread.sleep(3000);
+					person.setAlpha(100);
+					Thread.sleep(600);
+					person.setAlpha(255);
+					Thread.sleep(600);
+					person.setAlpha(100);
+					Thread.sleep(600);
+					person.setAlpha(255);
+					Thread.sleep(600);
+					person.setAlpha(100);
+					Thread.sleep(600);
+					person.setAlpha(255);
 					physical.setDoseNotDecreaseLife(false);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -475,7 +494,6 @@ public class PlayPanel extends JPanel {
 			}
 		}
 	}
-	
 	
 	private void characterHitbox() { // 히트박스 메소드, 장애물에 닿는거 처리할것, 젤리에 닿을때도 처리가능.
 		Rectangle objectR = null;
@@ -529,7 +547,7 @@ public class PlayPanel extends JPanel {
 	}	
 	
 	private boolean getFieldY() {
-		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 10));
+		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 4));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
 		
@@ -609,16 +627,17 @@ public class PlayPanel extends JPanel {
 				e.printStackTrace();
 			}
 		}
-		// ********************************************************** setVisible 말고 대체 방법 생각해야함
 		blackLabel.setVisible(false);
 	}
 	
+// *********************************************************슬라이딩 이미지
 	private class SlideKeyListener extends KeyAdapter {
 		Thread t = new Thread();
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				person.setIm(new ImageIcon(".\\img\\Person_sliding.png").getImage());
+				person.setIm(person.getSlide());
+				
 				isSlide = true;
 				person.setBounds(person.getX(), person.getY(), 150, 150);
 				slideBGMThread = new Thread(new SlideBGMRunnable());
@@ -635,11 +654,13 @@ public class PlayPanel extends JPanel {
 				}
 			}
 		}
+		
+// *********************************************************슬라이드 멈췄을때 이미지
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				person.setIm(new ImageIcon(".\\img\\Person.gif").getImage());
-				person.setBounds(person.getX(), person.getY(), 100, 150);
+				person.setIm(person.getRun());
+				person.setBounds(person.getX(), person.getY(), 150, 150);
 				isSlide = false;
 			}
 		}
