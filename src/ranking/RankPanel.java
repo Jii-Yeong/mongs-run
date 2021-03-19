@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import main.MainFrame;
 import panel.StartPanel;
+import result.ResultPanel;
 import score.ScorePanel;
 
 import javax.swing.JLabel;
@@ -32,20 +33,20 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	private File file;
 	private Font font;
 	private List<RankData> scoreList;
-	private StartPanel name;
-	private ScorePanel currentScore;
 	private MainFrame frame;
+	private ResultPanel resultPanel;
+	private StartPanel startPanel;
 	private ImageIcon background_image;
 	private ImageIcon mainButton_imgae;
 	/**
 	 * Create the panel.
 	 */
 	
-	public RankPanel(StartPanel name, ScorePanel currentScore, MainFrame frame) {
+	public RankPanel(ResultPanel resultPanel, StartPanel startPanel, MainFrame frame) {
 		file = new File(".\\rankScore.bin");
-		this.name = name;
-		this.currentScore = currentScore;
 		this.frame = frame;
+		this.resultPanel = resultPanel;
+		this.startPanel = startPanel;
 		scoreList = new ArrayList<>(); 
 		font = new Font("맑은 고딕", Font.BOLD, 30);
 		
@@ -56,9 +57,11 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		mainButton_imgae = new ImageIcon(".\\img\\button\\btn_main.png");
 		
 		if(file.exists()) {
+			System.out.println("로드 후 저장");
 			load();
 			save();
-		} else {
+		} else if (!file.exists()){
+			System.out.println("저장");
 			save();
 		}
 		
@@ -164,12 +167,12 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	// 데이터 저장
 	private void save() {
 		try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))){
-			RankData rankData = new RankData(name.getTfdName().getText(), currentScore.getScore());
-			name.getTfdName().setText("");
+			RankData rankData = new RankData(resultPanel.getStartPanel().getTfdName().getText(), resultPanel.getScorePanel().getScore());
+			resultPanel.getStartPanel().getTfdName().setText("");
 			scoreList.add(rankData);
 			Collections.sort(scoreList, Collections.reverseOrder());
 			out.writeObject(scoreList);
-			name.getBtnRanking().setEnabled(true);
+			startPanel.getBtnRanking().setEnabled(true);
 			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
