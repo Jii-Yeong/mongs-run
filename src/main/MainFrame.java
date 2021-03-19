@@ -13,6 +13,7 @@ import score.ScorePanel;
 
 public class MainFrame extends JFrame {
 	private Object test;
+	private Object test2;
 	
 	// 레이아웃
 	private CardLayout cards = new CardLayout();
