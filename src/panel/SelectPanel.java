@@ -132,9 +132,10 @@ public class SelectPanel extends JPanel {
 		btnStart.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("캐릭터 번호" + selectedNum);
+				lblSelected.setVisible(false);
+				
 				if (selectedNum == 0) {
-					JOptionPane.showMessageDialog(null, "캐릭터를 선택해주세요", "오류", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "캐릭터를 선택해주세요", "에러", JOptionPane.WARNING_MESSAGE);
 				} else {
 					playPanel = new PlayPanel(frame, selectedNum);
 					frame.getContentPane().add("play", playPanel);
