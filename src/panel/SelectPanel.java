@@ -87,8 +87,8 @@ public class SelectPanel extends JPanel {
 		btnIcon2.setBounds(284, 155, 204, 298);
 		setButton(btnIcon2);
 		add(btnIcon2);
+		
 		btnIcon2.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblSelected.setVisible(true);
@@ -133,7 +133,6 @@ public class SelectPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				lblSelected.setVisible(false);
-				
 				if (selectedNum == 0) {
 					JOptionPane.showMessageDialog(null, "캐릭터를 선택해주세요", "에러", JOptionPane.WARNING_MESSAGE);
 				} else {

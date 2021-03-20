@@ -83,6 +83,7 @@ public class StartPanel extends JPanel implements Serializable {
 		btnStart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("게임시작!");
 				if (tfdName.getText().contains(" ")) {
 					JOptionPane.showMessageDialog(null, "공백이 포함되었습니다", "오류", JOptionPane.WARNING_MESSAGE);
 				} else if (tfdName.getText().equals("")) {
