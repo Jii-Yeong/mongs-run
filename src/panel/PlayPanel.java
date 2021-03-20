@@ -217,6 +217,12 @@ public class PlayPanel extends JPanel {
 							getRed(image);
 							getYellow(image);
 							getGreen(image);
+							for (int i = 0; i < objectList.size(); i++) {
+								objectList.get(i).setObject(new ImageIcon(".\\img\\cloud.png").getImage());
+							}
+							for (int i = 0; i < fieldList.size(); i++) {
+								fieldList.get(i).setField(new ImageIcon(".\\img\\cloud_foothold.png").getImage());
+							}
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -245,6 +251,12 @@ public class PlayPanel extends JPanel {
 							getRed(image);
 							getYellow(image);
 							getGreen(image);
+							for (int i = 0; i < objectList.size(); i++) {
+								objectList.get(i).setObject(new ImageIcon(".\\img\\meteor.png").getImage());
+							}
+							for (int i = 0; i < fieldList.size(); i++) {
+								fieldList.get(i).setField(new ImageIcon(".\\img\\steel.png").getImage());
+							}
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
