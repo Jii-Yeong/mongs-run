@@ -57,36 +57,34 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		mainButton_imgae = new ImageIcon(".\\img\\button\\btn_main.png");
 		
 		if(file.exists()) {
-			System.out.println("로드 후 저장");
 			load();
 			save();
 		} else if (!file.exists()){
-			System.out.println("저장");
 			save();
 		}
 		
 		JLabel rank1_Score = new JLabel(scorePrint(0));
-		rank1_Score.setBounds(265, 111, 333, 64);
+		rank1_Score.setBounds(265, 111, 650, 64);
 		rank1_Score.setFont(font);
 		add(rank1_Score);
 		
 		JLabel rank2_Score = new JLabel(scorePrint(1));
-		rank2_Score.setBounds(265, 185, 333, 64);
+		rank2_Score.setBounds(265, 185, 650, 64);
 		rank2_Score.setFont(font);
 		add(rank2_Score);
 		
 		JLabel rank3_Score = new JLabel(scorePrint(2));
-		rank3_Score.setBounds(265, 259, 333, 64);
+		rank3_Score.setBounds(265, 259, 650, 64);
 		rank3_Score.setFont(font);
 		add(rank3_Score);
 		
 		JLabel rank4_Score = new JLabel(scorePrint(3));
-		rank4_Score.setBounds(265, 333, 333, 64);
+		rank4_Score.setBounds(265, 333, 650, 64);
 		rank4_Score.setFont(font);
 		add(rank4_Score);
 		
 		JLabel rank5_Score = new JLabel(scorePrint(4));
-		rank5_Score.setBounds(265, 407, 333, 64);
+		rank5_Score.setBounds(265, 407, 650, 64);
 		rank5_Score.setFont(font);
 		add(rank5_Score);
 		
@@ -155,6 +153,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	
 	// 데이터 로드
 	private void load() {
+		System.out.println("로드");
 		try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))){
 			scoreList = (List<RankData>) in.readObject();
 		} catch (IOException e) {
@@ -166,6 +165,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	
 	// 데이터 저장
 	private void save() {
+		System.out.println("세이브");
 		try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))){
 			RankData rankData = new RankData(resultPanel.getStartPanel().getTfdName().getText(), resultPanel.getScorePanel().getScore());
 			resultPanel.getStartPanel().getTfdName().setText("");
