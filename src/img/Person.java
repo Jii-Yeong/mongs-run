@@ -16,15 +16,17 @@ public class Person extends JPanel {
 	// 달리는 캐릭터
 	public Image person_run = new ImageIcon(".\\img\\Person.gif").getImage();
 	public Image chick_run = new ImageIcon(".\\img\\chick_run.gif").getImage();
+	public Image totoro_run = new ImageIcon(".\\img\\chick_run.gif").getImage();
 	
 	// 점프 캐릭터
 	public Image person_jump = new ImageIcon(".\\img\\person_jump.png").getImage();
 	public Image chick_jump = new ImageIcon(".\\img\\chick_jump.png").getImage();
+	public Image totoro_jump = new ImageIcon(".\\img\\chick_jump.png").getImage();
 	
 	// 슬라이딩 캐릭터
 	public Image person_sliding = new ImageIcon(".\\img\\Person_sliding.png").getImage();
 	public Image chick_sliding = new ImageIcon(".\\img\\chick_jump.png").getImage();
-	
+	public Image totoro_sliding = new ImageIcon(".\\img\\chick_jump.png").getImage();
 	
 	public Image run;
 	public Image slide;
@@ -45,6 +47,12 @@ public class Person extends JPanel {
 			setIm(person_run);
 			break;
 		case 2:
+			setIm(chick_run);
+			break;
+		case 3:
+			setIm(totoro_run);
+			break;
+		case 4:
 			setIm(chick_run);
 			break;
 		}
@@ -133,6 +141,12 @@ public class Person extends JPanel {
 		case 2:
 			setSlide(chick_sliding);
 			break;
+		case 3:
+			setSlide(totoro_run);
+			break;
+		case 4:
+			setSlide(chick_sliding);
+			break;
 		}
 	}
 	public void switchRun(int selectedNum) {
@@ -142,6 +156,12 @@ public class Person extends JPanel {
 			break;
 		case 2:
 			setRun(chick_run);
+			break;
+		case 3:
+			setRun(totoro_run);
+			break;
+		case 4:
+			setRun(totoro_run);
 			break;
 		}
 	}
@@ -153,6 +173,12 @@ public class Person extends JPanel {
 		case 2:
 			setJump(chick_jump);
 			break;
+		case 3:
+			setJump(totoro_jump);
+			break;
+		case 4:
+			setJump(totoro_jump);
+			break;
 		}
 	}
 	public void switchSize(int selectedNum) {
@@ -162,6 +188,14 @@ public class Person extends JPanel {
 			setHeight(im.getHeight(null));
 			break;
 		case 2:
+			setWidth(im.getWidth(null));
+			setHeight(im.getHeight(null));
+			break;
+		case 3:
+			setWidth(im.getWidth(null));
+			setHeight(im.getHeight(null));
+			break;
+		case 4:
 			setWidth(im.getWidth(null));
 			setHeight(im.getHeight(null));
 			break;
