@@ -71,6 +71,8 @@ public class PlayPanel extends JPanel {
 	private Thread jellyThread;
 	private Thread healingThread;
 	private Thread slideBGMThread;
+	private Thread fadeInThread;
+	private Thread fadeOutThread;
 	private JLabel blackLabel;
 	private BufferedImage image = null;
 	private boolean isJump;
@@ -90,9 +92,6 @@ public class PlayPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	JPanel pnl;
-	JPanel pnl2;
-	JPanel pnl4; // 깜빡이용 히트박스표시패널
 
 	public PlayPanel(MainFrame frame, int selectedNum) {
 		this.selectedNum = selectedNum;
@@ -147,16 +146,6 @@ public class PlayPanel extends JPanel {
 		gameOverState = new Thread(new GameOverRunnable());
 		gameOverState.start();
 
-		pnl = new JPanel();
-		background.add(pnl);
-
-		pnl2 = new JPanel();
-		pnl2.setBackground(new Color(2, 233, 44));
-		background.add(pnl2);
-
-		pnl4 = new JPanel();
-		pnl4.setBackground(new Color(255, 174, 201));
-		background.add(pnl4);
 
 		setFocusable(true);
 		addKeyListener(new SlideKeyListener());
@@ -209,10 +198,16 @@ public class PlayPanel extends JPanel {
 ////				***********************************************************깜빡
 					if (fieldList.get(550).getX() == 0) { // 1스테이지의 필드리스트 사이즈-1만큼 get()에 입력
 						try {
+							
 							image = ImageIO.read(new File(".\\img\\stage2.png"));
 							obstacle = new ImageIcon(".\\img\\cloud.png");
 							foothold = new ImageIcon(".\\img\\cloud_foothold.png");
 							mapCreate(image, obstacle, foothold);
+							background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
+							fadeOutThread = new Thread(new fadeOutRunnable());
+							fadeInThread = new Thread(new fadeInRunnable());
+							fadeInThread.start();
+							fadeOutThread.start();
 							tempSound.stop();
 							tempSound = soundStart(redskyBGM);
 						} catch (IOException e) {
@@ -221,7 +216,6 @@ public class PlayPanel extends JPanel {
 							System.out.println("사운드 없음");
 							mapCreate(image, obstacle, foothold);
 						}
-						background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
 					}
 				}
 
@@ -242,6 +236,10 @@ public class PlayPanel extends JPanel {
 							obstacle = new ImageIcon(".\\img\\meteor.png");
 							foothold = new ImageIcon(".\\img\\steel.png");
 							mapCreate(image, obstacle, foothold);
+							fadeOutThread = new Thread(new fadeOutRunnable());
+							fadeInThread = new Thread(new fadeInRunnable());
+							fadeInThread.start();
+							fadeOutThread.start();
 							tempSound.stop();
 							tempSound = soundStart(spaceBGM);
 						} catch (IOException e) {
@@ -407,6 +405,38 @@ public class PlayPanel extends JPanel {
 			}
 		}
 	}
+	
+	private class fadeOutRunnable implements Runnable {
+		@Override
+		public void run() {
+			int i = 0;
+			while (i <= 255) {
+				try {
+					fadeInOut(i);
+					Thread.sleep(250);
+					i += 25;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	private class fadeInRunnable implements Runnable {
+		@Override
+		public void run() {
+			int i = 250;
+			while (i >= 0) {
+				try {
+					fadeInOut(i);
+					Thread.sleep(250);
+					i -= 25;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 	private void getBlack(BufferedImage image) {
 		int width = image.getWidth();
@@ -479,7 +509,6 @@ public class PlayPanel extends JPanel {
 			personHitR = new Rectangle(new Point(0, person.getY() + 80),
 					new Dimension(person.getWidth(), (person.getHeight() - 10) / 2));
 		}
-		pnl4.setBounds(personHitR);
 		for (int i = 0; i < objectList.size(); i++) {
 			objectR = new Rectangle(new Point(objectList.get(i).getX(), objectList.get(i).getY()),
 					new Dimension(10, 10));
@@ -556,11 +585,9 @@ public class PlayPanel extends JPanel {
 	private boolean getFieldY() {
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(person.getWidth(), 4));
 		Rectangle fieldR = null;
-		pnl.setBounds(personR);
 
 		for (int i = 0; i < fieldList.size(); i++) {
 			fieldR = new Rectangle(new Point(fieldList.get(i).getX(), fieldList.get(i).getY()), new Dimension(50, 50));
-			pnl2.setBounds(fieldR);
 			if (personR.intersects(fieldR)) {
 				physical.setJumpStatus(0);
 				return true;
@@ -621,6 +648,10 @@ public class PlayPanel extends JPanel {
 			sound = null;
 		}
 		return sound;
+	}
+	
+	private void fadeInOut(int i) {
+		background.setAlpha(i);
 	}
 
 // *********************************************************슬라이딩 이미지
