@@ -140,7 +140,6 @@ public class SelectPanel extends JPanel {
 					frame.getContentPane().add("play", playPanel);
 					frame.changePlayPanel();
 					playPanel.requestFocus(); // 포커스 요청
-					
 				}
 			}
 		});

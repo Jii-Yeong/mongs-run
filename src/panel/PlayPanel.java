@@ -66,7 +66,6 @@ public class PlayPanel extends JPanel {
 	private Thread MoveThread;
 	private Thread GravityThread;
 	private Thread gameOverState;
-	private Thread soundThread;
 	private Thread doseNotDecreaseLifeThread;
 	private Thread blackDrawThread;
 	private Thread jellyThread;
@@ -85,7 +84,7 @@ public class PlayPanel extends JPanel {
 	private File jumpBGM;
 	private File slideBGM;
 	private Clip sound;
-	private Clip tempSound;
+//	private Clip tempSound;
 	private int selectedNum;
 
 	/**
@@ -97,14 +96,14 @@ public class PlayPanel extends JPanel {
 	
 	public PlayPanel(MainFrame frame, int selectedNum) {
 		this.selectedNum = selectedNum;
-		System.out.println("현재 캐릭터 : "+selectedNum);
+		System.out.println("현재 캐릭터 : "+ selectedNum);
 		this.frame = frame;
 		stop = false;
 		skyBGM = new File(".\\sound\\sky_map1.wav");
 		redskyBGM = new File(".\\sound\\redsky_map2.wav");
 		spaceBGM = new File(".\\sound\\space_map3.wav");
 		jumpBGM = new File(".\\sound\\jump.wav");
-		slideBGM = new File(".\\\\sound\\\\slide.wav");
+		slideBGM = new File(".\\sound\\slide.wav");
 		field = new Field();
 		scorePanel = new ScorePanel();
 		
@@ -127,7 +126,7 @@ public class PlayPanel extends JPanel {
 		
 		try {
 			image = ImageIO.read(new File(".\\img\\stage1.png"));
-			tempSound = soundStart(skyBGM);
+//			tempSound = soundStart(skyBGM);
 			getBlack(image);
 			getRed(image);
 			getYellow(image);
@@ -209,8 +208,8 @@ public class PlayPanel extends JPanel {
 ////				***********************************************************깜빡
 					if (fieldList.get(550).getX() == 0) { // 1스테이지의 필드리스트 사이즈-1만큼 get()에 입력
 						try {
-							tempSound.stop();
-							tempSound= soundStart(redskyBGM);
+//							tempSound.stop();
+//							tempSound= soundStart(redskyBGM);
 							image = ImageIO.read(new File(".\\img\\stage2.png"));
 							System.out.println("맵2번 : " + fieldList.size());
 							getBlack(image);
@@ -237,8 +236,8 @@ public class PlayPanel extends JPanel {
 ////				***********************************************************깜빡
 					if (fieldList.get(1180).getX() == 0) {
 						try {
-							tempSound.stop();
-							tempSound = soundStart(spaceBGM);
+//							tempSound.stop();
+//							tempSound = soundStart(spaceBGM);
 							System.out.println("맵3번 : " + fieldList.size());
 							image = ImageIO.read(new File(".\\img\\stage3.png"));
 							getBlack(image);
@@ -340,7 +339,7 @@ public class PlayPanel extends JPanel {
 				try {
 					if (isSlideBGM == false) {
 						isSlideBGM = true;
-						soundStart(slideBGM);
+//						soundStart(slideBGM);
 						Thread.sleep(500);
 						isSlideBGM = false;
 					}
@@ -571,7 +570,7 @@ public class PlayPanel extends JPanel {
 		rankPanel = new RankPanel(resultPanel, frame.getStartPanel(), frame);
 		frame.getContentPane().add("rank", rankPanel);
 		stop = true;
-		tempSound.stop();
+//		tempSound.stop();
 	}
 	
 	private void backFadeOut() {
@@ -585,20 +584,20 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	
-	private Clip soundStart(File path) {
-		try {
-			sound = AudioSystem.getClip();
-			sound.open(AudioSystem.getAudioInputStream(path));
-			sound.start();
-		} catch (LineUnavailableException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace();
-		}
-		return sound;
-	}
+//	private Clip soundStart(File path) {
+//		try {
+//			sound = AudioSystem.getClip();
+//			sound.open(AudioSystem.getAudioInputStream(path));
+//			sound.start();
+//		} catch (LineUnavailableException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (UnsupportedAudioFileException e) {
+//			e.printStackTrace();
+//		}
+//		return sound;
+//	}
 	
 	private void backFadeIn() {
 		for (int i = 255; i >= 0; i -= 5) {
@@ -632,7 +631,7 @@ public class PlayPanel extends JPanel {
 					int temp = physical.getJumpStatus();
 					temp++;
 					physical.setJumpStatus(temp);
-					soundStart(jumpBGM);
+//					soundStart(jumpBGM);
 				}
 			}
 		}
