@@ -62,6 +62,7 @@ public class PlayPanel extends JPanel {
 	private RankPanel rankPanel;
 	private ResultPanel resultPanel;
 	private ScorePanel scorePanel;
+	private SelectPanel selectPanel;
 	private MainFrame frame;
 	private Thread fieldThread;
 	private Thread MoveThread;
@@ -87,15 +88,14 @@ public class PlayPanel extends JPanel {
 	private File slideBGM;
 	private Clip sound;
 	private Clip tempSound;
-	private int selectedNum;
 
 	/**
 	 * Create the panel.
 	 */
 
-	public PlayPanel(MainFrame frame, int selectedNum) {
-		this.selectedNum = selectedNum;
-		System.out.println("현재 캐릭터 : " + selectedNum);
+	public PlayPanel(MainFrame frame, SelectPanel selectPanel) {
+		this.selectPanel = selectPanel;
+		System.out.println("현재 캐릭터 : " + selectPanel.getSelectedNum());
 		this.frame = frame;
 		stop = false;
 		skyBGM = new File(".\\sound\\sky_map1.wav");
@@ -109,7 +109,7 @@ public class PlayPanel extends JPanel {
 		setPreferredSize(new Dimension(1000, 700));
 		setMaximumSize(new Dimension(1000, 700));
 		setLayout(null);
-		person = new Person(selectedNum);
+		person = new Person(selectPanel.getSelectedNum());
 		person.setOpaque(false);
 		background.setBounds(0, 0, 1000, 700);
 		person.setBackground(new Color(0, 0, 0, 1));
@@ -281,7 +281,7 @@ public class PlayPanel extends JPanel {
 			while (!stop) {
 				try {
 					Thread.sleep(20);
-					person.switchSize(selectedNum);
+					person.switchSize(selectPanel.getSelectedNum());
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -377,22 +377,6 @@ public class PlayPanel extends JPanel {
 					Thread.sleep(600);
 					person.setAlpha(255);
 					physical.setDoseNotDecreaseLife(false);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	private class fadeOutRunnable implements Runnable {
-		@Override
-		public void run() {
-			int i = 0;
-			while (i <= 255) {
-				try {
-					fadeInOut(i);
-					Thread.sleep(100);
-					i += 25;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -528,21 +512,21 @@ public class PlayPanel extends JPanel {
 			potionR = new Rectangle(new Point(potionList.get(i).getX(), potionList.get(i).getY()),
 					new Dimension(10, 10));
 			if (personHitR.intersects(potionR) && physical.isHealing() == false) {
-				if (selectedNum == 1) {
+				if (selectPanel.getSelectedNum() == 1) {
 					physical.lifePlus();
 				}
-				if (selectedNum == 2) {
+				if (selectPanel.getSelectedNum() == 2) {
 					physical.lifePlus();
 					physical.lifePlus();
 					physical.lifePlus();
-					physical.lifePlus();
-					physical.lifePlus();
-				}
-				if (selectedNum == 3) {
 					physical.lifePlus();
 					physical.lifePlus();
 				}
-				if (selectedNum == 4) {
+				if (selectPanel.getSelectedNum() == 3) {
+					physical.lifePlus();
+					physical.lifePlus();
+				}
+				if (selectPanel.getSelectedNum() == 4) {
 					physical.lifePlus();
 					physical.lifePlus();
 					physical.lifePlus();
@@ -614,6 +598,7 @@ public class PlayPanel extends JPanel {
 			rankPanel = new RankPanel(resultPanel, frame.getStartPanel(), frame);
 			frame.getContentPane().add("rank", rankPanel);
 			stop = true;
+			selectPanel.setSelectedNum(0);
 			tempSound.stop();
 		} catch (NullPointerException e) {
 			System.out.println("사운드 종료");

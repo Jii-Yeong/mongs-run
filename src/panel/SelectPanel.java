@@ -137,7 +137,7 @@ public class SelectPanel extends JPanel {
 				if (selectedNum == 0) {
 					JOptionPane.showMessageDialog(null, "캐릭터를 선택해주세요", "에러", JOptionPane.WARNING_MESSAGE);
 				} else {
-					playPanel = new PlayPanel(frame, selectedNum);
+					playPanel = new PlayPanel(frame, SelectPanel.this);
 					frame.getContentPane().add("play", playPanel);
 					frame.changePlayPanel();
 					playPanel.requestFocus(); // 포커스 요청
@@ -168,6 +168,14 @@ public class SelectPanel extends JPanel {
 		setVisible(true);
 	}
 	
+	public int getSelectedNum() {
+		return selectedNum;
+	}
+
+	public void setSelectedNum(int selectedNum) {
+		this.selectedNum = selectedNum;
+	}
+
 	// 버튼 기본 설정 메소드
 	private void setButton(JButton btn) {
 		btn.setBorderPainted(false);
