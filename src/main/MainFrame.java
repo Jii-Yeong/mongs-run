@@ -40,12 +40,10 @@ public class MainFrame extends JFrame {
 		getContentPane().add("start", startPanel);
 		getContentPane().add("select", selectPanel);
 		
-		
 		setSize(1000, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		System.out.println(getBounds());
 	}
 	
 	// 패널 전환 메소드
