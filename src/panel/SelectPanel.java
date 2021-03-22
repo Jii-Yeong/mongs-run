@@ -45,7 +45,7 @@ public class SelectPanel extends JPanel {
 		
 		// 시작 버튼, 배경 이미지
 		ImageIcon imgStart = new ImageIcon(".\\img\\button\\btn_start.png");
-		ImageIcon imgBackground = new ImageIcon(".\\img\\background\\test.png");
+		ImageIcon imgBackground = new ImageIcon(".\\img\\background\\startBg.png");
 		
 		// 캐릭터 이미지
 		ImageIcon btnCharacter1 = new ImageIcon(".\\img\\person_jump.png");

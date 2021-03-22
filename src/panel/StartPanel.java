@@ -41,7 +41,7 @@ public class StartPanel extends JPanel implements Serializable {
 	 */
 	public StartPanel(MainFrame frame) {
 		// 배경 이미지
-		ImageIcon img = new ImageIcon(".\\img\\background\\test.png");
+		ImageIcon img = new ImageIcon(".\\img\\background\\startBg.png");
 		
 		// 시작 버튼, 랭킹 버튼
 		ImageIcon imgStart = new ImageIcon(".\\img\\button\\btn_start.png");
