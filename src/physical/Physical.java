@@ -18,9 +18,6 @@ public class Physical extends JLayeredPane {
 	private int cnt;
 	private List<JLabel> lifeList;
 	private JLabel lifeMinus;
-	private ResultPanel resultPanel;
-	private ScorePanel scorePanel;
-	private MainFrame frame;
 	private Thread physicalTimeLow;
 	private boolean doseNotDecreaseLife;
 	private boolean jellyEat;
