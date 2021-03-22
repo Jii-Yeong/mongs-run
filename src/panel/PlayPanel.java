@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.datatransfer.Clipboard;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -66,9 +67,7 @@ public class PlayPanel extends JPanel {
 	private Thread MoveThread;
 	private Thread GravityThread;
 	private Thread gameOverState;
-	private Thread soundThread;
 	private Thread doseNotDecreaseLifeThread;
-	private Thread blackDrawThread;
 	private Thread jellyThread;
 	private Thread healingThread;
 	private Thread slideBGMThread;
@@ -97,14 +96,14 @@ public class PlayPanel extends JPanel {
 	
 	public PlayPanel(MainFrame frame, int selectedNum) {
 		this.selectedNum = selectedNum;
-		System.out.println("현재 캐릭터 : "+selectedNum);
+		System.out.println("현재 캐릭터 : "+ selectedNum);
 		this.frame = frame;
 		stop = false;
 		skyBGM = new File(".\\sound\\sky_map1.wav");
 		redskyBGM = new File(".\\sound\\redsky_map2.wav");
 		spaceBGM = new File(".\\sound\\space_map3.wav");
 		jumpBGM = new File(".\\sound\\jump.wav");
-		slideBGM = new File(".\\\\sound\\\\slide.wav");
+		slideBGM = new File(".\\sound\\slide.wav");
 		field = new Field();
 		scorePanel = new ScorePanel();
 		
@@ -167,6 +166,8 @@ public class PlayPanel extends JPanel {
 		@Override
 		public void run() {
 			int stagestate = 595; // 스테이지.png파일의 길이
+			ImageIcon obstacle = null;
+			ImageIcon foothold = null;
 			while (!stop) {
 				try {
 					Thread.sleep(10);
@@ -209,22 +210,17 @@ public class PlayPanel extends JPanel {
 ////				***********************************************************깜빡
 					if (fieldList.get(550).getX() == 0) { // 1스테이지의 필드리스트 사이즈-1만큼 get()에 입력
 						try {
-//							tempSound.stop();
-							tempSound= soundStart(redskyBGM);
 							image = ImageIO.read(new File(".\\img\\stage2.png"));
-							System.out.println("맵2번 : " + fieldList.size());
-							getBlack(image);
-							getRed(image);
-							getYellow(image);
-							getGreen(image);
-							for (int i = 0; i < objectList.size(); i++) {
-								objectList.get(i).setObject(new ImageIcon(".\\img\\cloud.png").getImage());
-							}
-							for (int i = 0; i < fieldList.size(); i++) {
-								fieldList.get(i).setField(new ImageIcon(".\\img\\cloud_foothold.png").getImage());
-							}
+							obstacle = new ImageIcon(".\\img\\cloud.png");
+							foothold = new ImageIcon(".\\img\\cloud_foothold.png");
+							mapCreate(image, obstacle, foothold);
+							tempSound.stop();
+							tempSound= soundStart(redskyBGM);
 						} catch (IOException e) {
 							e.printStackTrace();
+						} catch (NullPointerException e) {
+							System.out.println("사운드 없음");
+							mapCreate(image, obstacle, foothold);
 						}
 						background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
 					}
@@ -243,22 +239,17 @@ public class PlayPanel extends JPanel {
 ////				***********************************************************깜빡
 					if (fieldList.get(1180).getX() == 0) {
 						try {
-//							tempSound.stop();
-							tempSound = soundStart(spaceBGM);
-							System.out.println("맵3번 : " + fieldList.size());
 							image = ImageIO.read(new File(".\\img\\stage3.png"));
-							getBlack(image);
-							getRed(image);
-							getYellow(image);
-							getGreen(image);
-							for (int i = 0; i < objectList.size(); i++) {
-								objectList.get(i).setObject(new ImageIcon(".\\img\\meteor.png").getImage());
-							}
-							for (int i = 0; i < fieldList.size(); i++) {
-								fieldList.get(i).setField(new ImageIcon(".\\img\\steel.png").getImage());
-							}
+							obstacle = new ImageIcon(".\\img\\meteor.png");
+							foothold = new ImageIcon(".\\img\\steel.png");
+							mapCreate(image, obstacle, foothold);
+							tempSound.stop();
+							tempSound = soundStart(spaceBGM);
 						} catch (IOException e) {
 							e.printStackTrace();
+						} catch (NullPointerException e) {
+							System.out.println("사운드 없음");
+							mapCreate(image, obstacle, foothold);
 						}
 						background.setBackImg1(new ImageIcon(".\\img\\bg3.png").getImage());
 					}
@@ -329,94 +320,94 @@ public class PlayPanel extends JPanel {
 	}
 	
 	// Y좌표가 900이상 or 체력이 40 이하가 되면 게임 종료 및 결과창 출력
-		private class GameOverRunnable implements Runnable {
-			@Override
-			public void run() {
-				while (!stop) {
-					try {
-						Thread.sleep(1000);
-						if (person.getY() >= 900 || physical.getLife() <= 40) {
-							gameOver();
-							break;
-						}
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-		
-		private class SlideBGMRunnable implements Runnable {
-			@Override
-			public void run() {
+	private class GameOverRunnable implements Runnable {
+		@Override
+		public void run() {
+			while (!stop) {
 				try {
-					if (isSlideBGM == false) {
-						isSlideBGM = true;
-						soundStart(slideBGM);
-						Thread.sleep(500);
-						isSlideBGM = false;
+					Thread.sleep(1000);
+					if (person.getY() >= 900 || physical.getLife() <= 40) {
+						gameOver();
+						break;
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		
-		private class HealingRunnable implements Runnable {
-			@Override
-			public void run() {
-				if (physical.isHealing() == false) {
-					try {
-						physical.setHealing(true);
-						Thread.sleep(1000);
-						physical.setHealing(false);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+	}
+	
+	private class SlideBGMRunnable implements Runnable {
+		@Override
+		public void run() {
+			try {
+				if (isSlideBGM == false) {
+					isSlideBGM = true;
+					soundStart(slideBGM);
+					Thread.sleep(500);
+					isSlideBGM = false;
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private class HealingRunnable implements Runnable {
+		@Override
+		public void run() {
+			if (physical.isHealing() == false) {
+				try {
+					physical.setHealing(true);
+					Thread.sleep(1000);
+					physical.setHealing(false);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}
-		
-		private class JellyRunnable implements Runnable {
-			@Override
-			public void run() {
-				if (physical.isJellyEat() == false) {
-					try {
-						physical.setJellyEat(true);
-						Thread.sleep(250);
-						physical.setJellyEat(false);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+	}
+	
+	private class JellyRunnable implements Runnable {
+		@Override
+		public void run() {
+			if (physical.isJellyEat() == false) {
+				try {
+					physical.setJellyEat(true);
+					Thread.sleep(250);
+					physical.setJellyEat(false);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}
-		
-		private class doseNotDecreaseLifeRunnable implements Runnable {
-			@Override
-			public void run() {
-				if (physical.isDoseNotDecreaseLife() == false) {
-					try {
-						physical.setDoseNotDecreaseLife(true);
-						System.out.println("3초간 무적");
-						person.setAlpha(100);
-						Thread.sleep(600);
-						person.setAlpha(255);
-						Thread.sleep(600);
-						person.setAlpha(100);
-						Thread.sleep(600);
-						person.setAlpha(255);
-						Thread.sleep(600);
-						person.setAlpha(100);
-						Thread.sleep(600);
-						person.setAlpha(255);
-						physical.setDoseNotDecreaseLife(false);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+	}
+	
+	private class doseNotDecreaseLifeRunnable implements Runnable {
+		@Override
+		public void run() {
+			if (physical.isDoseNotDecreaseLife() == false) {
+				try {
+					physical.setDoseNotDecreaseLife(true);
+					System.out.println("3초간 무적");
+					person.setAlpha(100);
+					Thread.sleep(600);
+					person.setAlpha(255);
+					Thread.sleep(600);
+					person.setAlpha(100);
+					Thread.sleep(600);
+					person.setAlpha(255);
+					Thread.sleep(600);
+					person.setAlpha(100);
+					Thread.sleep(600);
+					person.setAlpha(255);
+					physical.setDoseNotDecreaseLife(false);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}
+	}
 	
 	private void getBlack(BufferedImage image) {
 		int width = image.getWidth();
@@ -537,7 +528,24 @@ public class PlayPanel extends JPanel {
 				}
 			}
 		}
-	}	
+	}
+	
+//	image = ImageIO.read(new File(".\\img\\stage2.png"));
+//	ImageIcon obstacle = new ImageIcon(".\\\\img\\\\cloud.png");
+//	ImageIcon foothold = new ImageIcon(".\\img\\cloud_foothold.png");
+
+	private void mapCreate(BufferedImage image, ImageIcon obstacle, ImageIcon foothold) {
+		getBlack(image);
+		getRed(image);
+		getYellow(image);
+		getGreen(image);
+		for (int i = 0; i < objectList.size(); i++) {
+			objectList.get(i).setObject(obstacle.getImage());
+		}
+		for (int i = 0; i < fieldList.size(); i++) {
+			fieldList.get(i).setField(foothold.getImage());
+		}
+	}
 	
 	private boolean getFieldY() {
 		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 4));
@@ -577,13 +585,17 @@ public class PlayPanel extends JPanel {
 	}
 
 	private void gameOver() {
-		resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
-		frame.getContentPane().add("result", resultPanel);
-		frame.changeResultPanel();
-		rankPanel = new RankPanel(resultPanel, frame.getStartPanel(), frame);
-		frame.getContentPane().add("rank", rankPanel);
-		stop = true;
-		tempSound.stop();
+		try {
+			resultPanel = new ResultPanel(frame.getStartPanel(), scorePanel, frame);
+			frame.getContentPane().add("result", resultPanel);
+			frame.changeResultPanel();
+			rankPanel = new RankPanel(resultPanel, frame.getStartPanel(), frame);
+			frame.getContentPane().add("rank", rankPanel);
+			stop = true;
+			tempSound.stop();
+		} catch (NullPointerException e) {
+			System.out.println("사운드 종료");
+		}
 	}
 	
 	private void backFadeOut() {
@@ -599,15 +611,18 @@ public class PlayPanel extends JPanel {
 	
 	private Clip soundStart(File path) {
 		try {
-//			sound = AudioSystem.getClip();
+			sound = AudioSystem.getClip();
 			sound.open(AudioSystem.getAudioInputStream(path));
-//			sound.start();
+			sound.start();
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			sound = null;
+//			e.printStackTrace();
 		}
 		return sound;
 	}
@@ -626,7 +641,7 @@ public class PlayPanel extends JPanel {
 	
 // *********************************************************슬라이딩 이미지
 	private class SlideKeyListener extends KeyAdapter {
-		Thread t = new Thread();
+//		Thread t = new Thread();
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
