@@ -1,7 +1,9 @@
 package panel;
 
+import java.awt.AlphaComposite;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -21,6 +23,8 @@ public class BackgroundPanel extends JPanel implements Runnable {
 	
 	int back1X = 0;
 	int back2X = backImg1.getWidth(null);
+	private AlphaComposite alphaComposite;
+	private int alpha = 255;
 	public BackgroundPanel() {
 		setPreferredSize(new Dimension(1000, 700));
 		setBounds(0, 0, 1000, 700);
@@ -31,7 +35,9 @@ public class BackgroundPanel extends JPanel implements Runnable {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
+		Graphics2D g2 = (Graphics2D)g;
+		alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) getAlpha()/255);
+		g2.setComposite(alphaComposite);
 		g.drawImage(backImg1, back1X, 0, this);
 		g.drawImage(backImg1, back2X, 0, this);
 	}
@@ -57,4 +63,11 @@ public class BackgroundPanel extends JPanel implements Runnable {
 			}
 		}
 	}
+	public int getAlpha() {
+		return alpha;
+	}
+	public void setAlpha(int alpha) {
+		this.alpha = alpha;
+	}
+	
 }

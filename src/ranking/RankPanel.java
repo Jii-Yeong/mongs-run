@@ -9,6 +9,7 @@ import score.ScorePanel;
 
 import javax.swing.JLabel;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -66,26 +67,31 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		JLabel rank1_Score = new JLabel(scorePrint(0));
 		rank1_Score.setBounds(265, 111, 650, 64);
 		rank1_Score.setFont(font);
+		rank1_Score.setForeground(new Color(255, 255, 255));
 		add(rank1_Score);
 		
 		JLabel rank2_Score = new JLabel(scorePrint(1));
 		rank2_Score.setBounds(265, 185, 650, 64);
 		rank2_Score.setFont(font);
+		rank2_Score.setForeground(new Color(255, 255, 255));
 		add(rank2_Score);
 		
 		JLabel rank3_Score = new JLabel(scorePrint(2));
 		rank3_Score.setBounds(265, 259, 650, 64);
 		rank3_Score.setFont(font);
+		rank3_Score.setForeground(new Color(255, 255, 255));
 		add(rank3_Score);
 		
 		JLabel rank4_Score = new JLabel(scorePrint(3));
 		rank4_Score.setBounds(265, 333, 650, 64);
 		rank4_Score.setFont(font);
+		rank4_Score.setForeground(new Color(255, 255, 255));
 		add(rank4_Score);
 		
 		JLabel rank5_Score = new JLabel(scorePrint(4));
 		rank5_Score.setBounds(265, 407, 650, 64);
 		rank5_Score.setFont(font);
+		rank5_Score.setForeground(new Color(255, 255, 255));
 		add(rank5_Score);
 		
 		JButton MainButton = new JButton();
@@ -101,26 +107,31 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		JLabel rank1 = new JLabel("1등");
 		rank1.setBounds(167, 111, 62, 64);
 		rank1.setFont(font);
+		rank1.setForeground(new Color(255, 255, 255));
 		add(rank1);
 		
 		JLabel rank2 = new JLabel("2등");
 		rank2.setBounds(167, 185, 62, 64);
 		rank2.setFont(font);
+		rank2.setForeground(new Color(255, 255, 255));
 		add(rank2);
 		
 		JLabel rank3 = new JLabel("3등");
 		rank3.setBounds(167, 259, 62, 64);
 		rank3.setFont(font);
+		rank3.setForeground(new Color(255, 255, 255));
 		add(rank3);
 		
 		JLabel rank4 = new JLabel("4등");
 		rank4.setBounds(167, 333, 62, 64);
 		rank4.setFont(font);
+		rank4.setForeground(new Color(255, 255, 255));
 		add(rank4);
 		
 		JLabel rank5 = new JLabel("5등");
 		rank5.setBounds(167, 407, 62, 64);
 		rank5.setFont(font);
+		rank5.setForeground(new Color(255, 255, 255));
 		add(rank5);
 		
 		JLabel background = new JLabel();
