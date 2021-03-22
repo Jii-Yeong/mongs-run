@@ -57,7 +57,6 @@ public class MainFrame extends JFrame {
 	}
 	public void changePlayPanel() {
 		cards.show(this.getContentPane(), "play");
-		
 	}
 	
 	public void changeRankPanel() {

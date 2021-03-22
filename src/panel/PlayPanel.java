@@ -71,7 +71,7 @@ public class PlayPanel extends JPanel {
 	private Thread jellyThread;
 	private Thread healingThread;
 	private Thread slideBGMThread;
-	private Thread fadeInThread;
+	private Thread fadeInOutThread;
 	private Thread fadeOutThread;
 	private JLabel blackLabel;
 	private BufferedImage image = null;
@@ -185,29 +185,17 @@ public class PlayPanel extends JPanel {
 				}
 
 				if (fieldList.size() <= stagestate) { // 1스테이지에서 2스테이지로 넘어감
-//					System.out.println(fieldList.size());
-////				***********************************************************깜빡
-//					if (fieldList.get(400).getX() == 0) {
-//						blackLabel = new JLabel();
-//						blackLabel.setBounds(0, 0, 1000, 660);
-//						blackLabel.setOpaque(true);
-//						background.add(blackLabel);
-//						blackDrawThread = new Thread(new backFade());
-//						blackDrawThread.start();
-//					}
-////				***********************************************************깜빡
+					if (fieldList.get(530).getX() == 0) {
+						fadeInOutThread = new Thread(new fadeInOutRunnable());
+						fadeInOutThread.start();
+					}
 					if (fieldList.get(550).getX() == 0) { // 1스테이지의 필드리스트 사이즈-1만큼 get()에 입력
 						try {
-							
 							image = ImageIO.read(new File(".\\img\\stage2.png"));
 							obstacle = new ImageIcon(".\\img\\cloud.png");
 							foothold = new ImageIcon(".\\img\\cloud_foothold.png");
 							mapCreate(image, obstacle, foothold);
 							background.setBackImg1(new ImageIcon(".\\img\\bg2.png").getImage());
-							fadeOutThread = new Thread(new fadeOutRunnable());
-							fadeInThread = new Thread(new fadeInRunnable());
-							fadeInThread.start();
-							fadeOutThread.start();
 							tempSound.stop();
 							tempSound = soundStart(redskyBGM);
 						} catch (IOException e) {
@@ -220,26 +208,16 @@ public class PlayPanel extends JPanel {
 				}
 
 				if (fieldList.size() > stagestate) { // 2스테이지에서 3스테이지로 넘어감
-////				***********************************************************깜빡
-//					if (fieldList.get(395).getX() == 0) {
-//						blackLabel = new JLabel();
-//						blackLabel.setBounds(0, 0, 1000, 660);
-//						blackLabel.setOpaque(true);
-//						background.add(blackLabel);
-//						blackDrawThread = new Thread(new backFade());
-//						blackDrawThread.start();
-//					}
-////				***********************************************************깜빡
+					if (fieldList.get(1160).getX() == 0) {
+						fadeInOutThread = new Thread(new fadeInOutRunnable());
+						fadeInOutThread.start();
+					}
 					if (fieldList.get(1180).getX() == 0) {
 						try {
 							image = ImageIO.read(new File(".\\img\\stage3.png"));
 							obstacle = new ImageIcon(".\\img\\meteor.png");
 							foothold = new ImageIcon(".\\img\\steel.png");
 							mapCreate(image, obstacle, foothold);
-							fadeOutThread = new Thread(new fadeOutRunnable());
-							fadeInThread = new Thread(new fadeInRunnable());
-							fadeInThread.start();
-							fadeOutThread.start();
 							tempSound.stop();
 							tempSound = soundStart(spaceBGM);
 						} catch (IOException e) {
@@ -413,7 +391,7 @@ public class PlayPanel extends JPanel {
 			while (i <= 255) {
 				try {
 					fadeInOut(i);
-					Thread.sleep(250);
+					Thread.sleep(100);
 					i += 25;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -422,20 +400,30 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	
-	private class fadeInRunnable implements Runnable {
+	private class fadeInOutRunnable implements Runnable {
 		@Override
 		public void run() {
 			int i = 250;
 			while (i >= 0) {
 				try {
 					fadeInOut(i);
-					Thread.sleep(250);
+					Thread.sleep(100);
 					i -= 25;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-		}
+			int j = 0;
+			while (j <= 250) {
+				try {
+					fadeInOut(j);
+					Thread.sleep(100);
+					j += 25;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		} 
 	}
 
 	private void getBlack(BufferedImage image) {
@@ -654,7 +642,6 @@ public class PlayPanel extends JPanel {
 		background.setAlpha(i);
 	}
 
-// *********************************************************슬라이딩 이미지
 	private class SlideKeyListener extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
@@ -678,7 +665,6 @@ public class PlayPanel extends JPanel {
 			}
 		}
 
-// *********************************************************슬라이드 멈췄을때 이미지
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
