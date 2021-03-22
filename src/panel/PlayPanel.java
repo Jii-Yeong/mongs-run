@@ -126,7 +126,7 @@ public class PlayPanel extends JPanel {
 
 		try {
 			image = ImageIO.read(new File(".\\img\\stage1.png"));
-//			tempSound = soundStart(skyBGM);
+			tempSound = soundStart(skyBGM);
 			getBlack(image);
 			getRed(image);
 			getYellow(image);
@@ -554,12 +554,12 @@ public class PlayPanel extends JPanel {
 	}
 
 	private boolean getFieldY() {
-		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(100, 4));
+		Rectangle personR = new Rectangle(new Point(0, person.getY() + 150), new Dimension(person.getWidth(), 4));
 		Rectangle fieldR = null;
 		pnl.setBounds(personR);
 
 		for (int i = 0; i < fieldList.size(); i++) {
-			fieldR = new Rectangle(new Point(fieldList.get(i).getX(), fieldList.get(i).getY()), new Dimension(50, 10));
+			fieldR = new Rectangle(new Point(fieldList.get(i).getX(), fieldList.get(i).getY()), new Dimension(50, 50));
 			pnl2.setBounds(fieldR);
 			if (personR.intersects(fieldR)) {
 				physical.setJumpStatus(0);
