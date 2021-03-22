@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
 import main.MainFrame;
-import ranking.RankPanel;
 import result.ResultPanel;
 import score.ScorePanel;
 
@@ -20,7 +19,6 @@ public class Physical extends JLayeredPane {
 	private List<JLabel> lifeList;
 	private JLabel lifeMinus;
 	private ResultPanel resultPanel;
-	private RankPanel rankPanel;
 	private ScorePanel scorePanel;
 	private MainFrame frame;
 	private Thread physicalTimeLow;
@@ -121,7 +119,7 @@ public class Physical extends JLayeredPane {
 		public void run() {
 			try {
 				while (life >= 40) {
-					Thread.sleep(10000);
+					Thread.sleep(4500);
 					lifeMinus(life);
 				}
 			} catch (InterruptedException e) {

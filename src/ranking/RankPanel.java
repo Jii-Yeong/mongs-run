@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import main.MainFrame;
 import panel.StartPanel;
+import result.ResultPanel;
 import score.ScorePanel;
 
 import javax.swing.JLabel;
@@ -32,20 +33,20 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	private File file;
 	private Font font;
 	private List<RankData> scoreList;
-	private StartPanel name;
-	private ScorePanel currentScore;
 	private MainFrame frame;
+	private ResultPanel resultPanel;
+	private StartPanel startPanel;
 	private ImageIcon background_image;
 	private ImageIcon mainButton_imgae;
 	/**
 	 * Create the panel.
 	 */
 	
-	public RankPanel(StartPanel name, ScorePanel currentScore, MainFrame frame) {
+	public RankPanel(ResultPanel resultPanel, StartPanel startPanel, MainFrame frame) {
 		file = new File(".\\rankScore.bin");
-		this.name = name;
-		this.currentScore = currentScore;
 		this.frame = frame;
+		this.resultPanel = resultPanel;
+		this.startPanel = startPanel;
 		scoreList = new ArrayList<>(); 
 		font = new Font("맑은 고딕", Font.BOLD, 30);
 		
@@ -58,32 +59,32 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		if(file.exists()) {
 			load();
 			save();
-		} else {
+		} else if (!file.exists()){
 			save();
 		}
 		
 		JLabel rank1_Score = new JLabel(scorePrint(0));
-		rank1_Score.setBounds(265, 111, 333, 64);
+		rank1_Score.setBounds(265, 111, 650, 64);
 		rank1_Score.setFont(font);
 		add(rank1_Score);
 		
 		JLabel rank2_Score = new JLabel(scorePrint(1));
-		rank2_Score.setBounds(265, 185, 333, 64);
+		rank2_Score.setBounds(265, 185, 650, 64);
 		rank2_Score.setFont(font);
 		add(rank2_Score);
 		
 		JLabel rank3_Score = new JLabel(scorePrint(2));
-		rank3_Score.setBounds(265, 259, 333, 64);
+		rank3_Score.setBounds(265, 259, 650, 64);
 		rank3_Score.setFont(font);
 		add(rank3_Score);
 		
 		JLabel rank4_Score = new JLabel(scorePrint(3));
-		rank4_Score.setBounds(265, 333, 333, 64);
+		rank4_Score.setBounds(265, 333, 650, 64);
 		rank4_Score.setFont(font);
 		add(rank4_Score);
 		
 		JLabel rank5_Score = new JLabel(scorePrint(4));
-		rank5_Score.setBounds(265, 407, 333, 64);
+		rank5_Score.setBounds(265, 407, 650, 64);
 		rank5_Score.setFont(font);
 		add(rank5_Score);
 		
@@ -152,6 +153,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	
 	// 데이터 로드
 	private void load() {
+		System.out.println("로드");
 		try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))){
 			scoreList = (List<RankData>) in.readObject();
 		} catch (IOException e) {
@@ -163,13 +165,14 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 	
 	// 데이터 저장
 	private void save() {
+		System.out.println("세이브");
 		try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))){
-			RankData rankData = new RankData(name.getTfdName().getText(), currentScore.getScore());
-			name.getTfdName().setText("");
+			RankData rankData = new RankData(resultPanel.getStartPanel().getTfdName().getText(), resultPanel.getScorePanel().getScore());
+			resultPanel.getStartPanel().getTfdName().setText("");
 			scoreList.add(rankData);
 			Collections.sort(scoreList, Collections.reverseOrder());
 			out.writeObject(scoreList);
-			name.getBtnRanking().setEnabled(true);
+			startPanel.getBtnRanking().setEnabled(true);
 			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();

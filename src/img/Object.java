@@ -15,7 +15,7 @@ public class Object extends JPanel{
 	private int width;
 	private int height;
 	
-	private Image obstacle = new ImageIcon(".\\img\\obstacle.png").getImage();
+	private Image object = new ImageIcon(".\\img\\obstacle.png").getImage();
 	
 	public Object() {
 		setBackground(new Color(237, 28, 36, 0));
@@ -25,6 +25,21 @@ public class Object extends JPanel{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		g.drawImage(obstacle, 0, 0, this);
+		g.drawImage(object, 0, 0, this);
 	}
+
+	public Object(Image obstacle) {
+		super();
+		this.object = obstacle;
+	}
+
+	public Image getObject() {
+		return object;
+	}
+
+	public void setObject(Image object) {
+		this.object = object;
+	}
+	
+	
 }
