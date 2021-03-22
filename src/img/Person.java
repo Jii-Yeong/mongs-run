@@ -16,17 +16,17 @@ public class Person extends JPanel {
 	// 달리는 캐릭터
 	public Image person_run = new ImageIcon(".\\img\\Person.gif").getImage();
 	public Image chick_run = new ImageIcon(".\\img\\chick_run.gif").getImage();
-	public Image totoro_run = new ImageIcon(".\\img\\chick_run.gif").getImage();
+	public Image totoro_run = new ImageIcon(".\\img\\totoro_run.gif").getImage();
 	
 	// 점프 캐릭터
 	public Image person_jump = new ImageIcon(".\\img\\person_jump.png").getImage();
 	public Image chick_jump = new ImageIcon(".\\img\\chick_jump.png").getImage();
-	public Image totoro_jump = new ImageIcon(".\\img\\chick_jump.png").getImage();
+	public Image totoro_jump = new ImageIcon(".\\img\\totoro_jump.png").getImage();
 	
 	// 슬라이딩 캐릭터
 	public Image person_sliding = new ImageIcon(".\\img\\Person_sliding.png").getImage();
-	public Image chick_sliding = new ImageIcon(".\\img\\chick_jump.png").getImage();
-	public Image totoro_sliding = new ImageIcon(".\\img\\chick_jump.png").getImage();
+	public Image chick_sliding = new ImageIcon(".\\img\\chick_sliding.png").getImage();
+	public Image totoro_sliding = new ImageIcon(".\\img\\totoro_sliding.png").getImage();
 	
 	public Image run;
 	public Image slide;
@@ -142,7 +142,7 @@ public class Person extends JPanel {
 			setSlide(chick_sliding);
 			break;
 		case 3:
-			setSlide(totoro_run);
+			setSlide(totoro_sliding);
 			break;
 		case 4:
 			setSlide(chick_sliding);

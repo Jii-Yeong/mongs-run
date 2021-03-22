@@ -127,7 +127,7 @@ public class PlayPanel extends JPanel {
 		
 		try {
 			image = ImageIO.read(new File(".\\img\\stage1.png"));
-			tempSound = soundStart(skyBGM);
+//			tempSound = soundStart(skyBGM);
 			getBlack(image);
 			getRed(image);
 			getYellow(image);
@@ -209,7 +209,7 @@ public class PlayPanel extends JPanel {
 ////				***********************************************************깜빡
 					if (fieldList.get(550).getX() == 0) { // 1스테이지의 필드리스트 사이즈-1만큼 get()에 입력
 						try {
-							tempSound.stop();
+//							tempSound.stop();
 							tempSound= soundStart(redskyBGM);
 							image = ImageIO.read(new File(".\\img\\stage2.png"));
 							System.out.println("맵2번 : " + fieldList.size());
@@ -243,7 +243,7 @@ public class PlayPanel extends JPanel {
 ////				***********************************************************깜빡
 					if (fieldList.get(1180).getX() == 0) {
 						try {
-							tempSound.stop();
+//							tempSound.stop();
 							tempSound = soundStart(spaceBGM);
 							System.out.println("맵3번 : " + fieldList.size());
 							image = ImageIO.read(new File(".\\img\\stage3.png"));
@@ -599,9 +599,9 @@ public class PlayPanel extends JPanel {
 	
 	private Clip soundStart(File path) {
 		try {
-			sound = AudioSystem.getClip();
+//			sound = AudioSystem.getClip();
 			sound.open(AudioSystem.getAudioInputStream(path));
-			sound.start();
+//			sound.start();
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
