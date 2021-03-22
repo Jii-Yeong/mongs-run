@@ -49,8 +49,8 @@ public class SelectPanel extends JPanel {
 		// 캐릭터 이미지
 		ImageIcon btnCharacter1 = new ImageIcon(".\\img\\person_jump.png");
 		ImageIcon btnCharacter2 = new ImageIcon(".\\img\\chick_jump.png");
-		ImageIcon btnCharacter3 = new ImageIcon(".\\img\\character\\char3.png");
-		ImageIcon btnCharacter4 = new ImageIcon(".\\img\\character\\char4.png");
+		ImageIcon btnCharacter3 = new ImageIcon(".\\img\\totoro_jump.png");
+		ImageIcon btnCharacter4 = new ImageIcon(".\\img\\totoro_jump.png");
 		
 		// 커서 객체 생성
 		cursor = new Cursor(Cursor.HAND_CURSOR);
