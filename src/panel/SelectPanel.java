@@ -145,6 +145,18 @@ public class SelectPanel extends JPanel {
 			}
 		});
 		add(btnStart);
+		
+		JLabel lblNewLabel = new JLabel("스페이스 - 점프");
+		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 30));
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setBounds(55, 500, 234, 106);
+		add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("↓ 방향키 - 슬라이드");
+		lblNewLabel_1.setFont(new Font("굴림", Font.PLAIN, 30));
+		lblNewLabel_1.setForeground(Color.WHITE);
+		lblNewLabel_1.setBounds(630, 500, 331, 106);
+		add(lblNewLabel_1);
 
 		// 불투명 배경
 		JLabel lblBackground2 = new JLabel();
