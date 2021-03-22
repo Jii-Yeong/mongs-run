@@ -620,9 +620,10 @@ public class PlayPanel extends JPanel {
 			e.printStackTrace();
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
+		} catch (NullPointerException e) {
+		}
+		catch (IllegalArgumentException e) {
 			sound = null;
-//			e.printStackTrace();
 		}
 		return sound;
 	}
@@ -641,7 +642,6 @@ public class PlayPanel extends JPanel {
 	
 // *********************************************************슬라이딩 이미지
 	private class SlideKeyListener extends KeyAdapter {
-//		Thread t = new Thread();
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
