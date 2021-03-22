@@ -17,16 +17,19 @@ public class Person extends JPanel {
 	public Image person_run = new ImageIcon(".\\img\\Person.gif").getImage();
 	public Image chick_run = new ImageIcon(".\\img\\chick_run.gif").getImage();
 	public Image totoro_run = new ImageIcon(".\\img\\totoro_run.gif").getImage();
+	public Image beemo_run = new ImageIcon(".\\img\\beemo_run.gif").getImage();
 	
 	// 점프 캐릭터
 	public Image person_jump = new ImageIcon(".\\img\\person_jump.png").getImage();
 	public Image chick_jump = new ImageIcon(".\\img\\chick_jump.png").getImage();
 	public Image totoro_jump = new ImageIcon(".\\img\\totoro_jump.png").getImage();
+	public Image beemo_jump = new ImageIcon(".\\img\\beemo_jump.png").getImage();
 	
 	// 슬라이딩 캐릭터
 	public Image person_sliding = new ImageIcon(".\\img\\Person_sliding.png").getImage();
 	public Image chick_sliding = new ImageIcon(".\\img\\chick_sliding.png").getImage();
 	public Image totoro_sliding = new ImageIcon(".\\img\\totoro_sliding.png").getImage();
+	public Image beemo_sliding = new ImageIcon(".\\img\\beemo_sliding.png").getImage();
 	
 	public Image run;
 	public Image slide;
@@ -53,7 +56,7 @@ public class Person extends JPanel {
 			setIm(totoro_run);
 			break;
 		case 4:
-			setIm(chick_run);
+			setIm(beemo_run);
 			break;
 		}
 		switchSize(selectedNum);
@@ -145,7 +148,7 @@ public class Person extends JPanel {
 			setSlide(totoro_sliding);
 			break;
 		case 4:
-			setSlide(chick_sliding);
+			setSlide(beemo_sliding);
 			break;
 		}
 	}
@@ -161,7 +164,7 @@ public class Person extends JPanel {
 			setRun(totoro_run);
 			break;
 		case 4:
-			setRun(totoro_run);
+			setRun(beemo_run);
 			break;
 		}
 	}
@@ -177,7 +180,7 @@ public class Person extends JPanel {
 			setJump(totoro_jump);
 			break;
 		case 4:
-			setJump(totoro_jump);
+			setJump(beemo_jump);
 			break;
 		}
 	}

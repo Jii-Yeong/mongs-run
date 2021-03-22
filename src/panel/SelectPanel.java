@@ -31,6 +31,7 @@ public class SelectPanel extends JPanel {
 	private JButton btnIcon3;
 	private JButton btnIcon4;
 	
+	// 선택된 캐릭터 번호
 	int selectedNum = 0;
 
 	// 커서
@@ -50,7 +51,7 @@ public class SelectPanel extends JPanel {
 		ImageIcon btnCharacter1 = new ImageIcon(".\\img\\person_jump.png");
 		ImageIcon btnCharacter2 = new ImageIcon(".\\img\\chick_jump.png");
 		ImageIcon btnCharacter3 = new ImageIcon(".\\img\\totoro_jump.png");
-		ImageIcon btnCharacter4 = new ImageIcon(".\\img\\totoro_jump.png");
+		ImageIcon btnCharacter4 = new ImageIcon(".\\img\\beemo1.png");
 		
 		// 커서 객체 생성
 		cursor = new Cursor(Cursor.HAND_CURSOR);
