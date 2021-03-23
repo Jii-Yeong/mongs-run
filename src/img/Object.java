@@ -1,6 +1,5 @@
 package img;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,20 +13,13 @@ public class Object extends JPanel{
 	private int y;
 	private int width;
 	private int height;
-	
-	private Image object = new ImageIcon(".\\img\\obstacle.png").getImage();
+	private Image object;
 	
 	public Object() {
 		setBackground(new Color(237, 28, 36, 0));
+		object = new ImageIcon(".\\img\\obstacle.png").getImage();
 	}
 	
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D) g;
-		g.drawImage(object, 0, 0, this);
-	}
-
 	public Object(Image obstacle) {
 		super();
 		this.object = obstacle;
@@ -41,5 +33,10 @@ public class Object extends JPanel{
 		this.object = object;
 	}
 	
-	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		g.drawImage(object, 0, 0, this);
+	}
 }

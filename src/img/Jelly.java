@@ -14,26 +14,32 @@ public class Jelly extends JPanel {
 	private int y;
 	private int width;
 	private int height;
-	private Image jelly = new ImageIcon(".\\img\\jelly2.png").getImage();
+	private Image jelly;
 	private AlphaComposite alphaComposite;
-	private int alpha = 255;
+	private int alpha;
+	
+	public Jelly() {
+		setBackground(new Color(255, 242, 0, 0));
+		jelly = new ImageIcon(".\\img\\jelly2.png").getImage();
+		alpha = 255;
+	}
 	
 	public int getAlpha() {
 		return alpha;
 	}
+	
 	public void setAlpha(int alpha) {
 		this.alpha = alpha;
-	}
-	public Jelly() {
-		setBackground(new Color(255, 242, 0, 0));
 	}
 	
 	public Image getJelly() {
 		return jelly;
 	}
+	
 	public void setJelly(Image jelly) {
 		this.jelly = jelly;
 	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

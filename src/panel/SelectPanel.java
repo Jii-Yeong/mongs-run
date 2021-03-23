@@ -32,7 +32,7 @@ public class SelectPanel extends JPanel {
 	private JButton btnIcon4;
 	
 	// 선택된 캐릭터 번호
-	int selectedNum = 0;
+	private int selectedNum = 0;
 
 	// 커서
 	private Cursor cursor;
@@ -42,7 +42,6 @@ public class SelectPanel extends JPanel {
 
 	// 생성자
 	public SelectPanel(MainFrame frame) {
-		
 		// 시작 버튼, 배경 이미지
 		ImageIcon imgStart = new ImageIcon(".\\img\\button\\btn_start.png");
 		ImageIcon imgBackground = new ImageIcon(".\\img\\background\\startBg.png");
@@ -67,15 +66,13 @@ public class SelectPanel extends JPanel {
 		lblSelected.setVisible(false);
 		add(lblSelected);
 		
-		
-		
 		// 캐릭터 선택 버튼 1 ~ 4
 		btnIcon1 = new JButton(btnCharacter1);
 		btnIcon1.setBounds(40, 155, 204, 298);
 		setButton(btnIcon1);
 		add(btnIcon1);
+		
 		btnIcon1.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblSelected.setVisible(true);
@@ -103,7 +100,6 @@ public class SelectPanel extends JPanel {
 		setButton(btnIcon3);
 		add(btnIcon3);
 		btnIcon3.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblSelected.setVisible(true);
@@ -117,7 +113,6 @@ public class SelectPanel extends JPanel {
 		setButton(btnIcon4);
 		add(btnIcon4);
 		btnIcon4.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblSelected.setVisible(true);
@@ -144,6 +139,7 @@ public class SelectPanel extends JPanel {
 				}
 			}
 		});
+		
 		add(btnStart);
 		
 		JLabel lblNewLabel = new JLabel("스페이스 - 점프");
