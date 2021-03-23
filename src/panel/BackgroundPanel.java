@@ -55,7 +55,7 @@ public class BackgroundPanel extends JPanel implements Runnable {
 		while (true) {
 			back1X--;
 			back2X--;
-			// 바디에 -1씩 해줘야 배경이 끊어지지않음
+			// 바디에 -2씩 해줘야 배경이 끊어지지않음
 			if (back1X < -(backImg1.getWidth(null))) {
 				back1X = backImg1.getWidth(null) - 2;
 			}
