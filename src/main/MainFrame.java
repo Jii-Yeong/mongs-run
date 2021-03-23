@@ -4,6 +4,8 @@ import java.awt.CardLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
+import panel.FrontPanel;
 import panel.SelectPanel;
 import panel.StartPanel;
 
@@ -37,6 +39,7 @@ public class MainFrame extends JFrame {
 		startPanel = new StartPanel(this);
 		selectPanel = new SelectPanel(this);
 		
+		getContentPane().add("front", new FrontPanel(this));
 		getContentPane().add("start", startPanel);
 		getContentPane().add("select", selectPanel);
 		
@@ -44,6 +47,7 @@ public class MainFrame extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		changeFrontPanel();
 	}
 	
 	// 패널 전환 메소드
@@ -64,6 +68,11 @@ public class MainFrame extends JFrame {
 	public void changeResultPanel() {
 		cards.show(this.getContentPane(), "result");
 	}
+	
+	public void changeFrontPanel() {
+		cards.show(this.getContentPane(), "front");
+	}
+	
 	
 	public StartPanel getStartPanel() {
 		return startPanel;
