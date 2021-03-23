@@ -6,15 +6,16 @@ import javax.swing.ImageIcon;
 
 public class Back {
 	private Image image;
+	private ImageIcon img;
 	private int x;
 	private int y;
 	private int width;
 	private int height;
-	private ImageIcon img = new ImageIcon(".\\img\\bg1.png");
 	
 	public Back(Image image, int x, int y, int width, int height) {
 		super();
 		this.image = image;
+		img = new ImageIcon(".\\img\\bg1.png");
 		this.x = x;
 		this.y = y;
 		this.width = width;

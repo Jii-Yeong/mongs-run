@@ -24,9 +24,6 @@ import score.ScorePanel;
 import java.awt.Font;
 
 public class StartPanel extends JPanel implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7054782096550336725L;
 	public SelectPanel selectPanel;
 	private JTextField tfdName;
@@ -34,7 +31,6 @@ public class StartPanel extends JPanel implements Serializable {
 	private JButton btnRanking;
 	private boolean firstPlayGame;
 	private RankPanel rankPanel;
-
 
 	/**
 	 * Create the panel.
@@ -118,7 +114,6 @@ public class StartPanel extends JPanel implements Serializable {
 		lblName.setBounds(319, 283, 147, 34);
 		add(lblName);
 		
-		
 		JLabel lblBackground2 = new JLabel();
 		lblBackground2.setBounds(0, 155, 1000, 430);
 		lblBackground2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -127,7 +122,6 @@ public class StartPanel extends JPanel implements Serializable {
 		add(lblBackground2);
 		add(lblBackground);
 
-		
 		// 패널 사이즈 & 옵션
 		setSize(1000, 700);
 		setVisible(true);

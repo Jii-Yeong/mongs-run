@@ -95,8 +95,8 @@ public class PlayPanel extends JPanel {
 
 	public PlayPanel(MainFrame frame, SelectPanel selectPanel) {
 		this.selectPanel = selectPanel;
-		System.out.println("현재 캐릭터 : " + selectPanel.getSelectedNum());
 		this.frame = frame;
+		System.out.println("현재 캐릭터 : " + selectPanel.getSelectedNum());
 		stop = false;
 		skyBGM = new File(".\\sound\\sky_map1.wav");
 		redskyBGM = new File(".\\sound\\redsky_map2.wav");
@@ -105,10 +105,6 @@ public class PlayPanel extends JPanel {
 		slideBGM = new File(".\\sound\\slide.wav");
 		field = new Field();
 		scorePanel = new ScorePanel();
-
-		setPreferredSize(new Dimension(1000, 700));
-		setMaximumSize(new Dimension(1000, 700));
-		setLayout(null);
 		person = new Person(selectPanel.getSelectedNum());
 		person.setOpaque(false);
 		background.setBounds(0, 0, 1000, 700);
@@ -121,8 +117,7 @@ public class PlayPanel extends JPanel {
 		physical = new Physical();
 		physical.setBounds(0, 0, 560, 80);
 		background.add(physical);
-		add(background);
-
+		
 		try {
 			image = ImageIO.read(new File(".\\img\\stage1.png"));
 			tempSound = soundStart(skyBGM);
@@ -146,9 +141,12 @@ public class PlayPanel extends JPanel {
 		gameOverState = new Thread(new GameOverRunnable());
 		gameOverState.start();
 
-
 		setFocusable(true);
 		addKeyListener(new SlideKeyListener());
+		setPreferredSize(new Dimension(1000, 700));
+		setMaximumSize(new Dimension(1000, 700));
+		setLayout(null);
+		add(background);
 	}
 
 	private class fieldRunnable implements Runnable {
@@ -233,11 +231,10 @@ public class PlayPanel extends JPanel {
 		}
 	}
 
+	// 점프
 	private class JumpRunnable implements Runnable {
 		private int gravity = 1;
 		private int dy = -20;
-
-// *********************************************************점프 이미지
 		@Override
 		public void run() {
 			int y = person.getY();
@@ -261,6 +258,7 @@ public class PlayPanel extends JPanel {
 		}
 	}
 
+	// 중력
 	private class GravityRunnable implements Runnable {
 		@Override
 		public void run() {
@@ -274,7 +272,8 @@ public class PlayPanel extends JPanel {
 			}
 		}
 	}
-
+	
+	// 이동
 	private class MoveRunnable implements Runnable {
 		@Override
 		public void run() {
@@ -312,6 +311,7 @@ public class PlayPanel extends JPanel {
 		}
 	}
 
+	// 슬라이드 사운드
 	private class SlideBGMRunnable implements Runnable {
 		@Override
 		public void run() {
@@ -342,7 +342,8 @@ public class PlayPanel extends JPanel {
 			}
 		}
 	}
-
+	
+	// 젤리 먹는 간격
 	private class JellyRunnable implements Runnable {
 		@Override
 		public void run() {
@@ -358,6 +359,7 @@ public class PlayPanel extends JPanel {
 		}
 	}
 
+	// 무적 상태
 	private class doseNotDecreaseLifeRunnable implements Runnable {
 		@Override
 		public void run() {
@@ -384,6 +386,7 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	
+	// 스테이지 넘어갈때 페이드인아웃
 	private class fadeInOutRunnable implements Runnable {
 		@Override
 		public void run() {
@@ -397,6 +400,7 @@ public class PlayPanel extends JPanel {
 					e.printStackTrace();
 				}
 			}
+			
 			int j = 0;
 			while (j <= 250) {
 				try {
@@ -470,10 +474,12 @@ public class PlayPanel extends JPanel {
 		}
 	}
 
-	private void characterHitbox() { // 히트박스 메소드, 장애물에 닿는거 처리할것, 젤리에 닿을때도 처리가능.
+	// 히트박스 메소드, 장애물에 닿는거 처리, 젤리에 닿을때도 처리
+	private void characterHitbox() {
 		Rectangle objectR = null;
 		Rectangle jellyR = null;
 		Rectangle potionR = null;
+		
 		if (!isSlide) { // down키 눌러질때 true
 			personHitR = new Rectangle(new Point(0, person.getY()),
 					new Dimension(person.getWidth(), person.getHeight() - 10));
@@ -481,6 +487,7 @@ public class PlayPanel extends JPanel {
 			personHitR = new Rectangle(new Point(0, person.getY() + 80),
 					new Dimension(person.getWidth(), (person.getHeight() - 10) / 2));
 		}
+		
 		for (int i = 0; i < objectList.size(); i++) {
 			objectR = new Rectangle(new Point(objectList.get(i).getX(), objectList.get(i).getY()),
 					new Dimension(10, 10));

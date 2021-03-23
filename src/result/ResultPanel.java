@@ -25,16 +25,13 @@ public class ResultPanel extends JPanel implements ActionListener {
 	 * Create the panel.
 	 */
 	public ResultPanel(StartPanel startPanel, ScorePanel scorePanel, MainFrame frame) {
-		// 이미지 변경 작업필요 **************************************************************************************
-		// 배경 1000 * 700
-		// 버튼 230 * 70
 		this.frame = frame;
 		this.startPanel = startPanel;
 		this.scorePanel = scorePanel;
 		button_image = new ImageIcon(".\\img\\button\\btn_main.png");
 		background_image = new ImageIcon(".\\img\\background\\resultBg.png");
-		setLayout(null);
 		font = new Font("맑은 고딕", Font.BOLD, 30);
+		setLayout(null);
 		
 		JLabel score = new JLabel(startPanel.getTfdName().getText() + " : " + String.format("%,d", scorePanel.getScore()) + "점");
 		score.setBounds(479, 66, 439, 113);

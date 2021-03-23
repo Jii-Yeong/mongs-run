@@ -50,10 +50,6 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		this.startPanel = startPanel;
 		scoreList = new ArrayList<>(); 
 		font = new Font("맑은 고딕", Font.BOLD, 30);
-		
-		// 이미지 변경 작업필요 **************************************************************************************
-		// 배경 1000 * 700
-		// 버튼 230 * 70
 		background_image = new ImageIcon(".\\img\\background\\rankingBg.png");
 		mainButton_imgae = new ImageIcon(".\\img\\button\\btn_main.png");
 		
@@ -144,8 +140,6 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 		setVisible(true);
 	}
 
-	
-
 	public List<RankData> getScoreList() {
 		return scoreList;
 	}
@@ -197,8 +191,7 @@ public class RankPanel extends JPanel implements ActionListener, Serializable {
 			if (scoreList.get(i).getName() != null) {
 				result = scoreList.get(i).getName() + " : " + String.format("%,d", scoreList.get(i).getScore()) + "점";
 			}
-		} catch (IndexOutOfBoundsException e) {
-		}
+		} catch (IndexOutOfBoundsException e) {}
 		return result;
 	}
 }

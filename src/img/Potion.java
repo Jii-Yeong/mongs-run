@@ -15,9 +15,15 @@ public class Potion extends JPanel {
 	private int width;
 	private int height;
 	private AlphaComposite alphaComposite;
-	private int alpha = 255;
-	private Image potion = new ImageIcon(".\\img\\potion.png").getImage();
+	private int alpha;
+	private Image potion;
 
+	public Potion() {
+		setBackground(new Color(34, 177, 76, 0));
+		potion = new ImageIcon(".\\img\\potion.png").getImage();
+		alpha = 255;
+	}
+	
 	public int getAlpha() {
 		return alpha;
 	}
@@ -29,9 +35,6 @@ public class Potion extends JPanel {
 	}
 	public void setPotion(Image potion) {
 		this.potion = potion;
-	}
-	public Potion() {
-		setBackground(new Color(34, 177, 76, 0));
 	}
 	
 	@Override

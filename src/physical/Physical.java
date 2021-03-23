@@ -38,7 +38,6 @@ public class Physical extends JLayeredPane {
 		lifeBar_image = new ImageIcon(".\\img\\lifebar\\lifeBar.png");
 		
 		// x = 540 체력 풀, x = 65 체력 없음
-		
 		JLabel lifebar = new JLabel();
 		lifebar.setBounds(0, 0, 560, 80);
 		lifebar.setIcon(lifeBar_image);

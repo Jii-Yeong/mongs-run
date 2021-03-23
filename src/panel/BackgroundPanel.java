@@ -10,21 +10,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class BackgroundPanel extends JPanel implements Runnable {
-	ImageIcon backIc1 = new ImageIcon(".\\img\\bg1.png");
-	ImageIcon backIc2 = new ImageIcon(".\\img\\bg2.png");
-	ImageIcon backIc3 = new ImageIcon(".\\img\\bg3.png");
-	Image backImg1 = new ImageIcon(".\\img\\bg1.png").getImage();
-	Image backImg2 = new ImageIcon(".\\img\\bg2.png").getImage();
-	Image backImg3 = new ImageIcon(".\\img\\bg3.png").getImage();
-	
-	public void setBackImg1(Image backImg1) {
-		this.backImg1 = backImg1;
-	}
-	
-	int back1X = 0;
-	int back2X = backImg1.getWidth(null);
+	private ImageIcon backIc1 = new ImageIcon(".\\img\\bg1.png");
+	private ImageIcon backIc2 = new ImageIcon(".\\img\\bg2.png");
+	private ImageIcon backIc3 = new ImageIcon(".\\img\\bg3.png");
+	private Image backImg1 = new ImageIcon(".\\img\\bg1.png").getImage();
+	private Image backImg2 = new ImageIcon(".\\img\\bg2.png").getImage();
+	private Image backImg3 = new ImageIcon(".\\img\\bg3.png").getImage();
+	private int back1X = 0;
+	private int back2X = backImg1.getWidth(null);
 	private AlphaComposite alphaComposite;
 	private int alpha = 255;
+	
 	public BackgroundPanel() {
 		setPreferredSize(new Dimension(1000, 700));
 		setBounds(0, 0, 1000, 700);
@@ -32,6 +28,18 @@ public class BackgroundPanel extends JPanel implements Runnable {
 		Thread t = new Thread(this);
 		t.start();
 	}
+	
+	public void setBackImg1(Image backImg1) {
+		this.backImg1 = backImg1;
+	}
+	
+	public int getAlpha() {
+		return alpha;
+	}
+	public void setAlpha(int alpha) {
+		this.alpha = alpha;
+	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -41,9 +49,9 @@ public class BackgroundPanel extends JPanel implements Runnable {
 		g.drawImage(backImg1, back1X, 0, this);
 		g.drawImage(backImg1, back2X, 0, this);
 	}
+	
 	@Override
 	public void run() {
-//		System.out.println("1스테이지 가로값: " + backImg1.getWidth(null));
 		while (true) {
 			back1X--;
 			back2X--;
@@ -63,11 +71,4 @@ public class BackgroundPanel extends JPanel implements Runnable {
 			}
 		}
 	}
-	public int getAlpha() {
-		return alpha;
-	}
-	public void setAlpha(int alpha) {
-		this.alpha = alpha;
-	}
-	
 }
