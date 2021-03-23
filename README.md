@@ -1,4 +1,5 @@
 # mongs-run
+![image](https://user-images.githubusercontent.com/57383657/112101420-f50f6600-8be9-11eb-8e26-dd256ba43309.png)
 
 ## 프로젝트 소개
 ![image](https://user-images.githubusercontent.com/57383657/112087613-a229b480-8bd1-11eb-8dc7-2fd21ae7d373.png)
@@ -6,6 +7,9 @@
 쿠키런을 모티브로한 **러닝 액션 게임**
 
 ## 실행 방법
+1. Java 8 버전을 설치한다.
+2. 프로젝트 폴더를 다운로드 한다.
+3. 프로젝트 폴더 안에서 Mongs-run.jar 파일을 실행시킨다
 
 ## 개발 언어, 도구
 - Java 8
@@ -62,5 +66,20 @@
 - **양종문** : 맵 디자인 
 
 ![image](https://user-images.githubusercontent.com/57383657/112089427-fc784480-8bd4-11eb-8a93-23313f9ba4d3.png)
+
+## 참고 자료
+
+### 배경 참고
+
+1. 새벽 풍경 (구글 이미지)
+2. 유튜브 프로크리에이트 강좌 여러개
+
+### 개발 아이디어 참고
+[Jaybon1님의 스윙 쿠키런 프로젝트](https://github.com/jaybon1/cookierun)
+
+### 캐릭터 디자인 참고
+- 어몽어스 (게임)
+- 토토로 (애니메이션)
+- 비모 (애니메이션)
 
 
