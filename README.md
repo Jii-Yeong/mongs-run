@@ -21,7 +21,11 @@
 - 프로크리에이트 (iPad)
 
 ## 구동 방식
-![image](https://user-images.githubusercontent.com/57383657/112087979-53c8e580-8bd2-11eb-9bcb-19183bcf1b75.png)
+![몽스런1](https://user-images.githubusercontent.com/79301442/118759173-7a8e5a00-b8ab-11eb-89bf-d82c431ac1b5.gif)
+![몽스런2](https://user-images.githubusercontent.com/79301442/118759179-7b26f080-b8ab-11eb-9749-578cf09934f4.gif)
+![몽스런3](https://user-images.githubusercontent.com/79301442/118759204-8b3ed000-b8ab-11eb-873b-f16ee9c03803.gif)
+![몽스런4](https://user-images.githubusercontent.com/79301442/118759206-8e39c080-b8ab-11eb-94dc-d0e5365bf8eb.gif)
+
 
 맵은 왼쪽 방향으로, 캐릭터는 위 아래로 움직인다.
 
